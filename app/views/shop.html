@@ -1,0 +1,33 @@
+<div class="page-header text-center">
+    <h1 class="text-capitalize">let's go <small class="text-center">购物商城</small></h1>
+</div>
+
+<div class="panel panel-default">
+    <div id="shop_list_body" class="panel-body">
+        <div class="row text-center">
+          <div class="col-md-2"></div>
+          <div class="col-md-2"><label>分类</label></div>
+          <div class="col-md-2"><label>名称</label></div>
+          <div class="col-md-2"><label>单价</label></div>
+          <div class="col-md-2"><label>购买</label></div>
+        </div>
+        <div class="row text-center" ng-repeat="item in allItems">
+                <div class="col-md-2"></div>
+                <div class="col-md-2 category"> {{item.category}} </div>
+                <div class="col-md-2 name'+i">  {{item.name}} </div>
+                <div class="col-md-2 price"> {{item.price+'元/' + item.unit }}</div>
+                <div class="col-md-2">
+                    <label>
+                        <button type="button" class="btn btn-Info buy_button"  name="drink_1_buy" ng-click="addCartNum(item)">
+                            <span class="glyphicon glyphicon-hand-up"><span>&nbsp;添加至购物车
+                        </button>
+                    </label>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="text-center">
+    <span>
+        <a href="#/cartList" id="enter_button" class="btn btn-primary btn-lg text-center" role="button">查看购物车&nbsp;>></a>
+    </span>
+</div>

@@ -1,22 +1,31 @@
-'use strict';
+// 'use strict';
+describe('test main :', function () {
 
-describe('Controller: MainCtrl', function () {
+    beforeEach(module('letusgoApp'));
 
-  // load the controller's module
-  beforeEach(module('letusgoApp'));
+    var $scope, $controller;
 
-  var MainCtrl,
-    scope;
+    beforeEach(inject(function ($injector) {
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
+        $scope = $injector.get('$rootScope').$new();
+        $controller = $injector.get('$controller');
+
+        creatMainCtrl = function () {
+
+            return $controller('MainCtrl', {
+                $scope: $scope
+            });
+        }
+    }));
+
+    describe('to-parent-navigator-inmain', function () {
+        beforeEach(function () {
+            spyOn($scope, "$emit");
+            creatMainCtrl();
+
+        });
+        it('to-parent-navigator-inmain is ok', function () {
+            expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-inmain');
+        });
     });
-  }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
-  });
 });

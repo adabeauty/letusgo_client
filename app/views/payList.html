@@ -1,0 +1,38 @@
+<label><h3><span class="glyphicon glyphicon-list-alt">支付宝</span></h3></label>
+<div class="panel panel-default" id="pay_list">
+    <div class="panel-heading text-center"><h3>Let's Go结算清单</h3></div>
+    <div class="panel-body">
+        <div class="row text-center">
+            <div class="col-md-1"></div>
+            <div class="col-md-2"><label>编号</label></div>
+            <div class="col-md-2"><label>名称</label></div>
+            <div class="col-md-2"><label>单价</label></div>
+            <div class="col-md-2"><label>数量</label></div>
+            <div class="col-md-2"><label>小计</label></div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+        <div class="row text-center" ng-repeat="boughtGood in boughtGoods">
+            <div class="col-md-1"></div>
+            <!-- <div class="col-md-2">(orderListNum++)</div> -->
+            <div class="col-md-2">0</div>
+            <div class="col-md-2"><span id="cart_1_name">{{boughtGood.item.name}}</span></div>
+            <div class="col-md-2"><span id="cart_1_price">{{boughtGood.item.price+'元/'+boughtGood.item.unit}}</span></div>
+            <div class="col-md-2"><span id="cart_1_num">{{boughtGood.num}}</span></div>
+            <div class="col-md-2"><span id="cart_1_everyTotal">{{boughtGood.item.price*boughtGood.num +'元'}}</span></div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-8">{{'件数:'+boughtGoodsLength}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-8">{{'应付金额:'+totalMoney}}</div>
+        </div>
+        <div class="text-center">
+              <a href="#/shop" class="tn btn-primary btn-lg text-center clear" role="button" ng-click="clearDate()"><span>继续购物</span></a>
+          </div>
+    </div>
+</div>

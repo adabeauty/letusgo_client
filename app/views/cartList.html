@@ -1,0 +1,55 @@
+<h3><span class="glyphicon glyphicon-shopping-cart">我的购物车</span></h3>
+
+<div  ng-show="cartGoods"  ng-repeat="cartGood in cartGoods">
+<div class="panel panel-default" ng-show="cartGood.boughtgoods">
+    <div class="panel-heading text-center">{{cartGood.categoryName}}</div>
+    <div class="panel-body">
+        <div class="row text-center">
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2"><label>名称</label></div>
+            <div class="col-md-2"><label>单价</label></div>
+            <div class="col-md-2"><label>数量</label></div>
+            <div class="col-md-2"><label>小计</label></div>
+            <div class="col-md-1"><label>删除</label></div>
+        </div>
+        <div class="row text-center" ng-repeat="cartItem in cartGood.boughtgoods" >
+            <div class="col-md-2"></div>
+
+            <div class="col-md-2"><span id="cart_1_name">{{cartItem.item.name}}</span></div>
+            <div class="col-md-2"><span id="cart_1_price"> {{cartItem.item.price+'元/'+cartItem.item.unit}}</span></div>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <span class="input-group-btn">
+
+                        <button class="btn btn-default dowm_button" type="button" name="down_button" ng-click="modifyCartItemNum(cartItem, 0)">-</button>
+                    </span>
+                    <span class="form-control show_num">{{cartItem.num}}</span>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default up_button" type="button" ng-click="modifyCartItemNum(cartItem, 1)">+</button>
+
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2"><span name="cart_everyng-click=""Total">{{cartItem.num*cartItem.item.price}}</span>元</div>
+            <div class="col-md-1"><button ng-click="deleteItem(cartItem)"><span name="cart_everyRemove" class="glyphicon glyphicon-trash" ></span></button></div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row text-left">
+            <div class="col-md-2 col-md-offset-8 cart_list_num"><label>{{'数量：'+ totalNumber}}</label></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-8 cart_list_account"><label>{{'合计：'+ totalMoney}}<span id="cart_total"></span></label></div>
+        </div>
+        <div class="text-right">
+            <span>
+                <a href="#/shop" class="btn btn-primary btn-lg text-center" role="button">&nbsp;继续购物</a>
+                <a href="#/payList" class="btn btn-primary btn-lg text-center" role="button">立刻结算&nbsp;>></a>
+            </span>
+        </div>
+    </div>
+</div>
