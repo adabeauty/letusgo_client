@@ -1,11 +1,12 @@
 'use strict';
 angular.module('letusgoApp')
-    .controller('GoodsAddCtrl', function ($scope, $location, localStorageService, goodsAddService) {
+    .controller('GoodsAddCtrl', function ($scope, $location, localStorageService, goodsManageService) {
+//    .controller('GoodsAddCtrl', function ($scope, $location, localStorageService, goodsManageService) {
 
-        $scope.allCategories = goodsAddService.getAllCategories();
+        $scope.allCategories = goodsManageService.getAllCategories();
         $scope.saveButton = function () {
 
-            goodsAddService.saveButton($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
+            goodsManageService.saveButton($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
             $scope.allItems = localStorageService.get('allGoods');
         };
 

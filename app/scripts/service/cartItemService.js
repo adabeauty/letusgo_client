@@ -8,7 +8,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
 
     this.hasExistGoods = function (name, boughtGoods) {
-        var boughtGood = false;
+        var boughtGood;
 
         if(boughtGoods !== null){
             for (var i = 0; i < boughtGoods.length; i++) {
@@ -49,19 +49,20 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
                     boughtgoods: boughtgoods
                 };
     };
-    this.getGroup = function () {
-
+    this.getGoodsArray = function(){
         var boughtGoods = localStorageService.get('boughtGoods');
         var goodsObject = _.groupBy(boughtGoods, function (num) {
             return num.item.category;
         });
         var goodsArray = _.map(goodsObject);
+        return  goodsArray;
+    };
+    this.getGroup = function () {
 
+        var goodsArray = this.getGoodsArray();
         var drink = goodsArray[0];
         var nut = goodsArray[1];
         var snack = goodsArray[2];
-
-//        this.setGroup('饮料类', drink, 'drinks');
 
         var drinks = this.cartList('饮料类', drink);
         var snacks = this.cartList('零食类', snack);
@@ -72,10 +73,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         localStorageService.set('nuts', nuts);
 
     };
-//    this.setGroup = function(group, groupName, categoryName){
-//         var currentGroup =  this.cartList(groupName, group);
-//         localStorageService.set(categoryName, currentGroup);
-//    };
+
     this.generateCartGoods = function () {
 
         this.getGroup();

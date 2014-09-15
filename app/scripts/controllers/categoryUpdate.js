@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('CategoryUpdateCtrl', function ($scope, $location, localStorageService, cagtegoryUpdateService) {
+    .controller('CategoryUpdateCtrl', function ($scope, $location, localStorageService, categoryManageService) {
 
         $scope.updateObject = localStorageService.get('updateCategory');
 
         $scope.updateCategory = function () {
 
             localStorageService.set('updateCategory', $scope.updateObject);
-            cagtegoryUpdateService.updateCategory();
+            categoryManageService.updateCategory();
             $location.path('/categoryManage');
 
         };

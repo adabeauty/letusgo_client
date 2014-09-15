@@ -2,13 +2,13 @@
 describe('test goodsUpdate:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, goodsUpdateService, $controller, GoodsUpdateCtrl;
+    var $scope, $location, localStorageService, goodsManageService, $controller, GoodsUpdateCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
-        goodsUpdateService = $injector.get('goodsUpdateService');
+        goodsManageService = $injector.get('goodsManageService');
 
         $controller = $injector.get('$controller');
 
@@ -17,7 +17,7 @@ describe('test goodsUpdate:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                goodsUpdateService: goodsUpdateService
+                goodsManageService: goodsManageService
             });
         }
     }));
@@ -30,7 +30,7 @@ describe('test goodsUpdate:', function () {
     describe('test updateItem is ok', function () {
         beforeEach(function () {
             spyOn(localStorageService, 'set');
-            spyOn(goodsUpdateService, 'updateItem');
+            spyOn(goodsManageService, 'updateItem');
             spyOn($location, 'path');
         });
         it('updateItem is ok', function () {
@@ -38,7 +38,7 @@ describe('test goodsUpdate:', function () {
 
             expect(localStorageService.get).toHaveBeenCalledWith('updateItem');
             expect(localStorageService.set).toHaveBeenCalledWith('updateItem', $scope.updateObject);
-            expect(goodsUpdateService.updateItem).toHaveBeenCalled();
+            expect(goodsManageService.updateItem).toHaveBeenCalled();
             expect($location.path).toHaveBeenCalledWith('/goodsManage');
         });
     });

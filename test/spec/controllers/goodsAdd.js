@@ -1,12 +1,12 @@
 describe('test goodsAdd:', function () {
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, goodsAddService, $controller, creatGoodsAddCtrl;
+    var $scope, $location, localStorageService, goodsManageService, $controller, creatGoodsAddCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
-        goodsAddService = $injector.get('goodsAddService');
+        goodsManageService = $injector.get('goodsManageService');
 
         $controller = $injector.get('$controller');
 
@@ -15,29 +15,25 @@ describe('test goodsAdd:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                goodsAddService: goodsAddService
+                goodsManageService: goodsManageService
             });
         }
     }));
 
     beforeEach(function () {
-        spyOn(goodsAddService, 'getAllCategories');
+        spyOn(goodsManageService, 'getAllCategories');
         creatGoodsAddCtrl();
     });
 
-    // describe('$scope.allCategories', function(){
-    //     expect(goodsAddService.getAllCategories).toHaveBeendCalled();
-    // });
-    //
     describe('test saveButton', function () {
         beforeEach(function () {
-            spyOn(goodsAddService, 'saveButton');
+            spyOn(goodsManageService, 'saveButton');
             spyOn(localStorageService, 'get');
 
             $scope.saveButton();
         });
         it('saveButton is ok', function () {
-            expect(goodsAddService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
+            expect(goodsManageService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
             expect(localStorageService.get).toHaveBeenCalledWith('allGoods');
         });
     });

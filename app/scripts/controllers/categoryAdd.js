@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('CategoryAddCtrl', function ($scope, $location, categoryAddService) {
+    .controller('CategoryAddCtrl', function ($scope, $location, categoryManageService) {
 
         $scope.saveButton = function () {
 
-            categoryAddService.saveButton($scope.currentID, $scope.currentName);
+            categoryManageService.saveButton($scope.currentID, $scope.currentName);
         };
 
         $scope.cancel = function () {

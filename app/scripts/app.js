@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc overview
- * @name letusgoApp
+ * @name letGoApp
  * @description
- * # letusgoApp
+ * # letGoApp
  *
  * Main module of the application.
  */

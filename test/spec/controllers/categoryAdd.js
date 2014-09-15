@@ -1,11 +1,11 @@
 describe('test categoryAdd:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, $location, categoryAddService, $controller, creatCategoryAddCtrl;
+    var $scope, $location, categoryManageService, $controller, creatCategoryAddCtrl;
     beforeEach(inject(function ($injector) {
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
-        categoryAddService = $injector.get('categoryAddService');
+        categoryManageService = $injector.get('categoryManageService');
 
         $controller = $injector.get('$controller');
 
@@ -14,7 +14,7 @@ describe('test categoryAdd:', function () {
             return $controller('CategoryAddCtrl', {
                 $scope: $scope,
                 $location: $location,
-                categoryAddService: categoryAddService
+                categoryManageService: categoryManageService
             });
         }
     }));
@@ -25,9 +25,9 @@ describe('test categoryAdd:', function () {
             creatCategoryAddCtrl();
         });
         it('saveButton is ok', function () {
-            spyOn(categoryAddService, 'saveButton');
+            spyOn(categoryManageService, 'saveButton');
             $scope.saveButton();
-            expect(categoryAddService.saveButton).toHaveBeenCalledWith($scope.currentID, $scope.currentName);
+            expect(categoryManageService.saveButton).toHaveBeenCalledWith($scope.currentID, $scope.currentName);
         });
     });
 

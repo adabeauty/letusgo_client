@@ -2,20 +2,20 @@
 describe('test categoryUpdate', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, cagtegoryUpdateService, $controller, creatCategoryUpdateCtrl;
+    var $scope, $location, localStorageService, categoryManageService, $controller, creatCategoryUpdateCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
-        cagtegoryUpdateService = $injector.get('cagtegoryUpdateService');
+        categoryManageService = $injector.get('categoryManageService');
         $controller = $injector.get('$controller');
         creatCategoryUpdateCtrl = function () {
             return $controller('CategoryUpdateCtrl', {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                cagtegoryUpdateService: cagtegoryUpdateService
+                categoryManageService: categoryManageService
             });
         }
     }));
@@ -35,7 +35,7 @@ describe('test categoryUpdate', function () {
     describe('test updateCategory', function () {
         beforeEach(function () {
             spyOn(localStorageService, 'set');
-            spyOn(cagtegoryUpdateService, 'updateCategory');
+            spyOn(categoryManageService, 'updateCategory');
             spyOn($location, 'path');
 
             $scope.updateCategory();
