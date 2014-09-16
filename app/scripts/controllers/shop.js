@@ -6,6 +6,7 @@ angular.module('letusgoApp')
         $scope.$emit('to-parent-navigator-inshop');
 
         $scope.allItems = localStorageService.get('allGoods');
+
         $scope.addCartNum = function (item) {
 
             $scope.$emit('to-parent-changeClickCount', 1, 1);

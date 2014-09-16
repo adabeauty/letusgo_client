@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('CategoryCtrl', function ($scope, categoryManageService, localStorageService) {
+    .controller('CategoryCtrl', function ($scope, CategoryService, localStorageService) {
 
         $scope.$emit('to-parent-navigator-incategoryManage');
         $scope.category = localStorageService.get('category');
@@ -13,7 +13,7 @@ angular.module('letusgoApp')
 
         $scope.deleteButton = function (every) {
 
-            categoryManageService.deleteButton(every);
+            CategoryService.deleteButton(every);
             $scope.category = localStorageService.get('category');
 
         };

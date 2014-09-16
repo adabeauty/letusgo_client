@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('GoodsCtrl', function ($scope, $location, localStorageService, goodsManageService) {
+    .controller('GoodsCtrl', function ($scope, $location, localStorageService, GoodService) {
 
         $scope.$emit('to-parent-navigator-ingoodsManage');
         $scope.allGoods = localStorageService.get('allGoods');
@@ -13,7 +13,7 @@ angular.module('letusgoApp')
 
         $scope.deleteButton = function (item) {
 
-            goodsManageService.deleteButton(item);
+            GoodService.deleteButton(item);
             $scope.allGoods = localStorageService.get('allGoods');
         };
         $scope.addButton = function () {

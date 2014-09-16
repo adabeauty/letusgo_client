@@ -1,12 +1,12 @@
 angular.module('letusgoApp')
-    .controller('GoodsUpdateCtrl', function ($scope, $location, localStorageService, goodsManageService) {
+    .controller('GoodsUpdateCtrl', function ($scope, $location, localStorageService, GoodService) {
 
         $scope.updateObject = localStorageService.get('updateItem');
 
         $scope.updateItem = function () {
 
             localStorageService.set('updateItem', $scope.updateObject);
-            goodsManageService.updateItem();
+            GoodService.updateItem();
             $location.path('/goodsManage');
         };
 

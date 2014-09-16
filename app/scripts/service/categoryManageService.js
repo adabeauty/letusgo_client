@@ -1,4 +1,4 @@
-angular.module('letusgoApp').service('categoryManageService', function (localStorageService, $location) {
+angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location) {
 
 
     this.category = function (ID, name, num) {
