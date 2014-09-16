@@ -2,13 +2,13 @@
 describe('test goodsManage:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, goodsManageService, $controller, creatGoodsCtrl;
+    var $scope, $location, localStorageService, GoodService, $controller, creatGoodsCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
-        goodsManageService = $injector.get('goodsManageService');
+        GoodService = $injector.get('GoodService');
 
         $controller = $injector.get('$controller');
 
@@ -17,7 +17,7 @@ describe('test goodsManage:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                goodsManageService: goodsManageService
+                GoodService: GoodService
             });
         }
     }));
@@ -54,14 +54,14 @@ describe('test goodsManage:', function () {
         var item;
         beforeEach(function () {
             item = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-            spyOn(goodsManageService, 'deleteButton');
+            spyOn(GoodService, 'deleteButton');
 
             $scope.deleteButton(item);
         });
 
         it('deleteButton', function () {
 
-            expect(goodsManageService.deleteButton).toHaveBeenCalledWith(item);
+            expect(GoodService.deleteButton).toHaveBeenCalledWith(item);
             expect(localStorageService.get).toHaveBeenCalledWith('allGoods');  //应该被调用两次
         });
     });

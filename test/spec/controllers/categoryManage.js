@@ -1,18 +1,18 @@
 describe('test categoryManage:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, categoryManageService, localStorageService, $controller, creatCategoryCtrl;
+    var $scope, CategoryService, localStorageService, $controller, creatCategoryCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
-        categoryManageService = $injector.get('categoryManageService');
+        CategoryService = $injector.get('CategoryService');
         localStorageService = $injector.get('localStorageService');
 
         $controller = $injector.get('$controller');
         creatCategoryCtrl = function () {
             return $controller('CategoryCtrl', {
                 $scope: $scope,
-                categoryManageService: categoryManageService,
+                CategoryService: CategoryService,
                 localStorageService: localStorageService
             });
         }
@@ -41,10 +41,10 @@ describe('test categoryManage:', function () {
         });
         it('deleteButton is ok', function () {
 
-            spyOn(categoryManageService, 'deleteButton');
+            spyOn(CategoryService, 'deleteButton');
             $scope.deleteButton(every);
 
-            expect(categoryManageService.deleteButton).toHaveBeenCalledWith(every);
+            expect(CategoryService.deleteButton).toHaveBeenCalledWith(every);
             expect(localStorageService.get).toHaveBeenCalledWith('category');
         });
     });
@@ -64,29 +64,5 @@ describe('test categoryManage:', function () {
             expect(localStorageService.set).toHaveBeenCalledWith('updateCategory', categoryDetail);
         });
     });
-    // describe('test addButton()', function(){
-    //
-    //     it('addButton is ok', function(){
-    //         creatCategoryCtrl();
-    //         $scope.addButton();
-    //         expect($scope.add).toEqual(true);
-    //     });
-    // });
-    //
-    // describe('test saveButton()', function(){
-    //
-    //     beforeEach(function(){
-    //
-    //         spyOn(localStorageService, 'get');
-    //         creatCategoryCtrl();
-    //     });
-    //     it('saveButton is ok', function(){
-    //
-    //         spyOn(categoryManageService, 'saveButton');
-    //         $scope.saveButton();
-    //
-    //         expect(categoryManageService.saveButton).toHaveBeenCalled();
-    //         expect(localStorageService.get).toHaveBeenCalledWith('category');
-    //     });
-    // });
+
 });

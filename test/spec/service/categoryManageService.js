@@ -1,12 +1,12 @@
 'use strict';
-describe('test: categoryManageService:', function () {
+describe('test: CategoryService:', function () {
 
-    var categoryManageService, localStorageService;
+    var CategoryService, localStorageService;
     var store = {};
     beforeEach(module('letusgoApp'));
     beforeEach(inject(function ($injector) {
 
-        categoryManageService = $injector.get('categoryManageService');
+        CategoryService = $injector.get('CategoryService');
         localStorageService = $injector.get('localStorageService');
 
         spyOn(localStorageService, 'get').and.callFake(function (key) {
@@ -25,7 +25,7 @@ describe('test: categoryManageService:', function () {
             num = 3;
         });
         it('category is ok', function () {
-            var category = categoryManageService.category(ID, name, num);
+            var category = CategoryService.category(ID, name, num);
             expect(category.ID).toEqual('TF1001');
             expect(category.name).toEqual('饮料类');
             expect(category.num).toEqual(3);
@@ -40,7 +40,7 @@ describe('test: categoryManageService:', function () {
             categoryName = '饮料类';
         });
         it('categoryDetailSuccess is ok', function () {
-            var result = categoryManageService.categoryDetailSuccess(categoryID, categoryName);
+            var result = CategoryService.categoryDetailSuccess(categoryID, categoryName);
             expect(result).toEqual(undefined);
         });
     });
@@ -60,11 +60,11 @@ describe('test: categoryManageService:', function () {
             localStorageService.set('category', currentCategories);
         });
         it(' ID exist', function () {
-            var existResult = categoryManageService.IDHasExist(currentIDExist);
+            var existResult = CategoryService.IDHasExist(currentIDExist);
             expect(existResult).toBe(0);
         });
         it(' ID does not exist', function () {
-            var existResult = categoryManageService.IDHasExist(currentIDNoExist);
+            var existResult = CategoryService.IDHasExist(currentIDNoExist);
             expect(existResult).toBe(-1);
         });
     });
@@ -80,11 +80,11 @@ describe('test: categoryManageService:', function () {
             localStorageService.set('category', currentCategories);
         });
         it('name exist', function () {
-            var existResult = categoryManageService.nameHadExist(currentNameExist);
+            var existResult = CategoryService.nameHadExist(currentNameExist);
             expect(existResult).toBe(0);
         });
         it('name does not exist', function () {
-            var existResult = categoryManageService.nameHadExist(currentNameNoExist);
+            var existResult = CategoryService.nameHadExist(currentNameNoExist);
             expect(existResult).toBe(-1);
         });
     });
@@ -101,14 +101,14 @@ describe('test: categoryManageService:', function () {
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
 
-            spyOn(categoryManageService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
+            spyOn(CategoryService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
         });
         it('category is null', function () {
 
             localStorageService.set('category', '');
 
-            categoryManageService.addNewCateogory(currentID, currentName);
-            expect(categoryManageService.category).toHaveBeenCalledWith(currentID, currentName, '0');
+            CategoryService.addNewCateogory(currentID, currentName);
+            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
 
             var currentCategory = localStorageService.get('category');
             expect(currentCategory.length).toEqual(1);
@@ -121,9 +121,9 @@ describe('test: categoryManageService:', function () {
 
             localStorageService.set('category', currentCategories);
 
-            categoryManageService.addNewCateogory(currentID, currentName);
+            CategoryService.addNewCateogory(currentID, currentName);
 
-            expect(categoryManageService.category).toHaveBeenCalledWith(currentID, currentName, '0');
+            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
 
             var currentCategory = localStorageService.get('category');
             expect(currentCategory.length).toEqual(3);
@@ -145,41 +145,41 @@ describe('test: categoryManageService:', function () {
 
         });
         it('categoryDetailSuccess is failed', function () {
-            spyOn(categoryManageService, 'IDHasExist');
-            spyOn(categoryManageService, 'nameHadExist');
-            spyOn(categoryManageService, 'categoryDetailSuccess').and.returnValue(false);
-            spyOn(categoryManageService, 'addNewCateogory');
+            spyOn(CategoryService, 'IDHasExist');
+            spyOn(CategoryService, 'nameHadExist');
+            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(false);
+            spyOn(CategoryService, 'addNewCateogory');
 
-            var result = categoryManageService.saveButton(currentID, currentName);
+            var result = CategoryService.saveButton(currentID, currentName);
 
             expect(result).toEqual(false);
         });
         it('ID exist', function () {
-            spyOn(categoryManageService, 'IDHasExist').and.returnValue(1);
-            spyOn(categoryManageService, 'nameHadExist');
+            spyOn(CategoryService, 'IDHasExist').and.returnValue(1);
+            spyOn(CategoryService, 'nameHadExist');
 
-            var result = categoryManageService.saveButton(currentID, currentName);
+            var result = CategoryService.saveButton(currentID, currentName);
 
-            expect(categoryManageService.IDHasExist).toHaveBeenCalledWith(currentID);
-            expect(categoryManageService.nameHadExist).toHaveBeenCalledWith(currentName);
+            expect(CategoryService.IDHasExist).toHaveBeenCalledWith(currentID);
+            expect(CategoryService.nameHadExist).toHaveBeenCalledWith(currentName);
             expect(result).toEqual(false);
         });
         it('name exist', function () {
-            spyOn(categoryManageService, 'nameHadExist').and.returnValue(1);
-            spyOn(categoryManageService, 'IDHasExist');
+            spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
+            spyOn(CategoryService, 'IDHasExist');
 
-            var result = categoryManageService.saveButton(currentID, currentName);
+            var result = CategoryService.saveButton(currentID, currentName);
 
             expect(result).toEqual(false);
         });
         it('name and ID are not exist', function () {
-            spyOn(categoryManageService, 'nameHadExist').and.returnValue(-1);
-            spyOn(categoryManageService, 'IDHasExist').and.returnValue(-1);
-            spyOn(categoryManageService, 'addNewCateogory');
+            spyOn(CategoryService, 'nameHadExist').and.returnValue(-1);
+            spyOn(CategoryService, 'IDHasExist').and.returnValue(-1);
+            spyOn(CategoryService, 'addNewCateogory');
 
-            var result = categoryManageService.saveButton(currentID, currentName);
+            var result = CategoryService.saveButton(currentID, currentName);
 
-            expect(categoryManageService.addNewCateogory).toHaveBeenCalledWith(currentID, currentName);
+            expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentID, currentName);
             expect(result).toEqual(true);
         });
     });
@@ -197,7 +197,7 @@ describe('test: categoryManageService:', function () {
             localStorageService.set('category', allCategories);
         });
         it('updateCategory is ok', function () {
-            var index = categoryManageService.updateCategory();
+            var index = CategoryService.updateCategory();
             expect(index).toEqual(0);
             expect(localStorageService.get).toHaveBeenCalled();
         });
@@ -217,12 +217,12 @@ describe('test: categoryManageService:', function () {
             localStorageService.set('category', currentCategories);
         });
         it('num is not 0', function () {
-            categoryManageService.deleteButton(notDeleteCategory);
+            CategoryService.deleteButton(notDeleteCategory);
             var category = localStorageService.get('category');
             expect(category.length).toBe(2);
         });
         it('num is 0', function () {
-            categoryManageService.deleteButton(deleteCategory);
+            CategoryService.deleteButton(deleteCategory);
             var category = localStorageService.get('category');
             expect(category.length).toBe(1);
         });

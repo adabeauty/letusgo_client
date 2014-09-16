@@ -1,12 +1,12 @@
 describe('test goodsAdd:', function () {
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, goodsManageService, $controller, creatGoodsAddCtrl;
+    var $scope, $location, localStorageService, GoodService, $controller, creatGoodsAddCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
-        goodsManageService = $injector.get('goodsManageService');
+        GoodService = $injector.get('GoodService');
 
         $controller = $injector.get('$controller');
 
@@ -15,25 +15,25 @@ describe('test goodsAdd:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                goodsManageService: goodsManageService
+                GoodService: GoodService
             });
         }
     }));
 
     beforeEach(function () {
-        spyOn(goodsManageService, 'getAllCategories');
+        spyOn(GoodService, 'getAllCategories');
         creatGoodsAddCtrl();
     });
 
     describe('test saveButton', function () {
         beforeEach(function () {
-            spyOn(goodsManageService, 'saveButton');
+            spyOn(GoodService, 'saveButton');
             spyOn(localStorageService, 'get');
 
             $scope.saveButton();
         });
         it('saveButton is ok', function () {
-            expect(goodsManageService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
+            expect(GoodService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
             expect(localStorageService.get).toHaveBeenCalledWith('allGoods');
         });
     });
