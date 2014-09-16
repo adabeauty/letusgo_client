@@ -42,7 +42,7 @@ describe('itemService test:', function () {
             var itemResult = ItemService.loadItems();
 
             expect(itemResult.length).toEqual(7);
-            expect(ItemService.item.callCount).toEqual(7);
+            expect(ItemService.item.calls.count()).toEqual(7);
         });
     });
 
