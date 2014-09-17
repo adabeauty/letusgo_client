@@ -117,6 +117,16 @@ describe('test: CategoryService:', function () {
             expect(currentCategory[0].ID).toEqual('TF1004');
             expect(currentCategory[0].num).toEqual(0);
         });
+        it('category is null', function () {
+
+            localStorageService.set('category', null);
+
+            CategoryService.addNewCateogory(currentID, currentName);
+            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
+
+            var currentCategory = localStorageService.get('category');
+            expect(currentCategory.length).toEqual(1);
+        });
         it('category isnot null', function () {
 
             localStorageService.set('category', currentCategories);
@@ -155,6 +165,7 @@ describe('test: CategoryService:', function () {
             expect(result).toEqual(false);
         });
         it('ID exist', function () {
+            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
             spyOn(CategoryService, 'IDHasExist').and.returnValue(1);
             spyOn(CategoryService, 'nameHadExist');
 
@@ -165,14 +176,16 @@ describe('test: CategoryService:', function () {
             expect(result).toEqual(false);
         });
         it('name exist', function () {
+            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
+            spyOn(CategoryService, 'IDHasExist').and.returnValue(-1);
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
-            spyOn(CategoryService, 'IDHasExist');
 
             var result = CategoryService.saveButton(currentID, currentName);
 
             expect(result).toEqual(false);
         });
         it('name and ID are not exist', function () {
+            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
             spyOn(CategoryService, 'nameHadExist').and.returnValue(-1);
             spyOn(CategoryService, 'IDHasExist').and.returnValue(-1);
             spyOn(CategoryService, 'addNewCateogory');
