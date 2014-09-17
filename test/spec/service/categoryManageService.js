@@ -103,20 +103,7 @@ describe('test: CategoryService:', function () {
 
             spyOn(CategoryService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
         });
-        it('category is null', function () {
 
-            localStorageService.set('category', '');
-
-            CategoryService.addNewCateogory(currentID, currentName);
-            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
-
-            var currentCategory = localStorageService.get('category');
-            expect(currentCategory.length).toEqual(1);
-
-            expect(currentCategory[0].name).toEqual('家电类');
-            expect(currentCategory[0].ID).toEqual('TF1004');
-            expect(currentCategory[0].num).toEqual(0);
-        });
         it('category is null', function () {
 
             localStorageService.set('category', null);
@@ -155,10 +142,7 @@ describe('test: CategoryService:', function () {
 
         });
         it('categoryDetailSuccess is failed', function () {
-            spyOn(CategoryService, 'IDHasExist');
-            spyOn(CategoryService, 'nameHadExist');
             spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(false);
-            spyOn(CategoryService, 'addNewCateogory');
 
             var result = CategoryService.saveButton(currentID, currentName);
 
@@ -167,12 +151,10 @@ describe('test: CategoryService:', function () {
         it('ID exist', function () {
             spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
             spyOn(CategoryService, 'IDHasExist').and.returnValue(1);
-            spyOn(CategoryService, 'nameHadExist');
 
             var result = CategoryService.saveButton(currentID, currentName);
 
             expect(CategoryService.IDHasExist).toHaveBeenCalledWith(currentID);
-            expect(CategoryService.nameHadExist).toHaveBeenCalledWith(currentName);
             expect(result).toEqual(false);
         });
         it('name exist', function () {
