@@ -58,6 +58,10 @@ describe('cartItemService test: ', function () {
             existName = '可口可乐';
             unexistName = '雪碧';
         });
+        it('noughtGoods is null:', function () {
+            var result = BoughtGoodsService.hasExistGoods(unexistName, null);
+            expect(result).toEqual(undefined);
+        });
         it('goods exist:', function () {
             var result = BoughtGoodsService.hasExistGoods(existName, [boughtItem]);
             expect(result.item.name).toEqual('可口可乐');
@@ -66,15 +70,16 @@ describe('cartItemService test: ', function () {
             var result = BoughtGoodsService.hasExistGoods(unexistName, [boughtItem]);
             expect(result).toEqual(undefined);
         });
+
     });
 
     describe('test add_cart_num():', function () {
 
-        beforeEach(function () {
-
-            localStorageService.set('boughtGoods', boughtItem);
-
-        });
+//        beforeEach(function () {
+//
+//            localStorageService.set('boughtGoods', boughtItem);
+//
+//        });
 
         it('boughtGoods is null', function () {
 
@@ -96,6 +101,7 @@ describe('cartItemService test: ', function () {
         it('boughtGoods is exist', function () {
 
             spyOn(BoughtGoodsService, 'hasExistGoods').and.returnValue(boughtItem);
+            localStorageService.set('boughtGoods', boughtItem);
             BoughtGoodsService.addCartNum(boughtItem);
 
             var boughtGoods = localStorageService.get('boughtGoods');
@@ -219,7 +225,27 @@ describe('cartItemService test: ', function () {
 
     });
 
+    describe('test deleteOrDecrease:', function(){
+       beforeEach(function(){
+           var boughtItems = [
+               {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}},
+               {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}},
+               {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋'}}
+           ];
+           localStorageService.set('boughtGoods', boughtItems);
+       });
+       it('decrease by 1', function(){
+           BoughtGoodsService.decreaseOrDelete(1);
 
+           var allGoods = localStorageService.get('boughtGoods');
+           expect(allGoods[1].num).toBe(2);
+       });
+       it('delete', function(){
+           BoughtGoodsService.decreaseOrDelete(0);
+           var allGoods = localStorageService.get('boughtGoods');
+           expect(allGoods.length).toBe(2);
+       });
+    });
     var deleteGood;
     describe('test deleteItem():', function () {
         beforeEach(function () {
@@ -229,34 +255,12 @@ describe('cartItemService test: ', function () {
         it('deleteItem is ok', function () {
             BoughtGoodsService.deleteItem(deleteGood);
             var allGoods = localStorageService.get('boughtGoods');
-            // console.log(allGoods);
+
             expect(allGoods.length).toEqual(2);
         });
     });
 
-    var getBoughtGoods, getClickcount, getDrinks, getSnacks, getNuts;
-    describe('test clearDate()', function () {
 
-        beforeEach(function () {
-
-            BoughtGoodsService.clearDate();
-
-            getBoughtGoods = localStorageService.get('boughtGoods');
-            getClickcount = localStorageService.get('clickcount');
-            getDrinks = localStorageService.get('drinks');
-            getSnacks = localStorageService.get('snacks');
-            getNuts = localStorageService.get('nuts');
-        });
-        it('clearDate is ok', function () {
-
-            expect(getBoughtGoods).toBe('');
-            expect(getClickcount).toBe(0);
-            expect(getDrinks).toBe(0);
-            expect(getSnacks).toBe(0);
-            expect(getNuts).toBe(0);
-        });
-
-    });
     var processI, directionUp, directionDown;
     describe('test processNum():', function () {
 
@@ -301,4 +305,27 @@ describe('cartItemService test: ', function () {
 
     });
 
+    var getBoughtGoods, getClickcount, getDrinks, getSnacks, getNuts;
+    describe('test clearDate()', function () {
+
+        beforeEach(function () {
+
+            BoughtGoodsService.clearDate();
+
+            getBoughtGoods = localStorageService.get('boughtGoods');
+            getClickcount = localStorageService.get('clickcount');
+            getDrinks = localStorageService.get('drinks');
+            getSnacks = localStorageService.get('snacks');
+            getNuts = localStorageService.get('nuts');
+        });
+        it('clearDate is ok', function () {
+
+            expect(getBoughtGoods).toBe('');
+            expect(getClickcount).toBe(0);
+            expect(getDrinks).toBe(0);
+            expect(getSnacks).toBe(0);
+            expect(getNuts).toBe(0);
+        });
+
+    });
 });
