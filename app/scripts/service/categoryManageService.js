@@ -29,8 +29,8 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
     this.addNewCateogory = function (currentID, currentName) {
 
         var currentCategory = localStorageService.get('category');
-
-        if (currentCategory === '' || null) {
+        var noCategory = currentCategory === '' || currentCategory === null;
+        if (noCategory) {
             currentCategory = [];
         }
 

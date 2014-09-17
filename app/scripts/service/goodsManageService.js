@@ -20,7 +20,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     this.saveItem = function (itemCategory, itemName, itemPrice, itemUnit) {
 
         var currentItems = localStorageService.get('allGoods');
-        if (currentItems === '' || null) {
+        var noItems = currentItems === '' || currentItems === null;
+        if (noItems) {
             currentItems = [];
         }
 
