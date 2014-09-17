@@ -103,7 +103,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     this.decreaseOrDelete = function(i){
         var boughtGoods = localStorageService.get('boughtGoods');
-
+        console.log(boughtGoods);
         if (boughtGoods[i].num === 1) {
             boughtGoods[i].num--;
             _.remove(boughtGoods, function (boughtGood) {
