@@ -132,6 +132,12 @@ describe('test GoodService:', function () {
 
             expect(result[0].num).toEqual(4);
         });
+        it('addCategoryNum is ok', function () {
+            GoodService.addCategoryNum('干果类');
+            var result = localStorageService.get('category');
+
+            expect(result[0].num).toEqual(3);
+        });
     });
 
     describe('test saveButton:', function () {
