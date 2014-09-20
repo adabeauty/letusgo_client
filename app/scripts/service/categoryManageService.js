@@ -1,5 +1,24 @@
-angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location) {
+angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location, $http) {
 
+    function getCategories(callback){
+
+        $http.get('/api/categories').success(function(data){
+            callback(JSON.parse(data));
+        });
+    }
+
+    function setCategories(categories, callback){
+
+        $http.post('/api/categories', {'categories': categories}).success(function(data){
+            callback(data);
+        });
+
+    }
+    this.getCategories = function(callback){
+        getCategories(function(data) {
+            callback(data);
+        });
+    };
 
     this.category = function (ID, name, num) {
         return {ID: ID, name: name, num: num};
