@@ -1,20 +1,6 @@
 'use strict';
 angular.module('letusgoApp').service('BoughtGoodsService', function (localStorageService, $http) {
 
-//    this.getClickCount = function(callback){
-//
-//        $http.get('/api/clickCount').success(function(data){
-//            callback(JSON.parse(data));
-//        });
-//    };
-//
-//    this.setClickCount = function(clickCount, callback){
-//
-//        $http.post('/api/clickCount', {'clickCount': clickCount}).success(function(data){
-//            callback(data);
-//        });
-//
-//    };
     function getClickCount (callback){
 
         $http.get('/api/clickCount').success(function(data){
@@ -33,7 +19,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         getClickCount(function(data) {
             callback(data);
         });
-    }
+    };
 
     this.BoughtItem = function (item, num) {
         return {    num: num,
@@ -155,7 +141,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     this.decreaseOrDelete = function(i){
         var boughtGoods = localStorageService.get('boughtGoods');
-        console.log(boughtGoods);
         if (boughtGoods[i].num === 1) {
             boughtGoods[i].num--;
             _.remove(boughtGoods, function (boughtGood) {
