@@ -1,18 +1,18 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('CartListCtrl', function ($scope, BoughtGoodsService, localStorageService) {
+    .controller('CartListCtrl', function ($scope, BoughtGoodsService) {
 
+        $scope.$emit('to-parent-changeClickCount', 1, 0);
         function downloadWeb(){
 
             $scope.cartGoods = BoughtGoodsService.generateCartGoods();
             $scope.totalMoney = BoughtGoodsService.getTotalMoney();
-//            $scope.totalNumber = +localStorageService.get('clickcount');
+
             BoughtGoodsService.getClickCount(function(data){
                 $scope.totalNumber = data;
                 console.log(data);
             });
-            $scope.$emit('to-parent-changeClickCount', 1, 0);
         }
 
         $scope.$emit('to-parent-navigator-incart');
