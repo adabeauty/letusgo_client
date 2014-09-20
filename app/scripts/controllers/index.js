@@ -35,7 +35,14 @@ angular.module('letusgoApp')
 
         $scope.$on('to-parent-changeClickCount', function (changeClickCount, addDirection, number) {
 
-            $scope.clickcount = BoughtGoodsService.addClickcount(addDirection, number);
+            BoughtGoodsService.addClickcount(addDirection, number,function(data){
+                $scope.clickcount = data;
+            });
+//            BoughtGoodsService.getClickCount(function(data){
+//                console.log(data);
+//                $scope.clickcount = data;
+//            });
+//            $scope.clickcount = BoughtGoodsService.addClickcount(addDirection, number);
         });
 
         $scope.$on('to-parent-clearClickCount', function () {
