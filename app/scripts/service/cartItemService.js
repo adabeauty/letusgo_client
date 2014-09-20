@@ -1,10 +1,25 @@
 'use strict';
-angular.module('letusgoApp').service('BoughtGoodsService', function (localStorageService) {
+angular.module('letusgoApp').service('BoughtGoodsService', function (localStorageService, $http) {
+
+    this.getClickCount = function(callback){
+
+        $http.get('/api/clickCount').success(function(data){
+            callback(JSON.parse(data));
+        });
+    };
+
+    this.setClickCount = function(clickCount, callback){
+
+        $http.post('/api/clickCount', {'clickCount': clickCount}).success(function(data){
+            callback(data);
+        });
+
+    };
 
     this.BoughtItem = function (item, num) {
         return {    num: num,
-                    item: item
-                };
+            item: item
+        };
     };
 
     this.hasExistGoods = function (name, boughtGoods) {
@@ -21,14 +36,32 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
         return boughtGood;
     };
-    this.addClickcount = function (direction, number) {
+    this.addClickcount = function (direction, number,callback) {
 
-        var clickcount = +localStorageService.get('clickcount');
+        var addClickCount = function(clickcount){
+            direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
+            return clickcount;
+        };
+        var currentThis = this;
+        this.getClickCount(function(getData){
 
-        direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
+            var currentClickCount = addClickCount(getData);
 
-        localStorageService.set('clickcount', clickcount);
-        return clickcount;
+            currentThis.setClickCount(currentClickCount, function(setDate){
+                console.log(currentClickCount);
+                if(setDate === 'ok'){
+                    callback(currentClickCount);
+                }
+            });
+            callback(currentClickCount);
+        });
+
+//        var clickcount = +localStorageService.get('clickcount');
+//
+//        direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
+//
+//        localStorageService.set('clickcount', clickcount);
+//        return clickcount;
     };
     this.addCartNum= function (item) {
 
@@ -46,8 +79,8 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.cartList = function (className, boughtgoods) {
 
         return {    categoryName: className,
-                    boughtgoods: boughtgoods
-                };
+            boughtgoods: boughtgoods
+        };
     };
     this.getGoodsArray = function(){
         var boughtGoods = localStorageService.get('boughtGoods');
@@ -141,7 +174,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.deleteItem = function (cartItem) {
         var boughtGoods = localStorageService.get('boughtGoods');
 
-         _.remove(boughtGoods, function (num) {
+        _.remove(boughtGoods, function (num) {
             return num.item.name === cartItem.item.name;
         });
 
@@ -150,8 +183,14 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
 
     this.clearDate = function () {
+
+//        localStorageService.set('clickcount', 0);
+        this.setClickCount(0, function(data){
+            if(data === 'ok'){
+                callback(data);
+            }
+        });
         localStorageService.set('boughtGoods', '');
-        localStorageService.set('clickcount', 0);
         localStorageService.set('drinks', 0);
         localStorageService.set('snacks', 0);
         localStorageService.set('nuts', 0);
