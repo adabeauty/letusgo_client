@@ -1,20 +1,39 @@
 'use strict';
 angular.module('letusgoApp').service('BoughtGoodsService', function (localStorageService, $http) {
 
-    this.getClickCount = function(callback){
+//    this.getClickCount = function(callback){
+//
+//        $http.get('/api/clickCount').success(function(data){
+//            callback(JSON.parse(data));
+//        });
+//    };
+//
+//    this.setClickCount = function(clickCount, callback){
+//
+//        $http.post('/api/clickCount', {'clickCount': clickCount}).success(function(data){
+//            callback(data);
+//        });
+//
+//    };
+    function getClickCount (callback){
 
         $http.get('/api/clickCount').success(function(data){
             callback(JSON.parse(data));
         });
     };
 
-    this.setClickCount = function(clickCount, callback){
+    function setClickCount(clickCount, callback){
 
         $http.post('/api/clickCount', {'clickCount': clickCount}).success(function(data){
             callback(data);
         });
 
     };
+    this.getClickCount = function(callback){
+        getClickCount(function(data) {
+            callback(data);
+        });
+    }
 
     this.BoughtItem = function (item, num) {
         return {    num: num,
@@ -42,12 +61,12 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
             return clickcount;
         };
-        var currentThis = this;
+//        var currentThis = this;
         this.getClickCount(function(getData){
 
             var currentClickCount = addClickCount(getData);
 
-            currentThis.setClickCount(currentClickCount, function(setDate){
+            setClickCount(currentClickCount, function(setDate){
                 console.log(currentClickCount);
                 if(setDate === 'ok'){
                     callback(currentClickCount);
@@ -185,7 +204,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.clearDate = function () {
 
 //        localStorageService.set('clickcount', 0);
-        this.setClickCount(0, function(data){
+        setClickCount(0, function(data){
             if(data === 'ok'){
                 callback(data);
             }
