@@ -6,7 +6,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         $http.get('/api/clickCount').success(function(data){
             callback(JSON.parse(data));
         });
-    };
+    }
 
     function setClickCount(clickCount, callback){
 
@@ -14,7 +14,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             callback(data);
         });
 
-    };
+    }
     this.getClickCount = function(callback){
         getClickCount(function(data) {
             callback(data);
