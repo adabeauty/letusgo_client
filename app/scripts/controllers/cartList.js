@@ -7,7 +7,12 @@ angular.module('letusgoApp')
 
             $scope.cartGoods = BoughtGoodsService.generateCartGoods();
             $scope.totalMoney = BoughtGoodsService.getTotalMoney();
-            $scope.totalNumber = +localStorageService.get('clickcount');
+//            $scope.totalNumber = +localStorageService.get('clickcount');
+            BoughtGoodsService.getClickCount(function(data){
+                $scope.totalNumber = data;
+                console.log(data);
+            });
+            $scope.$emit('to-parent-changeClickCount', 1, 0);
         }
 
         $scope.$emit('to-parent-navigator-incart');

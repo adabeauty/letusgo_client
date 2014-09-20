@@ -4,6 +4,8 @@ angular.module('letusgoApp')
     .controller('GoodsCtrl', function ($scope, $location, localStorageService, GoodService) {
 
         $scope.$emit('to-parent-navigator-ingoodsManage');
+        $scope.$emit('to-parent-changeClickCount', 1, 0);
+
         $scope.allGoods = localStorageService.get('allGoods');
 
         $scope.editButton = function (item) {
