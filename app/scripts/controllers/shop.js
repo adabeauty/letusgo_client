@@ -4,6 +4,7 @@ angular.module('letusgoApp')
     .controller('ShopCtrl', function ($scope, BoughtGoodsService, localStorageService) {
 
         $scope.$emit('to-parent-navigator-inshop');
+        $scope.$emit('to-parent-changeClickCount', 1, 0);
 
         $scope.allItems = localStorageService.get('allGoods');
 
