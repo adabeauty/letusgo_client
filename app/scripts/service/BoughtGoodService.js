@@ -10,9 +10,9 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.hasExistGoods = function (name, boughtGoods) {
 
         var boughtGood;
+
         if(boughtGoods != []){
             for (var i = 0; i < boughtGoods.length; i++) {
-
                 if (name === boughtGoods[i].item.name) {
                     return boughtGoods[i];
                 }
