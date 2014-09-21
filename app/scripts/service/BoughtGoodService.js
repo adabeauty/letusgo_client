@@ -43,16 +43,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
             });
         });
-//        var boughtGoods = localStorageService.get('boughtGoods');
-//
-//        if (localStorageService.get('boughtGoods') === null) {
-//            boughtGoods = [];
-//        }
-//        var boughtGood = this.hasExistGoods (item.name, boughtGoods);
-//
-//        boughtGood ? boughtGood.num++ : boughtGoods.push(this.BoughtItem(item, 1));
-//
-//        localStorageService.set('boughtGoods', boughtGoods);
+
     };
 
     this.cartList = function (className, boughtgoods) {
@@ -62,15 +53,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         };
     };
     this.getGoodsArray = function(callback){
-//        $http.get('/api/boughtGoods').success(function(data){
-//            var boughtGoods = JSON.parse(data);
-//            var goodsObject = _.groupBy(boughtGoods, function (num) {
-//                return num.item.category;
-//            });
-//            var goodsArray = _.map(goodsObject);
-//
-//            callback(goodsArray);
-//        });
+
         var boughtGoods = localStorageService.get('boughtGoods');
         var goodsObject = _.groupBy(boughtGoods, function (num) {
             return num.item.category;
@@ -160,30 +143,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             var currentClickCount = addClickCount(clickCount);
             callback(currentClickCount);
         });
-//        var addClickCount = function(clickcount){
-//            direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
-//            return clickcount;
-//        };
-//
-//        this.getClickCount(function(getData){
-//
-//            var currentClickCount = addClickCount(getData);
-//
-//            setClickCount(currentClickCount, function(setDate){
-//                console.log(currentClickCount);
-//                if(setDate === 'ok'){
-//                    callback(currentClickCount);
-//                }
-//            });
-//            callback(currentClickCount);
-//        });
 
-//        var clickcount = +localStorageService.get('clickcount');
-//
-//        direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
-//
-//        localStorageService.set('clickcount', clickcount);
-//        return clickcount;
     };
     this.getboughtGoodsLength = function () {
         var boughtGoods = localStorageService.get('boughtGoods');
