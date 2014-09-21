@@ -3,21 +3,19 @@
 angular.module('letusgoApp')
     .controller('CartListCtrl', function ($scope, BoughtGoodsService) {
 
-        $scope.$emit('to-parent-changeClickCount', 1, 0);
-        function downloadWeb(){
+        function refresh(){
+            BoughtGoodsService.refreshData(function(data){
 
-            $scope.cartGoods = BoughtGoodsService.generateCartGoods();
-            $scope.totalMoney = BoughtGoodsService.getTotalMoney();
+                $scope.cartGoods = data.cartGoods;
+                $scope.totalAmount = data.totalAmount;
+                $scope.totalCount = data.totalCount;
 
-            BoughtGoodsService.getClickCount(function(data){
-                $scope.totalNumber = data;
-                console.log(data);
             });
         }
 
+        refresh();
+        $scope.$emit('to-parent-changeClickCount', 1, 0);
         $scope.$emit('to-parent-navigator-incart');
-
-        downloadWeb();
 
         $scope.modifyCartItemNum = function (cartItem, direction) {
 
@@ -25,7 +23,7 @@ angular.module('letusgoApp')
 
             $scope.$emit('to-parent-changeClickCount', direction, 1);
 
-            downloadWeb();
+            refresh();
         };
 
         $scope.deleteItem = function (cartItem) {
@@ -34,7 +32,7 @@ angular.module('letusgoApp')
 
             $scope.$emit('to-parent-changeClickCount', 0, cartItem.num);
 
-            downloadWeb();
+            refresh();
         };
 
 
