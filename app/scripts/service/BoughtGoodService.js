@@ -23,25 +23,13 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
 
     this.addCartNum= function (item) {
+
         var currentThis = this;
         $http.get('api/boughtGoods').success(function(data){
-
-//            var boughtGoods = data;
-// 放在server里           if (boughtGoods === 'nil') {
-//                boughtGoods = [];
-//            }
-
             var boughtGood = currentThis.hasExistGoods (item.name, data);
-            if(boughtGood){
-                boughtGood.num++
-            }else{
-                data.push(currentThis.BoughtItem(item, 1));
-            }
-
-            $http.post('/api/boughtGoods', {'boughtGoods': data}).success(function(){
-                localStorageService.set('boughtGoods', data);
-
-            });
+            boughtGood ? boughtGood.num++ : data.push(currentThis.BoughtItem(item, 1));
+            localStorageService.set('boughtGoods', data);
+            $http.post('/api/boughtGoods', {'boughtGoods': data}).success(function(){});
         });
 
     };
@@ -104,12 +92,11 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.getClickCount = function(data){
 
         var sum = 0;
-        if(data !== []){
-            _.forEach(data, function (item) {
-                sum += item.num;
-            });
-        }
-        console.log('sum ', sum);
+        _.forEach(data, function (item) {
+            sum += item.num;
+        });
+        console.log('clickcount_Data', data);
+        console.log('sum', sum);
         return sum;
     };
 
@@ -122,24 +109,16 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
                 cartGoods: currentThis.generateCartGoods(data),
                 totalCount: currentThis.getClickCount(data)
             };
-            console.log('result:',result);
             callback(result);
         });
     };
     this.addClickcount = function (direction, number,callback) {
 
-        var addClickCount = function(clickcount){
-            direction === 1 ? clickcount = clickcount + number : clickcount = clickcount - number;
-            return clickcount;
-        };
-
         var currentThis = this;
         $http.get('/api/boughtGoods').success(function(data){
-
+            console.log('data_1', data);
             var clickCount = currentThis.getClickCount(data);
-            console.log('clickCount:', clickCount);
-            var currentClickCount = addClickCount(clickCount);
-            callback(currentClickCount);
+            callback(clickCount);
         });
 
     };
