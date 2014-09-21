@@ -201,12 +201,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     this.clearDate = function () {
 
-//        localStorageService.set('clickcount', 0);
-//        setClickCount(0, function(data){
-//            if(data === 'ok'){
-//                callback(data);
-//            }
-//        });
         $http.post('/api/boughtGoods', {'boughtGoods': []}).success(function(data){
 
             localStorageService.set('boughtGoods', []);
@@ -214,10 +208,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             localStorageService.set('snacks', 0);
             localStorageService.set('nuts', 0);
         });
-//        localStorageService.set('boughtGoods', '');
-//        localStorageService.set('drinks', 0);
-//        localStorageService.set('snacks', 0);
-//        localStorageService.set('nuts', 0);
+
     };
 
 });
