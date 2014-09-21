@@ -26,20 +26,20 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         var currentThis = this;
         $http.get('api/boughtGoods').success(function(data){
 
-            var boughtGoods = data;
+//            var boughtGoods = data;
 // 放在server里           if (boughtGoods === 'nil') {
 //                boughtGoods = [];
 //            }
 
-            var boughtGood = currentThis.hasExistGoods (item.name, boughtGoods);
+            var boughtGood = currentThis.hasExistGoods (item.name, data);
             if(boughtGood){
                 boughtGood.num++
             }else{
-                boughtGoods.push(currentThis.BoughtItem(item, 1));
+                data.push(currentThis.BoughtItem(item, 1));
             }
 
-            $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(currentBoughtGoods){
-                localStorageService.set('boughtGoods', boughtGoods);
+            $http.post('/api/boughtGoods', {'boughtGoods': data}).success(function(){
+                localStorageService.set('boughtGoods', data);
 
             });
         });
@@ -176,13 +176,13 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.modifyCartItemNum = function (cartItem, direction) {
 
         var boughtGoods = localStorageService.get('boughtGoods');
-
-        for (var i = 0; i < boughtGoods.length; i++) {
-            if (boughtGoods[i].item.name === cartItem.item.name) {
-
-                this.processNum(direction, i);
+        var currentThis = this;
+        _.forEach(boughtGoods, function(every, index){
+            if (every.item.name === cartItem.item.name) {
+                currentThis.processNum(direction, index);
             }
-        }
+        });
+        boughtGoods = localStorageService.get('boughtGoods');
         $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
 
     };
