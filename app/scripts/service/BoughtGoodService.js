@@ -102,10 +102,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
 
     this.getClickCount = function(data){
-//        var totalCount = _.reduce(data, function(totalCount, every) {
-//            return totalCount + every.num;
-//        });
-//        return totalCount;
+
         var sum = 0;
         if(data !== []){
             _.forEach(data, function (item) {
@@ -140,6 +137,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         $http.get('/api/boughtGoods').success(function(data){
 
             var clickCount = currentThis.getClickCount(data);
+            console.log('clickCount:', clickCount);
             var currentClickCount = addClickCount(clickCount);
             callback(currentClickCount);
         });
