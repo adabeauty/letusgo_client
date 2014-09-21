@@ -192,7 +192,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         _.remove(boughtGoods, function (num) {
             return num.item.name === cartItem.item.name;
         });
-
+        $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
         localStorageService.set('boughtGoods', boughtGoods);
 
     };
