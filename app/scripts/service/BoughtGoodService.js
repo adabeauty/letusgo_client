@@ -22,7 +22,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         return boughtGood;
     };
 
-    this.addCartNum= function (item) {
+    this.addCartNum= function (item, callback) {
 
         var currentThis = this;
         $http.get('api/boughtGoods').success(function(data){
@@ -30,6 +30,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             boughtGood ? boughtGood.num++ : data.push(currentThis.BoughtItem(item, 1));
             localStorageService.set('boughtGoods', data);
             $http.post('/api/boughtGoods', {'boughtGoods': data}).success(function(){});
+            callback(data);
         });
 
     };
