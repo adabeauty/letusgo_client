@@ -14,11 +14,6 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         var currentID = JSON.parse(lastID) + 1;
         return currentID;
     };
-    this.categoryDetailSuccess = function (categoryID, categoryName) {
-
-        var itemDetailSuccess = categoryID && categoryName;
-        return itemDetailSuccess;
-    };
 
     this.nameHadExist = function (currentName) {
 
@@ -45,10 +40,8 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
     this.saveButton = function (currentID, currentName) {
 
         var nameHadExist = this.nameHadExist(currentName);
-        var categoryDetailSuccess = this.categoryDetailSuccess(currentID, currentName);
-
-        if (!categoryDetailSuccess) {
-            alert('请填写完整商品信息!');
+        if (!currentName) {
+            alert('请填写分类名称!');
             return false;
         }
         if (nameHadExist !== -1) {
