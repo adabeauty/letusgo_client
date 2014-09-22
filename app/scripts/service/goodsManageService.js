@@ -1,7 +1,24 @@
 'use strict';
 angular.module('letusgoApp').service('GoodService', function ($location, localStorageService) {
+    function generateId(){
+        var currentItems = localStorageService.get('allGoods');
+        var Id;
+        if(currentItems.length === 0){
+            return 1;
+        }
+        var lastId = currentItems[currentItems.length - 1].Id;
+        Id = JSON.parse(lastId) + 1;
+        return Id;
+    };
     this.item = function (category, name, price, unit) {
-        return {category: category, name: name, price: price, unit: unit};
+
+        return {
+            Id: generateId(),
+            category: category,
+            name: name,
+            price: price,
+            unit: unit
+        };
     };
 
     this.hasExistItem = function (itemName) {
