@@ -1,5 +1,6 @@
 'use strict';
 angular.module('letusgoApp').service('GoodService', function ($location, localStorageService) {
+
     function generateId(){
         var currentItems = localStorageService.get('allGoods');
         var Id;
@@ -9,7 +10,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         var lastId = currentItems[currentItems.length - 1].Id;
         Id = JSON.parse(lastId) + 1;
         return Id;
-    };
+    }
+    
     this.item = function (category, name, price, unit) {
 
         return {
