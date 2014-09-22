@@ -1,43 +1,25 @@
 angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location, $http) {
 
-    function getCategories(callback){
-
-        $http.get('/api/categories').success(function(data){
-            callback(JSON.parse(data));
-        });
-    }
-
-    function setCategories(categories, callback){
-
-        $http.post('/api/categories', {'categories': categories}).success(function(data){
-            callback(data);
-        });
-
-    }
-    this.getCategories = function(callback){
-        getCategories(function(data) {
-            callback(data);
-        });
-    };
-
     this.category = function (ID, name, num) {
         return {ID: ID, name: name, num: num};
     };
-
+    this.getCurrentID = function(){
+        var category = localStorageService.get('category');
+        console.log('category:',category);
+        if(category.length === 0){
+            console.log('category:',category);
+            return 1;
+        }
+        var lastID = category[category.length - 1].ID;
+        var currentID = JSON.parse(lastID) + 1;
+        return currentID;
+    };
     this.categoryDetailSuccess = function (categoryID, categoryName) {
 
         var itemDetailSuccess = categoryID && categoryName;
         return itemDetailSuccess;
     };
 
-
-    this.IDHasExist = function (currentID) {
-
-        var currentCategory = localStorageService.get('category');
-        var idExist = _.findIndex(currentCategory, {ID: currentID});
-
-        return idExist;
-    };
     this.nameHadExist = function (currentName) {
 
         var currentCategory = localStorageService.get('category');
@@ -62,16 +44,11 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
 
     this.saveButton = function (currentID, currentName) {
 
-        var IDHasExist = this.IDHasExist(currentID);
         var nameHadExist = this.nameHadExist(currentName);
         var categoryDetailSuccess = this.categoryDetailSuccess(currentID, currentName);
 
         if (!categoryDetailSuccess) {
             alert('请填写完整商品信息!');
-            return false;
-        }
-        if (IDHasExist !== -1) {
-            alert('此ID已经存在,请重新输入ID!');
             return false;
         }
         if (nameHadExist !== -1) {
@@ -99,7 +76,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
 
         var currentCategory = localStorageService.get('category');
 
-        if (every.num !== '0') {
+        if (every.num !== 0) {
             alert('此分类下有商品存在,不能删除');
         } else {
             var events = _.remove(currentCategory, function (num) {
