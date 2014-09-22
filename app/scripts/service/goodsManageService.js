@@ -1,5 +1,5 @@
 'use strict';
-angular.module('letusgoApp').service('GoodService', function ($location, localStorageService) {
+angular.module('letusgoApp').service('GoodService', function ($location, localStorageService, $http) {
 
     function generateId(){
         var currentItems = localStorageService.get('allGoods');
@@ -11,7 +11,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         Id = JSON.parse(lastId) + 1;
         return Id;
     }
-    
     this.item = function (category, name, price, unit) {
 
         return {
@@ -23,12 +22,17 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         };
     };
 
-    this.hasExistItem = function (itemName) {
+    this.hasExistItem = function (itemName, callback) {
 
-        var currentItems = localStorageService.get('allGoods');
-        var exist = _.findIndex(currentItems, {name: itemName});
+//        var currentItems = localStorageService.get('allGoods');
+//        var exist = _.findIndex(currentItems, {name: itemName});
+//
+//        return exist;
+        $http.get('/api/goods').success(function(data){
+            var exist = _.findIndex(data, {name: itemName});
+            callback(exist);
+        });
 
-        return exist;
     };
 
     this.itemDetailSuccess = function (itemCategory, itemName, itemPrice, itemUnit) {
@@ -39,14 +43,24 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     this.saveItem = function (itemCategory, itemName, itemPrice, itemUnit) {
 
         var currentItems = localStorageService.get('allGoods');
-        var noItems = currentItems === '' || currentItems === null;
-        if (noItems) {
-            currentItems = [];
-        }
-
+//        var noItems = currentItems === '' || currentItems === null;
+//        if (noItems) {
+//            currentItems = [];
+//        }
         var newItem = this.item(itemCategory, itemName, itemPrice, itemUnit);
         currentItems.push(newItem);
         localStorageService.set('allGoods', currentItems);
+        $http.post('/api/goods', {'goods': currentItems}).success(function(){});
+//        var currentThis = this;
+//        $http.get('/api/goods').success(function(data){
+//            console.log(data);
+//            var newItem = currentThis.item(itemCategory, itemName, itemPrice, itemUnit);
+//            data.push(newItem);
+//            console.log('goods:', data);
+//            $http.post('/api/goods', {'goods': data}).success(function(){});
+//            localStorageService.set('allGoods', data);
+//        });
+
     };
     this.addCategoryNum = function (itemCategory) {
 
@@ -68,20 +82,37 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     };
     this.saveButton = function (itemCategory, itemName, itemPrice, itemUnit) {
 
-        var hasExistItem = this.hasExistItem(itemName);
-        var itemDetailSuccess = this.itemDetailSuccess(itemCategory.name, itemName, itemPrice, itemUnit);
+        var currentThis = this;
+        this.hasExistItem(itemName, function(hasExistItem){
+            var itemDetailSuccess = currentThis.itemDetailSuccess(itemCategory.name, itemName, itemPrice, itemUnit);
 
-        if (!itemDetailSuccess) {
-            alert('请填写完整商品信息!');
-            return false;
-        }
-        if (hasExistItem !== -1) {
-            alert('此商品已存在,请重新输入!');
-            return false;
-        } else {
-            this.succeedSave(itemCategory.name, itemName, itemPrice, itemUnit);
-            return true;
-        }
+            if (!itemDetailSuccess) {
+                alert('请填写完整商品信息!');
+            }
+            if (hasExistItem !== -1) {
+                alert('此商品已存在,请重新输入!');
+            } else {
+                var goods = localStorageService.get('allGoods');
+                $http.post('/api/goods', {'goods': goods}).success(function(){
+                    currentThis.succeedSave(itemCategory.name, itemName, itemPrice, itemUnit);
+                });
+//                currentThis.succeedSave(itemCategory.name, itemName, itemPrice, itemUnit);
+            }
+        });
+//        var hasExistItem = this.hasExistItem(itemName);
+//        var itemDetailSuccess = this.itemDetailSuccess(itemCategory.name, itemName, itemPrice, itemUnit);
+//
+//        if (!itemDetailSuccess) {
+//            alert('请填写完整商品信息!');
+//            return false;
+//        }
+//        if (hasExistItem !== -1) {
+//            alert('此商品已存在,请重新输入!');
+//            return false;
+//        } else {
+//            this.succeedSave(itemCategory.name, itemName, itemPrice, itemUnit);
+//            return true;
+//        }
 
     };
 
@@ -99,11 +130,17 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
 
         var updateObject = localStorageService.get('updateItem');
         var allGoods = localStorageService.get('allGoods');
-        var index = _.findIndex(allGoods, {'name': updateObject.name});
-        allGoods[index] = updateObject;
-
-        localStorageService.set('allGoods', allGoods);
-        return index;
+        $http.get('/api/goods').success(function(data){
+            var index = _.findIndex(allGoods, {'name': updateObject.name});
+            allGoods[index] = updateObject;
+            localStorageService.set('allGoods', allGoods);
+            callbak(data);
+        });
+//        var index = _.findIndex(allGoods, {'name': updateObject.name});
+//        allGoods[index] = updateObject;
+//
+//        localStorageService.set('allGoods', allGoods);
+//        return index;
     };
 
     this.decreaseCategoryNum = function (item) {
@@ -125,7 +162,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
             return item.name === num.name;
         });
         localStorageService.set('allGoods', currentItems);
-
+//        $http.delete('/apigoods/' + item.Id).success(function(){});
+        $http.delete('/api/goods/' + item.Id, {'goods': currentItems}).success(function(){});
         this.decreaseCategoryNum(item);
 
     };
