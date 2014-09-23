@@ -5,9 +5,9 @@ angular.module('letusgoApp')
 
         $scope.updateItem = function () {
 
-            localStorageService.set('updateItem', $scope.updateObject);
-            GoodService.updateItem();
-            $location.path('/goodsManage');
+            GoodService.updateItem($scope.updateObject, function(){
+                $location.path('/goodsManage');
+            });
         };
 
         $scope.cancel = function () {
