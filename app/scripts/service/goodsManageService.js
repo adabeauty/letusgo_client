@@ -53,10 +53,10 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
                 return category.num = +category.num + num;
             }
         });
-//        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
+        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
         localStorageService.set('category', currentCategory);
     };
-    
+
     this.succeedSave = function(name, itemName, itemPrice, itemUnit){
         this.saveItem(name, itemName, itemPrice, itemUnit);
         this.modifyCategoryNum(1, name);
