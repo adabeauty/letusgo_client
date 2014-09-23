@@ -24,10 +24,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
 
     this.hasExistItem = function (goods, itemName, callback) {
 
-//        $http.get('/api/goods').success(function(data){
-//            var exist = _.findIndex(data, {name: itemName});
-//            callback(exist);
-//        });
         var exist = _.findIndex(goods, {name: itemName});
         return exist;
 
@@ -39,16 +35,13 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         return itemDetailSuccess;
     };
     this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
-//        var currentItems = localStorageService.get('allGoods');
         var newItem = this.item(goods, itemCategory, itemName, itemPrice, itemUnit);
         goods.push(newItem);
-//        localStorageService.set('allGoods', goods);
         $http.post('/api/goods', {'goods': goods}).success(function(){});
 
     };
     this.modifyCategoryNum = function (num, itemCategory) {
 
-//        var currentCategory = localStorageService.get('category');
         $http.get('/api/categories').success(function(categories){
             _.forEach(categories, function (category) {
                 if (category.name === itemCategory) {
@@ -57,13 +50,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
             });
             $http.post('/api/categories', {'categories': categories}).success(function(){});
         });
-//        _.forEach(currentCategory, function (category) {
-//            if (category.name === itemCategory) {
-//                return category.num = +category.num + num;
-//            }
-//        });
-//        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
-//        localStorageService.set('category', currentCategory);
     };
 
     this.succeedSave = function(goods, name, itemName, itemPrice, itemUnit){
@@ -89,28 +75,10 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
                 });
             }
         });
-//
-//        var currentThis = this;
-//        this.hasExistItem(itemName, function(hasExistItem){
-//            var itemDetailSuccess = currentThis.itemDetailSuccess(itemCategory.name, itemName, itemPrice, itemUnit);
-//
-//            if (!itemDetailSuccess) {
-//                alert('请填写完整商品信息!');
-//            }
-//            if (hasExistItem !== -1) {
-//                alert('此商品已存在,请重新输入!');
-//            } else {
-//                $http.post('/api/goods', {'goods': goods}).success(function(){
-//                    currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
-//                });
-//            }
-//        });
-
     };
 
     this.getAllCategories = function (callback) {
 
-//        var category = localStorageService.get('category');
         $http.get('/api/categories').success(function(categories){
             var allCategories = [];
             _.forEach(categories, function (num) {
@@ -118,11 +86,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
             });
             callback(allCategories);
         });
-//        var allCategories = [];
-//        _(category).forEach(function (num) {
-//            allCategories.push({name: num.name});
-//        });
-//        return allCategories;
     };
 
     this.updateItem = function (updateObject, callback) {
