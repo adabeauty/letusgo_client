@@ -1,12 +1,18 @@
 'use strict';
 angular.module('letusgoApp')
-    .controller('GoodsAddCtrl', function ($scope, $location, localStorageService, GoodService) {
+    .controller('GoodsAddCtrl', function ($scope, $location, localStorageService, GoodService, $http) {
 
-        $scope.allCategories = GoodService.getAllCategories();
+        GoodService.getAllCategories(function(categoryNames){
+            $scope.allCategories = categoryNames;
+        });
+
         $scope.saveButton = function () {
 
             GoodService.saveButton($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
-            $scope.allItems = localStorageService.get('allGoods');
+
+            $http.get('/api/goods').success(function(goods){
+                $scope.allItems = goods;
+            });
         };
 
         $scope.cancel = function () {
