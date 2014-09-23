@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('PayListCtrl', function ($scope, BoughtGoodsService, localStorageService) {
+    .controller('PayListCtrl', function ($scope, BoughtGoodsService, localStorageService, $http) {
 
-        $scope.boughtGoods = localStorageService.get('boughtGoods');
-        $scope.boughtGoodsLength = BoughtGoodsService.getboughtGoodsLength();
-        $scope.totalMoney = BoughtGoodsService.getTotalMoney();
+        $http.get('/api/boughtGoods').success(function(data){
+
+            $scope.boughtGoods = data;
+            $scope.boughtGoodsLength = data.length;
+            $scope.totalMoney = BoughtGoodsService.getTotalMoney(data);;
+        });
 
         $scope.clearDate = function () {
 
