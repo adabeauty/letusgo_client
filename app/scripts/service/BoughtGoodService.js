@@ -90,7 +90,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.getTotalMoney = function (boughtGoods) {
 
         var totalMoney = 0;
-        console.log('boughtGood:', boughtGoods);
         _.forEach(boughtGoods, function (num) {
             totalMoney += num.num * num.item.price;
         });
@@ -164,13 +163,14 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             callback();
         });
     };
-    this.deleteItem = function (cartItem) {
+    this.deleteItem = function (cartItem, callback) {
 
         $http.get('/api/boughtGoods').success(function(boughtGoods){
             _.remove(boughtGoods, function (num) {
                 return num.item.name === cartItem.item.name;
             });
             $http.delete('/api/boughtGoods/' + cartItem.item.Id, {'boughtGoods': boughtGoods}).success(function(){});
+            callback();
         });
     };
 
