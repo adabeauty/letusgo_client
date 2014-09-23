@@ -6,7 +6,6 @@ angular.module('letusgoApp')
         $scope.$emit('to-parent-navigator-incategoryManage');
         $scope.$emit('to-parent-changeClickCount', 1, 0);
 
-//        $scope.category = localStorageService.get('category');
         $http.get('/api/categories').success(function(data){
             $scope.category = data;
             localStorageService.set('category', data);
