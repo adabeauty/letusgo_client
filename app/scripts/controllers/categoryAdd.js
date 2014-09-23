@@ -3,7 +3,9 @@
 angular.module('letusgoApp')
     .controller('CategoryAddCtrl', function ($scope, $location, CategoryService) {
 
-        $scope.currentID = CategoryService.getCurrentID();
+        CategoryService.getCurrentID(function(ID){
+            $scope.currentID = ID;
+        });
 
         $scope.saveButton = function () {
 
