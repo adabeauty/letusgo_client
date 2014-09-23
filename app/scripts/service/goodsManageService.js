@@ -45,22 +45,21 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         $http.post('/api/goods', {'goods': currentItems}).success(function(){});
 
     };
-    this.addCategoryNum = function (itemCategory) {
+    this.modifyCategoryNum = function (num, itemCategory) {
 
         var currentCategory = localStorageService.get('category');
         _.forEach(currentCategory, function (category) {
             if (category.name === itemCategory) {
-                return category.num++;
+                return category.num = +category.num + num;
             }
         });
-
+//        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
         localStorageService.set('category', currentCategory);
     };
-
+    
     this.succeedSave = function(name, itemName, itemPrice, itemUnit){
         this.saveItem(name, itemName, itemPrice, itemUnit);
-        this.addCategoryNum(name);
-
+        this.modifyCategoryNum(1, name);
         $location.path('/goodsManage');
     };
     this.saveButton = function (itemCategory, itemName, itemPrice, itemUnit) {
@@ -106,18 +105,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         });
     };
 
-    this.decreaseCategoryNum = function (item) {
-
-        var currentCategory = localStorageService.get('category');
-
-        _.forEach(currentCategory, function (category) {
-            if (category.name === item.category) {
-                return category.num--;
-            }
-        });
-
-        localStorageService.set('category', currentCategory);
-    };
     this.deleteButton = function (item) {
 
         var currentItems = localStorageService.get('allGoods');
@@ -126,8 +113,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         });
         localStorageService.set('allGoods', currentItems);
         $http.delete('/api/goods/' + item.Id, {'goods': currentItems}).success(function(){});
-        this.decreaseCategoryNum(item);
-
+        this.modifyCategoryNum(-1, item.category);
     };
 
 });
