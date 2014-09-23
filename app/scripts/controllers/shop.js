@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('letusgoApp')
-    .controller('ShopCtrl', function ($scope, BoughtGoodsService, localStorageService) {
+    .controller('ShopCtrl', function ($scope, BoughtGoodsService, localStorageService, $http) {
 
         $scope.$emit('to-parent-navigator-inshop');
         $scope.$emit('to-parent-changeClickCount', 1, 0);
 
-        $scope.allItems = localStorageService.get('allGoods');
+        $http.get('/api/goods').success(function(goods){
+            $scope.allItems = goods;
+        });
 
         $scope.addCartNum = function (item) {
 
