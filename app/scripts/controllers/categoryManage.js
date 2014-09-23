@@ -8,19 +8,19 @@ angular.module('letusgoApp')
                 $scope.category = data;
             });
         }
-        
+
         $scope.$emit('to-parent-navigator-incategoryManage');
         $scope.$emit('to-parent-changeClickCount', 1, 0);
         getCtegories();
 
-        $scope.editButton = function (categoryDetail) {
+        $scope.editButton = function (updateCategory) {
 
-            localStorageService.set('updateCategory', categoryDetail);
+            localStorageService.set('updateCategory', updateCategory);
         };
 
         $scope.deleteButton = function (every) {
 
-            CategoryService.deleteButton(every);
+            CategoryService.deleteButton($scope.category, every);
             getCtegories();
 
         };
