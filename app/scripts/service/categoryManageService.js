@@ -1,13 +1,16 @@
 angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location, $http) {
 
     this.category = function (ID, name, num) {
-        return {ID: ID, name: name, num: num};
+        return {
+            ID: ID,
+            name: name,
+            num: num
+        };
     };
     this.getCurrentID = function(){
+
         var category = localStorageService.get('category');
-        console.log('category:',category);
         if(category.length === 0){
-            console.log('category:',category);
             return 1;
         }
         var lastID = category[category.length - 1].ID;
@@ -33,6 +36,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         var current = this.category(currentID, currentName, '0');
 
         currentCategory.push(current);
+        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
         localStorageService.set('category', currentCategory);
 
     };
@@ -61,6 +65,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         var index = _.findIndex(allCategories, {'ID': updateObeject.ID});
         allCategories[index] = updateObeject;
 
+        $http.post('/api/categories', {'categories': allCategories}).success(function(){});
         localStorageService.set('category', allCategories);
         return index;
     };
@@ -76,6 +81,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 return every.ID === num.ID;
             });
         }
+        $http.post('/api/categories', {'categories': currentCategory}).success(function(){});
         localStorageService.set('category', currentCategory);
 
     };
