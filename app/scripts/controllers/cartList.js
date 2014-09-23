@@ -21,22 +21,16 @@ angular.module('letusgoApp')
 
             BoughtGoodsService.modifyCartItemNum(cartItem, direction, function(){
                 $scope.$emit('to-parent-changeClickCount', direction, 1);
-
                 refresh();
             });
-
-//            $scope.$emit('to-parent-changeClickCount', direction, 1);
-//
-//            refresh();
         };
 
         $scope.deleteItem = function (cartItem) {
 
-            BoughtGoodsService.deleteItem(cartItem);
-
-            $scope.$emit('to-parent-changeClickCount', 0, cartItem.num);
-
-            refresh();
+            BoughtGoodsService.deleteItem(cartItem, function(){
+                $scope.$emit('to-parent-changeClickCount', 0, cartItem.num);
+                refresh();
+            });
         };
 
 
