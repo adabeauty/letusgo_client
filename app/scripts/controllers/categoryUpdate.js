@@ -8,9 +8,9 @@ angular.module('letusgoApp')
         $scope.updateCategory = function () {
 
             localStorageService.set('updateCategory', $scope.updateObject);
-            CategoryService.updateCategory();
-            $location.path('/categoryManage');
-
+            CategoryService.updateCategory(function(){
+                $location.path('/categoryManage');
+            });
         };
         $scope.cancel = function () {
             $location.path('/categoryManage');
