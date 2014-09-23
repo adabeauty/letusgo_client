@@ -1,20 +1,20 @@
 'use strict';
 angular.module('letusgoApp').service('GoodService', function ($location, localStorageService, $http) {
 
-    function generateId(){
-        var currentItems = localStorageService.get('allGoods');
+    function generateId(goods){
+
         var Id;
-        if(currentItems.length === 0){
+        if(goods.length === 0){
             return 1;
         }
-        var lastId = currentItems[currentItems.length - 1].Id;
+        var lastId = goods[goods.length - 1].Id;
         Id = JSON.parse(lastId) + 1;
         return Id;
     }
-    this.item = function (category, name, price, unit) {
+    this.item = function (goods, category, name, price, unit) {
 
         return {
-            Id: generateId(),
+            Id: generateId(goods),
             category: category,
             name: name,
             price: price,
@@ -36,17 +36,16 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         var itemDetailSuccess = itemCategory && itemName && itemPrice && itemUnit;
         return itemDetailSuccess;
     };
-    this.saveItem = function (itemCategory, itemName, itemPrice, itemUnit) {
-
-        var currentItems = localStorageService.get('allGoods');
-        var newItem = this.item(itemCategory, itemName, itemPrice, itemUnit);
-        currentItems.push(newItem);
-        localStorageService.set('allGoods', currentItems);
-        $http.post('/api/goods', {'goods': currentItems}).success(function(){});
+    this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
+//        var currentItems = localStorageService.get('allGoods');
+        var newItem = this.item(goods, itemCategory, itemName, itemPrice, itemUnit);
+        goods.push(newItem);
+//        localStorageService.set('allGoods', goods);
+        $http.post('/api/goods', {'goods': goods}).success(function(){});
 
     };
     this.modifyCategoryNum = function (num, itemCategory) {
-
+//
         var currentCategory = localStorageService.get('category');
         _.forEach(currentCategory, function (category) {
             if (category.name === itemCategory) {
@@ -57,8 +56,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         localStorageService.set('category', currentCategory);
     };
 
-    this.succeedSave = function(name, itemName, itemPrice, itemUnit){
-        this.saveItem(name, itemName, itemPrice, itemUnit);
+    this.succeedSave = function(goods, name, itemName, itemPrice, itemUnit){
+        this.saveItem(goods, name, itemName, itemPrice, itemUnit);
         this.modifyCategoryNum(1, name);
         $location.path('/goodsManage');
     };
@@ -76,7 +75,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
             } else {
                 var goods = localStorageService.get('allGoods');
                 $http.post('/api/goods', {'goods': goods}).success(function(){
-                    currentThis.succeedSave(itemCategory.name, itemName, itemPrice, itemUnit);
+                    currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
                 });
             }
         });
@@ -93,27 +92,23 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         return allCategories;
     };
 
-    this.updateItem = function () {
+    this.updateItem = function (updateObject, callback) {
 
-        var updateObject = localStorageService.get('updateItem');
-        var allGoods = localStorageService.get('allGoods');
-        $http.get('/api/goods').success(function(data){
-            var index = _.findIndex(allGoods, {'name': updateObject.name});
-            allGoods[index] = updateObject;
-            localStorageService.set('allGoods', allGoods);
-            $http.post('/api/goods', {'goods': allGoods}).success(function(){});
+        $http.get('/api/goods').success(function(goods){
+            var index = _.findIndex(goods, {'name': updateObject.name});
+            goods[index] = updateObject;
+            $http.post('/api/goods', {'goods': goods}).success(function(){});
+            callback();
         });
     };
 
-    this.deleteButton = function (item) {
-
-        var currentItems = localStorageService.get('allGoods');
-        _.remove(currentItems, function (num) {
-            return item.name === num.name;
+    this.deleteButton = function (item, callback) {
+        var currentThis = this;
+        $http.get('/api/goods').success(function(goods){
+            $http.delete('/api/goods/' + item.Id, {'goods': goods}).success(function(){});
+            currentThis.modifyCategoryNum(-1, item.category);
+            callback();
         });
-        localStorageService.set('allGoods', currentItems);
-        $http.delete('/api/goods/' + item.Id, {'goods': currentItems}).success(function(){});
-        this.modifyCategoryNum(-1, item.category);
     };
 
 });
