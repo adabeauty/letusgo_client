@@ -2,7 +2,8 @@
 angular.module('letusgoApp').service('BoughtGoodsService', function (localStorageService, $http) {
 
     this.BoughtItem = function (item, num) {
-        return {    num: num,
+        return {
+            num: num,
             item: item
         };
     };
@@ -28,7 +29,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         $http.get('api/boughtGoods').success(function(data){
             var boughtGood = currentThis.hasExistGoods (item.name, data);
             boughtGood ? boughtGood.num++ : data.push(currentThis.BoughtItem(item, 1));
-            localStorageService.set('boughtGoods', data);
             $http.post('/api/boughtGoods', {'boughtGoods': data}).success(function(){});
             callback(data);
         });
@@ -37,22 +37,31 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     this.cartList = function (className, boughtgoods) {
 
-        return {    categoryName: className,
+        return {
+            categoryName: className,
             boughtgoods: boughtgoods
         };
     };
-    this.getGoodsArray = function(callback){
+    this.getGoodsArray = function(boughtGoods){
 
-        var boughtGoods = localStorageService.get('boughtGoods');
+//        var boughtGoods = localStorageService.get('boughtGoods');
+//        $http.get('api/boughtGoods').success(function(boughtGoods){
+//            var goodsObject = _.groupBy(boughtGoods, function (num) {
+//                return num.item.category;
+//            });
+//            var goodsArray = _.map(goodsObject);
+//            callback(goodsArray);
+//        });
         var goodsObject = _.groupBy(boughtGoods, function (num) {
             return num.item.category;
         });
         var goodsArray = _.map(goodsObject);
         return  goodsArray;
     };
-    this.getGroup = function () {
+    this.getGroup = function (boughtGoods) {
 
-        var goodsArray = this.getGoodsArray();
+        var goodsArray = this.getGoodsArray(boughtGoods);
+
         var drink = goodsArray[0];
         var nut = goodsArray[1];
         var snack = goodsArray[2];
@@ -67,9 +76,9 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     };
 
-    this.generateCartGoods = function () {
+    this.generateCartGoods = function (boughtGoods) {
 
-        this.getGroup();
+        this.getGroup(boughtGoods);
 
         var drinkClass = localStorageService.get('drinks');
         var snackClass = localStorageService.get('snacks');
@@ -78,11 +87,10 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         return [drinkClass, snackClass, nutClass];
     };
 
-    this.getTotalMoney = function () {
+    this.getTotalMoney = function (boughtGoods) {
 
-        var boughtGoods = localStorageService.get('boughtGoods');
         var totalMoney = 0;
-
+        console.log('boughtGood:', boughtGoods);
         _.forEach(boughtGoods, function (num) {
             totalMoney += num.num * num.item.price;
         });
@@ -120,13 +128,8 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         });
 
     };
-    this.getboughtGoodsLength = function () {
-        var boughtGoods = localStorageService.get('boughtGoods');
-        return  boughtGoods.length;
-    };
+    this.decreaseOrDelete = function(boughtGoods, i){
 
-    this.decreaseOrDelete = function(i){
-        var boughtGoods = localStorageService.get('boughtGoods');
         if (boughtGoods[i].num === 1) {
             boughtGoods[i].num--;
             _.remove(boughtGoods, function (boughtGood) {
@@ -136,53 +139,49 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         } else {
             boughtGoods[i].num--;
         }
-        localStorageService.set('boughtGoods', boughtGoods);
-    };
-    this.processNum = function (direction, i) {
-
-        var boughtGoods = localStorageService.get('boughtGoods');
-
-        if (direction === 1) {
-            boughtGoods[i].num++;
-            localStorageService.set('boughtGoods', boughtGoods);
-        } else {
-            this.decreaseOrDelete(i);
-        }
-
-    };
-    this.modifyCartItemNum = function (cartItem, direction) {
-
-        var boughtGoods = localStorageService.get('boughtGoods');
-        var currentThis = this;
-        _.forEach(boughtGoods, function(every, index){
-            if (every.item.name === cartItem.item.name) {
-                currentThis.processNum(direction, index);
-            }
-        });
-        boughtGoods = localStorageService.get('boughtGoods');
         $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
 
     };
+    this.processNum = function (boughtGoods, direction, i) {
+
+        if (direction === 1) {
+            boughtGoods[i].num++;
+            $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
+        } else {
+            this.decreaseOrDelete(boughtGoods, i);
+        }
+
+    };
+    this.modifyCartItemNum = function (cartItem, direction, callback) {
+
+        var currentThis = this;
+        $http.get('/api/boughtGoods').success(function(boughtGoods){
+            _.forEach(boughtGoods, function(every, index){
+                if (every.item.name === cartItem.item.name) {
+                    currentThis.processNum(boughtGoods, direction, index);
+                }
+            });
+            callback();
+        });
+    };
     this.deleteItem = function (cartItem) {
 
-        var boughtGoods = localStorageService.get('boughtGoods');
-        _.remove(boughtGoods, function (num) {
-            return num.item.name === cartItem.item.name;
+        $http.get('/api/boughtGoods').success(function(boughtGoods){
+            _.remove(boughtGoods, function (num) {
+                return num.item.name === cartItem.item.name;
+            });
+            $http.delete('/api/boughtGoods/' + cartItem.item.Id, {'boughtGoods': boughtGoods}).success(function(){});
         });
-        localStorageService.set('boughtGoods', boughtGoods);
-        $http.delete('/api/boughtGoods/' + cartItem.item.Id, {'boughtGoods': boughtGoods}).success(function(){});
     };
 
     this.clearDate = function () {
 
         $http.post('/api/boughtGoods', {'boughtGoods': []}).success(function(data){
 
-            localStorageService.set('boughtGoods', []);
             localStorageService.set('drinks', 0);
             localStorageService.set('snacks', 0);
             localStorageService.set('nuts', 0);
         });
-
     };
 
 });
