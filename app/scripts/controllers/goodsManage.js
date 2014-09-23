@@ -3,13 +3,15 @@
 angular.module('letusgoApp')
     .controller('GoodsCtrl', function ($scope, $location, localStorageService, GoodService, $http) {
 
+        function getGoods(){
+            $http.get('/api/goods').success(function(data){
+                $scope.allGoods = data;
+            });
+        }
+
+        getGoods();
         $scope.$emit('to-parent-navigator-ingoodsManage');
         $scope.$emit('to-parent-changeClickCount', 1, 0);
-
-        $http.get('/api/goods').success(function(data){
-            $scope.allGoods = data;
-            localStorageService.set('allGoods', data);
-        });
 
         $scope.editButton = function (item) {
             localStorageService.set('updateItem', item);
@@ -18,8 +20,9 @@ angular.module('letusgoApp')
 
         $scope.deleteButton = function (item) {
 
-            GoodService.deleteButton(item);
-            $scope.allGoods = localStorageService.get('allGoods');
+            GoodService.deleteButton(item, function(){
+                getGoods();
+            });
         };
         $scope.addButton = function () {
 
