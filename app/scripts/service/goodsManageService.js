@@ -101,7 +101,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
             var index = _.findIndex(allGoods, {'name': updateObject.name});
             allGoods[index] = updateObject;
             localStorageService.set('allGoods', allGoods);
-            callbak(data);
+            $http.post('/api/goods', {'goods': allGoods}).success(function(){});
         });
     };
 
