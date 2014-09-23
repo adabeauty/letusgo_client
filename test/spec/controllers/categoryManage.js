@@ -1,4 +1,4 @@
-describe('test categoryManage:', function () {
+xdescribe('test categoryManage:', function () {
 
     beforeEach(module('letusgoApp'));
     var $scope, CategoryService, localStorageService, $controller, creatCategoryCtrl;

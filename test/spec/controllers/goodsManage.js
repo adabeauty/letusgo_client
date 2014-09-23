@@ -1,5 +1,5 @@
 // 'use strict';
-describe('test goodsManage:', function () {
+xdescribe('test goodsManage:', function () {
 
     beforeEach(module('letusgoApp'));
     var $scope, $location, localStorageService, GoodService, $controller, creatGoodsCtrl;

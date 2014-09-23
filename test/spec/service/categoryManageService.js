@@ -1,5 +1,5 @@
 'use strict';
-describe('test: CategoryService:', function () {
+xdescribe('test: CategoryService:', function () {
 
     var CategoryService, localStorageService;
     var store = {};

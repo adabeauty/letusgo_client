@@ -1,5 +1,5 @@
 // 'use strict';
-describe('test categoryUpdate', function () {
+xdescribe('test categoryUpdate', function () {
 
     beforeEach(module('letusgoApp'));
     var $scope, $location, localStorageService, CategoryService, $controller, creatCategoryUpdateCtrl;
