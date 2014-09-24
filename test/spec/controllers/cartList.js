@@ -1,15 +1,14 @@
 'use strict';
-xdescribe('cartList test: ', function () {
+xdescribe('cartList test:', function () {
 
     beforeEach(module('letusgoApp'));
 
-    var $scope, BoughtGoodsService, localStorageService, $controller, creatCartListCtrl;
+    var $scope, BoughtGoodsService, $controller, creatCartListCtrl;
 
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         BoughtGoodsService = $injector.get('BoughtGoodsService');
-        localStorageService = $injector.get('localStorageService');
 
         $controller = $injector.get('$controller');
 
@@ -17,80 +16,67 @@ xdescribe('cartList test: ', function () {
 
             return $controller('CartListCtrl', {
                 $scope: $scope,
-                BoughtGoodsService: BoughtGoodsService,
-                localStorageService: localStorageService
+                BoughtGoodsService: BoughtGoodsService
             });
         }
     }));
 
-    describe('outside', function () {
+
+    describe('outside params', function () {
         beforeEach(function () {
 
             spyOn($scope, '$emit');
-            spyOn(BoughtGoodsService, 'generateCartGoods');
-            spyOn(BoughtGoodsService, 'getTotalMoney');
-            spyOn(localStorageService, 'get');
+//            spyOn('refresh');
             creatCartListCtrl();
         });
-
-        it('outside is ok', function () {
+        it('has correct value', function () {
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-incart');
-            expect(BoughtGoodsService.generateCartGoods).toHaveBeenCalled();
-            expect(BoughtGoodsService.getTotalMoney).toHaveBeenCalled();
-            expect(localStorageService.get).toHaveBeenCalled();
+            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 0);
+//            expect(refresh).toHaveBeenCalled();
         });
     });
+    describe('modifyItem ', function(){
 
-    var cartItem, direction;
-    describe('modifyCartItemNum :', function () {
-        beforeEach(function () {
-
+        var originalTimeout;
+        var direction, cartItem;
+        beforeEach(function() {
+            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
             creatCartListCtrl();
-            cartItem = {num: 1, item: {category: '饮料类', naem: '可口可乐', price: '3.00', unit: '瓶'}};
-            direction = 1;
-        });
-
-        it('modifyCartItemNum is ok', function () {
-
             spyOn(BoughtGoodsService, 'modifyCartItemNum');
             spyOn($scope, '$emit');
-            spyOn(BoughtGoodsService, 'generateCartGoods');
-            spyOn(BoughtGoodsService, 'getTotalMoney');
-            spyOn(localStorageService, 'get');
-
             $scope.modifyCartItemNum(cartItem, direction);
+        });
+
+        it("can work", function(done) {
+            setTimeout(function() {
+//                BoughtGoodsService.modifyCartItemNum();
+                done();
+            }, 9000);
 
             expect(BoughtGoodsService.modifyCartItemNum).toHaveBeenCalled();
-            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 1);
-            expect(BoughtGoodsService.generateCartGoods).toHaveBeenCalled();
-            expect(BoughtGoodsService.getTotalMoney).toHaveBeenCalled();
-            expect(localStorageService.get).toHaveBeenCalled();
+//            expect($scope.emit).toHaveBeenCalledWith('to-parent-changeClickCount', direction, 1);
+        });
+
+        afterEach(function() {
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         });
     });
 
-    describe('modifyCartItemNum :', function () {
-        beforeEach(function () {
+    describe('deleteItem', function(){
 
+        var cartItem = {num: 1, item: {Id: 1, name: '可乐', price: 3.50, unit: '瓶'}};
+        beforeEach(function(){
             creatCartListCtrl();
-            cartItem = {num: 1, item: {category: '饮料类', naem: '可口可乐', price: '3.00', unit: '瓶'}};
-
-        });
-
-        it('modifyCartItemNum is ok', function () {
-
             spyOn(BoughtGoodsService, 'deleteItem');
             spyOn($scope, '$emit');
-            spyOn(BoughtGoodsService, 'generateCartGoods');
-            spyOn(BoughtGoodsService, 'getTotalMoney');
-            spyOn(localStorageService, 'get');
 
-            $scope.deleteItem(cartItem, direction);
+            $scope.deleteItem(cartItem);
 
+        });
+        it('can work', function(){
             expect(BoughtGoodsService.deleteItem).toHaveBeenCalled();
-            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 0, 1);
-            expect(BoughtGoodsService.generateCartGoods).toHaveBeenCalled();
-            expect(BoughtGoodsService.getTotalMoney).toHaveBeenCalled();
-            expect(localStorageService.get).toHaveBeenCalled();
+            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 0, cartItem.num);
         });
     });
 
