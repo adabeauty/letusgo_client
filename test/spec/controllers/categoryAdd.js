@@ -1,4 +1,4 @@
-xdescribe('test categoryAdd:', function () {
+describe('test categoryAdd:', function () {
 
     beforeEach(module('letusgoApp'));
     var $scope, $location, CategoryService, $controller, creatCategoryAddCtrl;
@@ -19,14 +19,24 @@ xdescribe('test categoryAdd:', function () {
         }
     }));
 
-    describe('test saveButton:', function () {
+    describe('$scope.currentID', function(){
+        beforeEach(function () {
+            spyOn(CategoryService, 'getCurrentID');
+            creatCategoryAddCtrl();
+        });
+        it('should get value', function(){
+            expect(CategoryService.getCurrentID).toHaveBeenCalled();
+        })
+    });
+
+    describe('saveButton:', function () {
 
         beforeEach(function () {
             creatCategoryAddCtrl();
-        });
-        it('saveButton is ok', function () {
             spyOn(CategoryService, 'saveButton');
             $scope.saveButton();
+        });
+        it('should work', function () {
             expect(CategoryService.saveButton).toHaveBeenCalledWith($scope.currentID, $scope.currentName);
         });
     });
@@ -35,10 +45,10 @@ xdescribe('test categoryAdd:', function () {
 
         beforeEach(function () {
             creatCategoryAddCtrl();
-        });
-        it('cancel is ok', function () {
             spyOn($location, 'path');
             $scope.cancel();
+        });
+        it('cancel is ok', function () {
             expect($location.path).toHaveBeenCalledWith('/categoryManage');
         });
     });
