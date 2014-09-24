@@ -48,33 +48,15 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         var goodsArray = _.map(goodsObject);
         return  goodsArray;
     };
-    this.getGroup = function (boughtGoods) {
-
+    this.generateCartGoods = function(boughtGoods){
         var goodsArray = this.getGoodsArray(boughtGoods);
-
-        var drink = goodsArray[0];
-        var nut = goodsArray[1];
-        var snack = goodsArray[2];
-
-        var drinks = this.cartList('饮料类', drink);
-        var snacks = this.cartList('零食类', snack);
-        var nuts = this.cartList('干果类', nut);
-
-        localStorageService.set('drinks', drinks);
-        localStorageService.set('snacks', snacks);
-        localStorageService.set('nuts', nuts);
-
-    };
-
-    this.generateCartGoods = function (boughtGoods) {
-
-        this.getGroup(boughtGoods);
-
-        var drinkClass = localStorageService.get('drinks');
-        var snackClass = localStorageService.get('snacks');
-        var nutClass = localStorageService.get('nuts');
-
-        return [drinkClass, snackClass, nutClass];
+        var curerntThis = this;
+        var cartGoodsArray = [];
+        _.forEach(goodsArray, function(every){
+            var category = curerntThis.cartList(every[0].item.category, every);
+            cartGoodsArray.push(category );
+        });
+        return cartGoodsArray;
     };
 
     this.getTotalMoney = function (boughtGoods) {
