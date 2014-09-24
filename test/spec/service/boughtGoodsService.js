@@ -1,23 +1,14 @@
 'use strict';
 describe('cartItemService test: ', function () {
-
-    var BoughtGoodsService, localStorageService, $http, $httpBackend;
-//    var store = {};
+    
     beforeEach(module('letusgoApp'));
+    var BoughtGoodsService, localStorageService, $http, $httpBackend;
     beforeEach(inject(function ($injector) {
 
         BoughtGoodsService = $injector.get('BoughtGoodsService');
         localStorageService = $injector.get('localStorageService');
         $http = $injector.get('$http');
         $httpBackend = $injector.get('$httpBackend');
-
-//        spyOn(localStorageService, 'get').and.callFake(function (key) {
-//            return store[key];
-//        });
-//        spyOn(localStorageService, 'set').and.callFake(function (key, value) {
-//            return store[key] = value;
-//        });
-
     }));
 
     describe('boughtItem', function () {
@@ -194,33 +185,15 @@ describe('cartItemService test: ', function () {
         });
     });
 
-//    var cartItem, direction;
-//    describe('test modifyCartItemNum()', function () {
-//        beforeEach(function () {
-//
-//            cartItem = {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}};
-//            direction = 1;
-//
-//            localStorageService.set('boughtGoods', boughtItems);
-//
-//            spyOn(BoughtGoodsService, 'processNum');
-//
-//        });
-//        it('modifyCartItemNum', function () {
-//
-//            BoughtGoodsService.modifyCartItemNum(cartItem, direction);
-//            expect(BoughtGoodsService.processNum).toHaveBeenCalled();
-//        });
-//
-//    });
     describe('modifyCategoryNum', function(){
-        beforeaEach(function(){
+        beforeEach(function(){
 
         });
        it('should modify categoryNum', function(){
 
        });
     });
+
     xdescribe('test deleteItem():', function () {
         var deleteGood;
         beforeEach(function () {
@@ -243,29 +216,4 @@ describe('cartItemService test: ', function () {
             $httpBackend.flush();
         });
     });
-    //    describe('addClickcount', function () {
-//
-//        it('up click count work:', function () {
-//            localStorageService.set('clickcount', 10);
-//            var clickCountUp = BoughtGoodsService.addClickcount(1, 5);
-//            expect(clickCountUp).toBe(15);
-//
-//        });
-//        it('down click count work:', function () {
-//
-//            localStorageService.set('clickcount', 10);
-//            var clickCountDown = BoughtGoodsService.addClickcount(0, 5);
-//            expect(clickCountDown).toBe(5);
-//
-//        });
-//    });
-
-//    var noExistItem, boughtItem, newItem;
-//    beforeEach(function () {
-//
-//        newItem = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
-//        boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
-//        noExistItem = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-//
-//    });
 });
