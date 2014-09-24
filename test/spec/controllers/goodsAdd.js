@@ -1,10 +1,12 @@
-xdescribe('test goodsAdd:', function () {
+describe('test goodsAdd:', function () {
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, GoodService, $controller, creatGoodsAddCtrl;
+    var $scope, $location, $http, $httpBackend, localStorageService, GoodService, $controller, creatGoodsAddCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
         localStorageService = $injector.get('localStorageService');
         GoodService = $injector.get('GoodService');
 
@@ -15,31 +17,40 @@ xdescribe('test goodsAdd:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                GoodService: GoodService
+                GoodService: GoodService,
+                $http: $http
             });
         }
     }));
+    describe('outside getAllCategories', function(){
+        beforeEach(function(){
+            spyOn(GoodService, 'getAllCategories');
+            creatGoodsAddCtrl();
+        });
+        it('should work', function(){
+            expect(GoodService.getAllCategories).toHaveBeenCalled();
+        });
 
-    beforeEach(function () {
-        spyOn(GoodService, 'getAllCategories');
-        creatGoodsAddCtrl();
     });
-
     describe('test saveButton', function () {
         beforeEach(function () {
+            $httpBackend.when('GET', '/api/goods').respond([{}, {}, {}]);
+            creatGoodsAddCtrl();
             spyOn(GoodService, 'saveButton');
-            spyOn(localStorageService, 'get');
 
             $scope.saveButton();
         });
         it('saveButton is ok', function () {
             expect(GoodService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
-            expect(localStorageService.get).toHaveBeenCalledWith('allGoods');
+//            $httpBackend.flush();
+            $httpBackend.expectGET('/api/goods');
+//            $httpBackend.flush();
         });
     });
 
     describe('test cancel', function () {
         beforeEach(function () {
+            creatGoodsAddCtrl();
             spyOn($location, 'path');
             $scope.cancel();
         });
