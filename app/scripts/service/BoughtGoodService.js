@@ -136,7 +136,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             });
         });
     };
-    
+
     this.deleteItem = function (cartItem) {
         $http.delete('/api/boughtGoods/' + cartItem.item.Id).success(function(){});
     };
