@@ -1,5 +1,5 @@
 // 'use strict';
-xdescribe('test main :', function () {
+describe('test main :', function () {
 
     beforeEach(module('letusgoApp'));
 
