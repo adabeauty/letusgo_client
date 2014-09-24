@@ -34,6 +34,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         var itemDetailSuccess = itemCategory && itemName && itemPrice && itemUnit;
         return itemDetailSuccess;
     };
+
     this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
         var newItem = this.item(goods, itemCategory, itemName, itemPrice, itemUnit);
         goods.push(newItem);
@@ -86,13 +87,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     };
 
     this.updateItem = function (updateObject, callback) {
-
-        $http.get('/api/goods').success(function(goods){
-            var index = _.findIndex(goods, {'name': updateObject.name});
-            goods[index] = updateObject;
-            $http.post('/api/goods', {'goods': goods}).success(function(){});
-            callback();
-        });
+        $http.put('/api/goods/' + updateObject.Id, {'good': updateObject});
+        callback();
     };
 
     this.deleteButton = function (item) {
