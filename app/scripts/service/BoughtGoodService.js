@@ -44,14 +44,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
     this.getGoodsArray = function(boughtGoods){
 
-//        var boughtGoods = localStorageService.get('boughtGoods');
-//        $http.get('api/boughtGoods').success(function(boughtGoods){
-//            var goodsObject = _.groupBy(boughtGoods, function (num) {
-//                return num.item.category;
-//            });
-//            var goodsArray = _.map(goodsObject);
-//            callback(goodsArray);
-//        });
         var goodsObject = _.groupBy(boughtGoods, function (num) {
             return num.item.category;
         });
