@@ -40,9 +40,11 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
             var nameHadExist = currentThis.nameHadExist(categories, currentName);
             if (!currentName) {
                 alert('请填写分类名称!');
+                return false;
             }
             if (nameHadExist !== -1) {
                 alert('此商品分类已经存在,请重新输入!');
+                return false;
             } else{
                 currentThis.addNewCateogory(categories, currentID, currentName);
             }
