@@ -143,7 +143,14 @@ describe('cartItemService test: ', function () {
         });
 
     });
+    xdescribe('refresh', function(){
+        beforeEach('', function(){
 
+        });
+        it('should refresh date', function(){
+
+        });
+    });
     describe('test deleteOrDecrease:', function(){
        beforeEach(function(){
            var boughtItems = [
