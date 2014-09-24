@@ -1,10 +1,12 @@
-xdescribe('test categoryManage:', function () {
+describe('test categoryManage:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, CategoryService, localStorageService, $controller, creatCategoryCtrl;
+    var $scope, $http, $httpBackend, CategoryService, localStorageService, $controller, creatCategoryCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
         CategoryService = $injector.get('CategoryService');
         localStorageService = $injector.get('localStorageService');
 
@@ -13,56 +15,51 @@ xdescribe('test categoryManage:', function () {
             return $controller('CategoryCtrl', {
                 $scope: $scope,
                 CategoryService: CategoryService,
-                localStorageService: localStorageService
+                localStorageService: localStorageService,
+                $http: $http
             });
         }
     }));
 
-    describe('outside', function () {
+    describe('outside function', function () {
         beforeEach(function () {
             spyOn($scope, '$emit');
-            spyOn(localStorageService, 'get');
-
+            $httpBackend.when('GET', '/api/categories').respond([{}, {}, {}]);
             creatCategoryCtrl();
         });
 
-        it('outside is ok', function () {
+        it('should work', function () {
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-incategoryManage');
-            expect(localStorageService.get).toHaveBeenCalledWith('category');
+            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 0);
+            $httpBackend.expectGET('/api/categories');
+            $httpBackend.flush();
+
+        });
+    });
+
+    describe('test editButton()', function () {
+        var updateObject = {ID: 'TF1001', name: '饮料类', num: '1'};;
+        beforeEach(function () {
+            creatCategoryCtrl();
+            spyOn(localStorageService, 'set');
+            $scope.editButton(updateObject );
+        });
+        it('editButton is ok', function () {
+            expect(localStorageService.set).toHaveBeenCalledWith('updateCategory', updateObject);
         });
     });
 
     describe('test deleteButton()', function () {
-        var every;
+        var every = {ID: 'TF1001', name: '饮料类', num: '1'};
         beforeEach(function () {
-            every = {ID: 'TF1001', name: '饮料类', num: '1'};
-            spyOn(localStorageService, 'get');
             creatCategoryCtrl();
-        });
-        it('deleteButton is ok', function () {
-
             spyOn(CategoryService, 'deleteButton');
             $scope.deleteButton(every);
-
-            expect(CategoryService.deleteButton).toHaveBeenCalledWith(every);
-            expect(localStorageService.get).toHaveBeenCalledWith('category');
+        });
+        it('deleteButton is ok', function () {
+            expect(CategoryService.deleteButton).toHaveBeenCalledWith($scope.category, every);
         });
     });
-    describe('test editButton()', function () {
-        var categoryDetail;
-        beforeEach(function () {
-            categoryDetail = {ID: 'TF1001', name: '饮料类', num: '1'};
 
-            spyOn(localStorageService, 'get');
-            creatCategoryCtrl();
-        });
-        it('editButton is ok', function () {
-
-            spyOn(localStorageService, 'set');
-            $scope.editButton(categoryDetail);
-
-            expect(localStorageService.set).toHaveBeenCalledWith('updateCategory', categoryDetail);
-        });
-    });
 
 });
