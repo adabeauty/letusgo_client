@@ -95,13 +95,9 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         });
     };
 
-    this.deleteButton = function (item, callback) {
-        var currentThis = this;
-        $http.get('/api/goods').success(function(goods){
-            $http.delete('/api/goods/' + item.Id, {'goods': goods}).success(function(){});
-            currentThis.modifyCategoryNum(-1, item.category);
-            callback();
-        });
+    this.deleteButton = function (item) {
+        $http.delete('/api/goods/' + item.Id);
+        this.modifyCategoryNum(-1, item.category);
     };
 
 });
