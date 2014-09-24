@@ -92,82 +92,40 @@ describe('cartItemService test: ', function () {
             expect(cartListResult.categoryName).toEqual('饮料类');
         });
     });
-
     var boughtItems = [
         {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}},
         {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}},
         {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋'}}
     ];
-    describe('test getgroup():', function () {
-
-        beforeEach(function () {
-
-            localStorageService.set('boughtGoods', boughtItems);
-
+    describe('getGoodsArray', function(){
+        it('should return a array', function(){
+            var groupArray = BoughtGoodsService.getGoodsArray(boughtItems);
+            expect(groupArray.length).toBe(3);
+            expect(groupArray[0].length).toBe(1);
         });
-        it('getgroup work', function () {
-            BoughtGoodsService.getGroup();
-
-            var drinks = localStorageService.get('drinks');
-            var nuts = localStorageService.get('nuts');
-            var snacks = localStorageService.get('snacks');
-
-            expect(drinks.categoryName).toEqual('饮料类');
-            expect(nuts.categoryName).toEqual('干果类');
-            expect(snacks.categoryName).toEqual('零食类');
-
-        });
-
     });
 
-    var getGroupItem;
-    describe('test generateCartGoods():', function () {
 
+    describe('generateCartGoods', function () {
+        var boughtGoods, goodsArray;
         beforeEach(function () {
-            getGroupItem = [
-                { categoryName: '饮料类',
-                    boughtgoods: {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}}
-                },
-                { categoryName: '零食类',
-                    boughtgoods: {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}}
-                },
-                { categoryName: '干果类',
-                    boughtgoods: {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋'}}
-                }
-            ];
-            spyOn(BoughtGoodsService, 'getGroup').and.callFake(function () {
-
-                localStorageService.set('drinks', getGroupItem[0]);
-                localStorageService.set('snacks', getGroupItem[1]);
-                localStorageService.set('nuts', getGroupItem[2]);
-            });
+            var item1 = {
+                num: 1,
+                item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}
+            };
+            var item2 = {
+                num: 3,
+                item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}
+            };
+            goodsArray = [[item1],[item2]];
+            spyOn(BoughtGoodsService, 'getGoodsArray').and.returnValue(goodsArray);
+        });
+        it('should return cartList array', function () {
+            var cartListArray = BoughtGoodsService.generateCartGoods(boughtGoods);
+            expect(BoughtGoodsService.getGoodsArray).toHaveBeenCalled();
+            expect(cartListArray.length).toBe(2);
         });
 
-        it('invoke getGroup', function () {
-
-            var generateCartGoodsResult = BoughtGoodsService.generateCartGoods();
-            expect(BoughtGoodsService.getGroup).toHaveBeenCalled();
-            expect(generateCartGoodsResult.length).toBe(3);
-
-        });
-
-        it('the length of generateCartGoods', function () {
-
-            var generateCartGoodsResult = BoughtGoodsService.generateCartGoods();
-            expect(generateCartGoodsResult.length).toBe(3);
-
-        });
-
-        it('the content of generateCartGoods', function () {
-
-            var generateCartGoodsResult = BoughtGoodsService.generateCartGoods();
-
-            expect(generateCartGoodsResult[1].categoryName).toEqual('零食类');
-            expect(generateCartGoodsResult[0].boughtgoods.num).toBe(1);
-            expect(generateCartGoodsResult[2].boughtgoods.item.name).toEqual('开心果');
-            expect(generateCartGoodsResult[2].boughtgoods.item.price).toEqual('15.00');
-
-        });
     });
 
     describe('test getTotalMoney():', function () {
