@@ -1,12 +1,14 @@
-// 'use strict';
-xdescribe('test goodsManage:', function () {
+'use strict';
+describe('test goodsManage:', function () {
 
     beforeEach(module('letusgoApp'));
-    var $scope, $location, localStorageService, GoodService, $controller, creatGoodsCtrl;
+    var $scope, $location, $http, $httpBackend, localStorageService, GoodService, $controller, creatGoodsCtrl;
     beforeEach(inject(function ($injector) {
 
         $scope = $injector.get('$rootScope').$new();
         $location = $injector.get('$location');
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
         localStorageService = $injector.get('localStorageService');
         GoodService = $injector.get('GoodService');
 
@@ -17,32 +19,32 @@ xdescribe('test goodsManage:', function () {
                 $scope: $scope,
                 $location: $location,
                 localStorageService: localStorageService,
-                GoodService: GoodService
+                GoodService: GoodService,
+                $http: $http
             });
         }
     }));
 
     beforeEach(function () {
-        spyOn(localStorageService, 'get');
         spyOn($scope, '$emit');
-
+        $httpBackend.when('GET', '/api/goods').respond([{}, {}, {}]);
         creatGoodsCtrl();
     });
-
-    describe('test $scope.allGoods', function () {
-        it('ok', function () {
+    describe('outside function', function(){
+        it('should work', function(){
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-ingoodsManage');
-            expect(localStorageService.get).toHaveBeenCalledWith('allGoods');
+            expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 0);
+            $httpBackend.expectGET('/api/goods');
+            $httpBackend.flush();
         });
     });
 
+    var item = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
     describe('test editButton:', function () {
-        var item;
+
         beforeEach(function () {
             spyOn(localStorageService, 'set');
             spyOn($location, 'path');
-
-            item = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
             $scope.editButton(item);
         });
         it('editButton is ok', function () {
@@ -50,19 +52,14 @@ xdescribe('test goodsManage:', function () {
             expect($location.path).toHaveBeenCalledWith('/goodsUpdate');
         });
     });
-    describe('test deleteButton:', function () {
-        var item;
-        beforeEach(function () {
-            item = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-            spyOn(GoodService, 'deleteButton');
 
+    describe('test deleteButton:', function () {
+        beforeEach(function () {
+            spyOn(GoodService, 'deleteButton');
             $scope.deleteButton(item);
         });
-
         it('deleteButton', function () {
-
             expect(GoodService.deleteButton).toHaveBeenCalledWith(item);
-            expect(localStorageService.get).toHaveBeenCalledWith('allGoods');  //应该被调用两次
         });
     });
 
