@@ -134,7 +134,8 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
         if (direction === 1) {
             boughtGoods[i].num++;
-            $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
+            console.log(boughtGoods[i]);
+            $http.put('/api/boughtGoods/' + boughtGoods[i].item.Id, {'boughtGood': boughtGoods[i]});
         } else {
             this.decreaseOrDelete(boughtGoods, i);
         }
