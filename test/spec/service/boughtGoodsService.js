@@ -105,18 +105,17 @@ describe('cartItemService test: ', function () {
         });
     });
 
-
+    var item1 = {
+        num: 1,
+        item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}
+    };
+    var item2 = {
+        num: 3,
+        item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}
+    };
     describe('generateCartGoods', function () {
         var boughtGoods, goodsArray;
         beforeEach(function () {
-            var item1 = {
-                num: 1,
-                item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}
-            };
-            var item2 = {
-                num: 3,
-                item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}
-            };
             goodsArray = [[item1],[item2]];
             spyOn(BoughtGoodsService, 'getGoodsArray').and.returnValue(goodsArray);
         });
@@ -128,26 +127,19 @@ describe('cartItemService test: ', function () {
 
     });
 
-    describe('test getTotalMoney():', function () {
-        beforeEach(function () {
-
-            localStorageService.set('boughtGoods', boughtItems);
-
-        });
-        it('getTotalMoney is ok', function () {
-            var totalMoney = BoughtGoodsService.getTotalMoney();
-            expect(totalMoney).toBe(76.5);
+    describe('getTotalMoney', function () {
+        var boughtGoods = [item1, item2];
+        it('should return total', function () {
+            var totalMoney = BoughtGoodsService.getTotalMoney(boughtGoods);
+            expect(totalMoney).toBe(16.5);
         });
     });
 
-    describe('test getboughtGoodsLength():', function () {
-
-        beforeEach(function () {
-            localStorageService.set('boughtGoods', boughtItems);
-        });
-        it('getboughtGoodsLength is ok', function () {
-            var length = BoughtGoodsService.getboughtGoodsLength();
-            expect(length).toBe(3);
+    describe('getClickCount', function () {
+        var boughtGoods = [item1, item2];
+        it('should return totalCount', function () {
+            var totalCount = BoughtGoodsService.getClickCount(boughtGoods);
+            expect(totalCount).toBe(4);
         });
 
     });
