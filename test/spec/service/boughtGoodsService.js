@@ -180,20 +180,6 @@ describe('cartItemService test: ', function () {
            expect(allGoods.length).toBe(2);
        });
     });
-    var deleteGood;
-    describe('test deleteItem():', function () {
-        beforeEach(function () {
-            localStorageService.set('boughtGoods', boughtItems);
-            deleteGood = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
-        });
-        it('deleteItem is ok', function () {
-            BoughtGoodsService.deleteItem(deleteGood);
-            var allGoods = localStorageService.get('boughtGoods');
-
-            expect(allGoods.length).toEqual(2);
-        });
-    });
-
 
     var processI, directionUp, directionDown;
     describe('test processNum():', function () {
@@ -219,28 +205,46 @@ describe('cartItemService test: ', function () {
         });
     });
 
-    var cartItem, direction;
-    describe('test modifyCartItemNum()', function () {
-        beforeEach(function () {
-
-            cartItem = {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}};
-            direction = 1;
-
-            localStorageService.set('boughtGoods', boughtItems);
-
-            spyOn(BoughtGoodsService, 'processNum');
+//    var cartItem, direction;
+//    describe('test modifyCartItemNum()', function () {
+//        beforeEach(function () {
+//
+//            cartItem = {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}};
+//            direction = 1;
+//
+//            localStorageService.set('boughtGoods', boughtItems);
+//
+//            spyOn(BoughtGoodsService, 'processNum');
+//
+//        });
+//        it('modifyCartItemNum', function () {
+//
+//            BoughtGoodsService.modifyCartItemNum(cartItem, direction);
+//            expect(BoughtGoodsService.processNum).toHaveBeenCalled();
+//        });
+//
+//    });
+    describe('modifyCategoryNum', function(){
+        beforeaEach(function(){
 
         });
-        it('modifyCartItemNum', function () {
+       it('should modify categoryNum', function(){
 
-            BoughtGoodsService.modifyCartItemNum(cartItem, direction);
-            expect(BoughtGoodsService.processNum).toHaveBeenCalled();
-        });
-
+       });
     });
-
-    ddescribe('clearDate()', function () {
-
+    xdescribe('test deleteItem():', function () {
+        var deleteGood;
+        beforeEach(function () {
+            $httpBackend.when('DELETE', '/api/boughtGoods');
+            deleteGood = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+            BoughtGoodsService.deleteItem(deleteGood);
+        });
+        it('deleteItem is ok', function () {
+            $httpBackend.expectDELETE('/api/boughtGoods');
+            $httpBackend.flush();
+        });
+    });
+    describe('clearDate()', function () {
         beforeEach(function () {
             $httpBackend.when('POST', '/api/boughtGoods').respond([{}, {}, {}]);
             BoughtGoodsService.clearDate();
