@@ -181,27 +181,25 @@ describe('cartItemService test: ', function () {
        });
     });
 
-    var processI, directionUp, directionDown;
-    describe('test processNum():', function () {
-
+    ddescribe('processNum', function () {
+        var i, directionUp, directionDown, boughtGoods;
         beforeEach(function () {
-            localStorageService.set('boughtGoods', boughtItems);
-            processI = 1;
+            boughtGoods = [item1, item2];
+            i = 1;
             directionUp = 1;
             directionDown = 0;
+//            $httpBackend.when('PUT', '/api/boughtGoods'+1, {'boughtGood': boughtGoods[i]});
         });
-        it('up num is ok', function () {
 
-            BoughtGoodsService.processNum(directionUp, processI);
-
-            var goodUp = localStorageService.set('boughtGoods', boughtItems);
-            expect(goodUp[processI].num).toBe(5);
+        it('of up can work', function () {
+            BoughtGoodsService.processNum(boughtGoods, directionUp, i);
+//            $httpBackend.expectPUT('/api/boughtGoods');
+//            $httpBackend.flush();
         });
-        it('down num is ok', function () {
-            BoughtGoodsService.processNum(directionDown, processI);
-
-            var goodDown = localStorageService.set('boughtGoods', boughtItems);
-            expect(goodDown[processI].num).toBe(4);
+        it('of down can work', function () {
+            spyOn(BoughtGoodsService, 'decreaseOrDelete');
+            BoughtGoodsService.processNum(boughtGoods, directionDown, i);
+            expect(BoughtGoodsService.decreaseOrDelete).toHaveBeenCalledWith(boughtGoods, i);
         });
     });
 
