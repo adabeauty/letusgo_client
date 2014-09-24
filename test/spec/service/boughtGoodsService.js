@@ -151,6 +151,14 @@ describe('cartItemService test: ', function () {
 
         });
     });
+    xdescribe('addClickCount', function(){
+        beforeEach('', function(){
+
+        });
+        it('should add clickCount', function(){
+
+        });
+    });
     describe('test deleteOrDecrease:', function(){
        beforeEach(function(){
            var boughtItems = [
