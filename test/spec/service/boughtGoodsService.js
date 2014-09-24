@@ -1,97 +1,70 @@
 'use strict';
-xdescribe('cartItemService test: ', function () {
+describe('cartItemService test: ', function () {
 
-    var BoughtGoodsService, localStorageService;
-    var store = {};
+    var BoughtGoodsService, localStorageService, $http, $httpBackend;
+//    var store = {};
     beforeEach(module('letusgoApp'));
-
     beforeEach(inject(function ($injector) {
 
         BoughtGoodsService = $injector.get('BoughtGoodsService');
         localStorageService = $injector.get('localStorageService');
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
 
-        spyOn(localStorageService, 'get').and.callFake(function (key) {
-            return store[key];
-        });
-        spyOn(localStorageService, 'set').and.callFake(function (key, value) {
-            return store[key] = value;
-        });
+//        spyOn(localStorageService, 'get').and.callFake(function (key) {
+//            return store[key];
+//        });
+//        spyOn(localStorageService, 'set').and.callFake(function (key, value) {
+//            return store[key] = value;
+//        });
 
     }));
 
-    describe('test boughtItem():', function () {
-        it('item class generator:', function () {
-            var boughtItem = BoughtGoodsService.BoughtItem({category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}, 3);
+    describe('boughtItem', function () {
+        var item = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
+        it('should return a object:', function () {
+            var boughtItem = BoughtGoodsService.BoughtItem(item, 3);
             expect(boughtItem.num).toEqual(3);
         });
     });
 
-    describe('test addClickcount:', function () {
-
-        it('up click count work:', function () {
-            localStorageService.set('clickcount', 10);
-            var clickCountUp = BoughtGoodsService.addClickcount(1, 5);
-            expect(clickCountUp).toBe(15);
-
-        });
-        it('down click count work:', function () {
-
-            localStorageService.set('clickcount', 10);
-            var clickCountDown = BoughtGoodsService.addClickcount(0, 5);
-            expect(clickCountDown).toBe(5);
-
-        });
-    });
-
-    var noExistItem, boughtItem, newItem;
-    beforeEach(function () {
-
-        newItem = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
-        boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
-        noExistItem = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-
-    });
-
-    describe('test hasExistGoods():', function () {
+    describe('hasExistGoods', function () {
+        var boughtItem;
         var existName, unexistName;
         beforeEach(function () {
+            boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
             existName = '可口可乐';
             unexistName = '雪碧';
         });
-        it('noughtGoods is null:', function () {
-            var result = BoughtGoodsService.hasExistGoods(unexistName, null);
-            expect(result).toEqual(undefined);
-        });
-        it('goods exist:', function () {
+//        var noExistItem, boughtItem, newItem;
+//        var existName, unexistName;
+//        beforeEach(function () {
+//            newItem = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
+//            boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+//            noExistItem = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
+//
+//            existName = '可口可乐';
+//            unexistName = '雪碧';
+//        });
+        it('of existItem should work', function () {
             var result = BoughtGoodsService.hasExistGoods(existName, [boughtItem]);
             expect(result.item.name).toEqual('可口可乐');
         });
-        it('goods unExist:', function () {
+        it('of noExistItem should work', function () {
             var result = BoughtGoodsService.hasExistGoods(unexistName, [boughtItem]);
             expect(result).toEqual(undefined);
         });
 
     });
 
-    describe('test add_cart_num():', function () {
-
-//        beforeEach(function () {
-//
-//            localStorageService.set('boughtGoods', boughtItem);
-//
-//        });
+    xdescribe('addCartNum()', function () {
 
         it('boughtGoods is null', function () {
 
             spyOn(BoughtGoodsService, 'hasExistGoods').and.returnValue(undefined);
-
             spyOn(BoughtGoodsService, 'BoughtItem').and.returnValue(boughtItem);
 
-            localStorageService.set('boughtGoods', null);
-            BoughtGoodsService.addCartNum(newItem);
-
-            var boughtGoods = localStorageService.get('boughtGoods');
-
+            BoughtGoodsService.addCartNum(item,  done);
             expect(BoughtGoodsService.hasExistGoods).toHaveBeenCalled();
             expect(BoughtGoodsService.BoughtItem).toHaveBeenCalled();
             expect(boughtGoods[0].item.name).toEqual('可口可乐');
@@ -111,17 +84,13 @@ xdescribe('cartItemService test: ', function () {
 
     });
 
-    var className;
-    describe('test cartList()', function () {
-
-        beforeEach(function () {
-            className = '饮料类';
-        });
-        it('cartList work', function () {
+    describe('cartList', function () {
+        var className = '饮料类';
+        var boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+        it('should return a object', function () {
             var cartListResult = BoughtGoodsService.cartList(className, boughtItem);
             expect(cartListResult.categoryName).toEqual('饮料类');
         });
-
     });
 
     var boughtItems = [
@@ -326,6 +295,30 @@ xdescribe('cartItemService test: ', function () {
             expect(getSnacks).toBe(0);
             expect(getNuts).toBe(0);
         });
-
     });
+    //    describe('addClickcount', function () {
+//
+//        it('up click count work:', function () {
+//            localStorageService.set('clickcount', 10);
+//            var clickCountUp = BoughtGoodsService.addClickcount(1, 5);
+//            expect(clickCountUp).toBe(15);
+//
+//        });
+//        it('down click count work:', function () {
+//
+//            localStorageService.set('clickcount', 10);
+//            var clickCountDown = BoughtGoodsService.addClickcount(0, 5);
+//            expect(clickCountDown).toBe(5);
+//
+//        });
+//    });
+
+//    var noExistItem, boughtItem, newItem;
+//    beforeEach(function () {
+//
+//        newItem = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
+//        boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+//        noExistItem = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
+//
+//    });
 });
