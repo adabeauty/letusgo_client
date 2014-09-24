@@ -11,7 +11,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.hasExistGoods = function (name, boughtGoods) {
 
         var boughtGood;
-
         if(boughtGoods != []){
             for (var i = 0; i < boughtGoods.length; i++) {
                 if (name === boughtGoods[i].item.name) {
@@ -19,7 +18,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
                 }
             }
         }
-
         return boughtGood;
     };
 
@@ -154,9 +152,8 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             });
         });
     };
-    this.deleteItem = function (cartItem, callback) {
+    this.deleteItem = function (cartItem) {
         $http.delete('/api/boughtGoods/' + cartItem.item.Id).success(function(){});
-        callback();
     };
 
     this.clearDate = function () {
