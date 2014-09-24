@@ -159,7 +159,7 @@ describe('cartItemService test: ', function () {
 
         });
     });
-    describe('test deleteOrDecrease:', function(){
+    describe('deleteOrDecrease:', function(){
        beforeEach(function(){
            var boughtItems = [
                {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}},
@@ -239,26 +239,15 @@ describe('cartItemService test: ', function () {
 
     });
 
-    var getBoughtGoods, getClickcount, getDrinks, getSnacks, getNuts;
-    describe('test clearDate()', function () {
+    ddescribe('clearDate()', function () {
 
         beforeEach(function () {
-
+            $httpBackend.when('POST', '/api/boughtGoods').respond([{}, {}, {}]);
             BoughtGoodsService.clearDate();
-
-            getBoughtGoods = localStorageService.get('boughtGoods');
-            getClickcount = localStorageService.get('clickcount');
-            getDrinks = localStorageService.get('drinks');
-            getSnacks = localStorageService.get('snacks');
-            getNuts = localStorageService.get('nuts');
         });
         it('clearDate is ok', function () {
-
-            expect(getBoughtGoods).toBe('');
-            expect(getClickcount).toBe(0);
-            expect(getDrinks).toBe(0);
-            expect(getSnacks).toBe(0);
-            expect(getNuts).toBe(0);
+            $httpBackend.expectPOST('/api/boughtGoods');
+            $httpBackend.flush();
         });
     });
     //    describe('addClickcount', function () {
