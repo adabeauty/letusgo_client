@@ -22,7 +22,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         };
     };
 
-    this.hasExistItem = function (goods, itemName, callback) {
+    this.hasExistItem = function (goods, itemName) {
 
         var exist = _.findIndex(goods, {name: itemName});
         return exist;
@@ -30,10 +30,11 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     };
 
     this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
-        var newItem = this.item(goods, itemCategory, itemName, itemPrice, itemUnit);
+
+        var newItem = this.item(goods, itemCategory, itemName, JSON.parse(itemPrice).toFixed(2), itemUnit);
         goods.push(newItem);
         $http.post('/api/goods', {'goods': goods}).success(function(){});
-
+//        $http.post('/api/goods/' + newItem.Id, {'good': newItem});
     };
     this.modifyCategoryNum = function (num, itemCategory) {
 
@@ -63,6 +64,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
                 alert('此商品已存在,请重新输入!');
                 return false;
             } else {
+
                 $http.post('/api/goods', {'goods': goods}).success(function(){
                     currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
                 });

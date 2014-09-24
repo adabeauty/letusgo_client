@@ -30,6 +30,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         addCategory = this.category(currentID, currentName, '0');
         categories.push(addCategory);
         $http.post('/api/categories', {'categories': categories}).success(function(){});
+//        $http.post('/api/categories/' + currentID, {'category': addCategory});
         $location.path('/categoryManage');
     };
 
@@ -47,6 +48,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 return false;
             } else{
                 currentThis.addNewCateogory(categories, currentID, currentName);
+//                currentThis.addNewCateogory(currentID, currentName);
             }
         });
     };

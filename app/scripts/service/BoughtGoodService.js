@@ -82,7 +82,6 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     this.refreshData = function(callback){
         var currentThis = this;
         $http.get('/api/boughtGoods').success(function(data){
-            console.log('data:',data);
             var result = {
                 totalAmount: currentThis.getTotalMoney(data),
                 cartGoods: currentThis.generateCartGoods(data),
