@@ -26,8 +26,8 @@ angular.module('letusgoApp')
 
         $scope.deleteItem = function (cartItem) {
             BoughtGoodsService.deleteItem(cartItem);
-                $scope.$emit('to-parent-changeClickCount', 0, cartItem.num);
-                refresh();
+            $scope.$emit('to-parent-changeClickCount', 0, cartItem.num);
+            refresh();
         };
 
     });
