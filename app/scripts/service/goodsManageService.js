@@ -29,12 +29,6 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
 
     };
 
-    this.itemDetailSuccess = function (itemCategory, itemName, itemPrice, itemUnit) {
-
-        var itemDetailSuccess = itemCategory && itemName && itemPrice && itemUnit;
-        return itemDetailSuccess;
-    };
-
     this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
         var newItem = this.item(goods, itemCategory, itemName, itemPrice, itemUnit);
         goods.push(newItem);
@@ -60,13 +54,14 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         var currentThis = this;
         $http.get('/api/goods').success(function(goods){
             var hasExistItem =  currentThis.hasExistItem(goods, itemName);
-            var itemDetailSuccess = currentThis.itemDetailSuccess(itemCategory.name, itemName, itemPrice, itemUnit);
-
+            var itemDetailSuccess = itemCategory && itemName && itemPrice && itemUnit;
             if (!itemDetailSuccess) {
                 alert('请填写完整商品信息!');
+                return false;
             }
             if (hasExistItem !== -1) {
                 alert('此商品已存在,请重新输入!');
+                return false;
             } else {
                 $http.post('/api/goods', {'goods': goods}).success(function(){
                     currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
