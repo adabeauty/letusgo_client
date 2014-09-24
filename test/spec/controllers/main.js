@@ -1,9 +1,9 @@
-// 'use strict';
+'use strict';
 describe('test main :', function () {
 
     beforeEach(module('letusgoApp'));
 
-    var $scope, $controller;
+    var $scope, $controller, creatMainCtrl;
 
     beforeEach(inject(function ($injector) {
 
@@ -18,13 +18,13 @@ describe('test main :', function () {
         }
     }));
 
-    describe('to-parent-navigator-inmain', function () {
+    describe('to-parent-navigator-inmain function', function () {
         beforeEach(function () {
             spyOn($scope, "$emit");
             creatMainCtrl();
 
         });
-        it('to-parent-navigator-inmain is ok', function () {
+        it('should work', function () {
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-inmain');
         });
     });
