@@ -49,6 +49,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
         return  goodsArray;
     };
     this.generateCartGoods = function(boughtGoods){
+
         var goodsArray = this.getGoodsArray(boughtGoods);
         var curerntThis = this;
         var cartGoodsArray = [];
@@ -135,18 +136,13 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             });
         });
     };
+    
     this.deleteItem = function (cartItem) {
         $http.delete('/api/boughtGoods/' + cartItem.item.Id).success(function(){});
     };
 
     this.clearDate = function () {
-
-        $http.post('/api/boughtGoods', {'boughtGoods': []}).success(function(data){
-
-            localStorageService.set('drinks', 0);
-            localStorageService.set('snacks', 0);
-            localStorageService.set('nuts', 0);
-        });
+        $http.post('/api/boughtGoods', {'boughtGoods': []});
     };
 
 });
