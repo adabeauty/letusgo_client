@@ -43,12 +43,9 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     this.modifyCategoryNum = function (num, itemCategory) {
 
         $http.get('/api/categories').success(function(categories){
-            _.forEach(categories, function (category) {
-                if (category.name === itemCategory) {
-                    return category.num = +category.num + num;
-                }
-            });
-            $http.post('/api/categories', {'categories': categories}).success(function(){});
+            var index = _.findIndex(categories, {name: itemCategory});
+            categories[index].num = JSON.parse(categories[index].num) + num;
+            $http.put('/api/categories/' + categories[index].ID, {'category': categories[index]}).success(function(){});
         });
     };
 
