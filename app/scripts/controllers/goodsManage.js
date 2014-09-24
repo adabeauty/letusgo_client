@@ -19,10 +19,8 @@ angular.module('letusgoApp')
         };
 
         $scope.deleteButton = function (item) {
-
-            GoodService.deleteButton(item, function(){
-                getGoods();
-            });
+            GoodService.deleteButton(item);
+            getGoods();
         };
         $scope.addButton = function () {
 
