@@ -160,35 +160,26 @@ describe('cartItemService test: ', function () {
         });
     });
     describe('deleteOrDecrease:', function(){
-       beforeEach(function(){
-           var boughtItems = [
-               {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}},
-               {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}},
-               {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋'}}
-           ];
-           localStorageService.set('boughtGoods', boughtItems);
-       });
        it('decrease by 1', function(){
-           BoughtGoodsService.decreaseOrDelete(1);
-
-           var allGoods = localStorageService.get('boughtGoods');
-           expect(allGoods[1].num).toBe(2);
+           var boughtItems = [item1, item2];
+           var deleteResult = BoughtGoodsService.decreaseOrDelete(boughtItems, 0);
+           expect(deleteResult.length).toBe(1);
        });
        it('delete', function(){
-           BoughtGoodsService.decreaseOrDelete(0);
-           var allGoods = localStorageService.get('boughtGoods');
-           expect(allGoods.length).toBe(2);
+           var boughtItems = [item1, item2];
+           var decraseResult = BoughtGoodsService.decreaseOrDelete(boughtItems, 1);
+           expect(decraseResult.length).toBe(2);
        });
     });
 
-    ddescribe('processNum', function () {
+    describe('processNum', function () {
         var i, directionUp, directionDown, boughtGoods;
         beforeEach(function () {
             boughtGoods = [item1, item2];
             i = 1;
             directionUp = 1;
             directionDown = 0;
-//            $httpBackend.when('PUT', '/api/boughtGoods'+1, {'boughtGood': boughtGoods[i]});
+//            $httpBackend.when('PUT', '/api/boughtGoods'+1);
         });
 
         it('of up can work', function () {
