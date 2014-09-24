@@ -1,9 +1,9 @@
-// 'use strict';
-xdescribe('test index :', function () {
+'use strict';
+describe('test index :', function () {
 
     beforeEach(module('letusgoApp'));
 
-    var $scope, $rootScope, BoughtGoodsService, localStorageService;
+    var $scope, $rootScope, BoughtGoodsService, localStorageService, $controller, creatclickCountCtrl;
 
     beforeEach(inject(function ($injector) {
 
@@ -24,23 +24,11 @@ xdescribe('test index :', function () {
         }
     }));
 
-    describe('localStorageService', function () {
-        beforeEach(function () {
-            spyOn(localStorageService, 'get');
-            creatclickCountCtrl();
-
-        });
-        it('localStorageService.get is ok', function () {
-            expect(localStorageService.get).toHaveBeenCalled();
-        });
-
-    });
-
-    describe('test to-parent-navigator-inmain', function () {
+    describe('to-parent-navigator-inmain function', function () {
         beforeEach(function () {
             creatclickCountCtrl();
         });
-        it('to-parent-navigator-inmain is ok', function () {
+        it('should work', function () {
 
             $scope.$digest();
             $rootScope.$broadcast('to-parent-navigator-inmain');
@@ -49,11 +37,11 @@ xdescribe('test index :', function () {
         });
     });
 
-    describe('test to-parent-navigator-inshop', function () {
+    describe('to-parent-navigator-inshop function', function () {
         beforeEach(function () {
             creatclickCountCtrl();
         });
-        it('to-parent-navigator-inshop is ok', function () {
+        it('should work', function () {
 
             $scope.$digest();
             $rootScope.$broadcast('to-parent-navigator-inshop');
@@ -62,11 +50,11 @@ xdescribe('test index :', function () {
         });
     });
 
-    describe('test to-parent-navigator-incategoryManage', function () {
+    describe('to-parent-navigator-incategoryManage function', function () {
         beforeEach(function () {
             creatclickCountCtrl();
         });
-        it('to-parent-navigator-incategoryManage is ok', function () {
+        it('should work', function () {
 
             $scope.$digest();
             $rootScope.$broadcast('to-parent-navigator-incategoryManage');
@@ -75,11 +63,11 @@ xdescribe('test index :', function () {
         });
     });
 
-    describe('test to-parent-navigator-ingoodsManage', function () {
+    describe('to-parent-navigator-ingoodsManage function', function () {
         beforeEach(function () {
             creatclickCountCtrl();
         });
-        it('to-parent-navigator-ingoodsManage is ok', function () {
+        it('should work', function () {
 
             $scope.$digest();
             $rootScope.$broadcast('to-parent-navigator-ingoodsManage');
@@ -88,11 +76,11 @@ xdescribe('test index :', function () {
         });
     });
 
-    describe('test to-parent-navigator-incart', function () {
+    describe('to-parent-navigator-incart function', function () {
         beforeEach(function () {
             creatclickCountCtrl();
         });
-        it('to-parent-navigator-incart is ok', function () {
+        it('should work', function () {
 
             $scope.$digest();
             $rootScope.$broadcast('to-parent-navigator-incart');
@@ -107,7 +95,6 @@ xdescribe('test index :', function () {
             spyOn(BoughtGoodsService, 'addClickcount');
         });
         it('to-parent-changeClickCount is ok', function () {
-
             $scope.$digest();
             $rootScope.$broadcast('to-parent-changeClickCount');
             expect(BoughtGoodsService.addClickcount).toHaveBeenCalled();
@@ -120,7 +107,6 @@ xdescribe('test index :', function () {
             creatclickCountCtrl();
         });
         it('to-parent-clearClickCount is ok', function () {
-
             $scope.$digest();
             $rootScope.$broadcast('to-parent-clearClickCount');
             expect($scope.clickcount).toBe(0);
