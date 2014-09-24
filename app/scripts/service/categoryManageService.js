@@ -29,11 +29,9 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
     };
     this.addNewCateogory = function (categories, currentID, currentName) {
 
-        var current = this.category(currentID, currentName, '0');
-
-        categories.push(current);
-        $http.post('/api/categories', {'categories': categories}).success(function(){});
-
+        addCategory = this.category(currentID, currentName, '0');
+        $http.post('/api/categories', {'category': addCategory}).success(function(){});
+        $location.path('/categoryManage');
     };
 
     this.saveButton = function (currentID, currentName) {
@@ -48,22 +46,14 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 alert('此商品分类已经存在,请重新输入!');
             } else{
                 currentThis.addNewCateogory(categories, currentID, currentName);
-                $location.path('/categoryManage');
             }
         });
     };
 
     this.updateCategory = function (callback) {
-
-        $http.get('/api/categories').success(function(categories){
-
-            var updateObeject = localStorageService.get('updateCategory');
-            var index = _.findIndex(categories, {'ID': updateObeject.ID});
-            categories[index] = updateObeject;
-            $http.post('/api/categories', {'categories': categories}).success(function(){});
-            callback();
-        });
-
+        var updateObeject = localStorageService.get('updateCategory');
+        $http.put('/api/categories/' + updateObeject.ID, {'category': updateObeject}).success(function(){});
+        callback();
     };
 
     this.deleteButton = function (categories, object) {
@@ -71,12 +61,8 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         if (object.num !== '0') {
             alert('此分类下有商品存在,不能删除');
         } else {
-            var events = _.remove(categories, function (every) {
-                return object.ID === every.ID;
-            });
+            $http.delete('/api/categories/' + object.ID).success(function(){});
         }
-        $http.post('/api/categories', {'categories': categories}).success(function(){});
-
     };
 
 });
