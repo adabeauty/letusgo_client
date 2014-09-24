@@ -86,9 +86,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         });
     };
 
-    this.updateItem = function (updateObject, callback) {
+    this.updateItem = function (updateObject) {
         $http.put('/api/goods/' + updateObject.Id, {'good': updateObject});
-        callback();
     };
 
     this.deleteButton = function (item) {
