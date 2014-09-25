@@ -2,11 +2,12 @@
 describe('test: CategoryService:', function () {
 
     beforeEach(module('letusgoApp'));
-    var CategoryService, localStorageService, $http, $httpBackend;
+    var CategoryService, localStorageService, $http, $httpBackend, $location;
     beforeEach(inject(function ($injector) {
 
         CategoryService = $injector.get('CategoryService');
         localStorageService = $injector.get('localStorageService');
+        $location = $injector.get('$location');
         $http = $injector.get('$http');
         $httpBackend = $injector.get('$httpBackend');
     }));
@@ -37,7 +38,7 @@ describe('test: CategoryService:', function () {
        }) ;
     });
 
-    describe('nameHadExist', function () {
+    describe('nameHasExist', function () {
 
         var categories = [{ID:'1', name:'饮料类', num: 3}];
         it('of exsit name should return index', function () {
@@ -50,41 +51,28 @@ describe('test: CategoryService:', function () {
         });
     });
 
-    describe('test addNewCateogory()', function () {
+    describe('addNewCateogory', function () {
         var currentID, currentName, currentCategories;
 
         beforeEach(function () {
-
             currentID = 'TF1004';
             currentName = '家电类';
             currentCategories = [
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
-
             spyOn(CategoryService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
+            spyOn($location, 'path');
+//            $httpBackend.when('POST', '/api/categories').response([{},{},{}]);
         });
 
-        it('category is null', function () {
-
-            localStorageService.set('category', null);
-
-            CategoryService.addNewCateogory(currentID, currentName);
+        it('should add new category', function () {
+            CategoryService.addNewCateogory(currentCategories, currentID, currentName);
+//            $httpBackend.expectPOST('/api/categories');
+//            $httpBackend.flush();
             expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
-
-            var currentCategory = localStorageService.get('category');
-            expect(currentCategory.length).toEqual(1);
-        });
-        it('category isnot null', function () {
-
-            localStorageService.set('category', currentCategories);
-
-            CategoryService.addNewCateogory(currentID, currentName);
-
-            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
-
-            var currentCategory = localStorageService.get('category');
-            expect(currentCategory.length).toEqual(3);
+            expect(currentCategories.length).toEqual(3);
+            expect($location.path).toHaveBeenCalledWith('/categoryManage');
         });
     });
 
