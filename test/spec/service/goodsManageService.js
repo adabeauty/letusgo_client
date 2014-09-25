@@ -69,6 +69,7 @@ describe('test GoodService:', function () {
         });
 
     });
+
     describe('succeedSave', function(){
         var goods, name, itemName, itemPrice, itemUnit;
        beforeEach(function(){
@@ -83,7 +84,8 @@ describe('test GoodService:', function () {
            expect($location.path).toHaveBeenCalledWith('/goodsManage');
        })
     });
-    describe('test saveButton:', function () {
+
+    xdescribe('saveButton', function () {
         it('itemDetail isnot integreted', function () {
             spyOn(GoodService, 'itemDetailSuccess').and.returnValue(false);
             spyOn(GoodService, 'hasExistItem').and.returnValue(-1);
@@ -91,14 +93,14 @@ describe('test GoodService:', function () {
             var result = GoodService.saveButton('饮料类', '雪碧', '3.00', '瓶');
             expect(result).toEqual(false);
         });
-        it('only itemName has existed', function () {
+        it('without integrated information should alert', function () {
             spyOn(GoodService, 'itemDetailSuccess').and.returnValue(true);
             spyOn(GoodService, 'hasExistItem').and.returnValue(1);
 
             var result = GoodService.saveButton('饮料类', '雪碧', '3.00', '瓶');
             expect(result).toEqual(false);
         });
-        it('saveButton is ok', function () {
+        it('with existed name should alert', function () {
             spyOn(GoodService, 'itemDetailSuccess').and.returnValue(true);
             spyOn(GoodService, 'hasExistItem').and.returnValue(-1);
             spyOn(GoodService, 'saveItem');
@@ -111,6 +113,9 @@ describe('test GoodService:', function () {
             expect(GoodService.addCategoryNum).toHaveBeenCalledWith('饮料类');
             expect($location.path).toHaveBeenCalledWith('/goodsManage');
             expect(result).toEqual(true);
+        });
+        it('with integrated information should post', function(){
+            
         });
     });
 
