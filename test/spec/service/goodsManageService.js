@@ -61,28 +61,13 @@ describe('test GoodService:', function () {
 
     });
 
-    describe('test addCategoryNum', function () {
-        var category;
-        beforeEach(function () {
-            category = [
-                {ID: 'TF1001', name: '饮料类', num: 3}
-            ];
-            localStorageService.set('category', category);
+    xdescribe('modifyCategoryNum', function () {
+        var category =[ {ID: 'TF1001', name: '饮料类', num: 3}];
 
-            // item = {category:'饮料类',  name:'可乐', price:'3.00', unit:'瓶'};
-        });
-        it('addCategoryNum is ok', function () {
-            GoodService.addCategoryNum('饮料类');
-            var result = localStorageService.get('category');
+        it('should put modified category to server', function () {
 
-            expect(result[0].num).toEqual(4);
         });
-        it('addCategoryNum is ok', function () {
-            GoodService.addCategoryNum('干果类');
-            var result = localStorageService.get('category');
 
-            expect(result[0].num).toEqual(3);
-        });
     });
 
     describe('test saveButton:', function () {
