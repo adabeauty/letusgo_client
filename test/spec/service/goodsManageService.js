@@ -115,11 +115,11 @@ describe('test GoodService:', function () {
             expect(result).toEqual(true);
         });
         it('with integrated information should post', function(){
-            
+
         });
     });
 
-    describe('test getAllCategories', function () {
+    xdescribe('getAllCategories', function () {
         beforeEach(function () {
             var category = [
                 {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
@@ -127,7 +127,7 @@ describe('test GoodService:', function () {
             ];
             localStorageService.set('category', category);
         });
-        it('getAllCategories is ok', function () {
+        it('should get all categories, function () {
 
             var result = GoodService.getAllCategories();
             expect(result.length).toEqual(2);
