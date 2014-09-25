@@ -116,39 +116,39 @@ describe('test: CategoryService:', function () {
         });
     });
     
-    xdescribe('test updateCategory:', function () {
+    xdescribe('updateCategory', function () {
         var updateCategory, allCategories;
         beforeEach(function () {
             updateCategory = {ID: 'TF1001', name: '饮料', num: 3};
 
         });
-        it('updateCategory is ok', function () {
+        it('put updated category to server', function () {
 
         });
     });
     
 
-    describe('test:deleteButton', function () {
-        var deleteCategory , notDeleteCategory;
+    describe('deleteButton', function () {
+        var deleteObject, notobject, currentCategories;
         beforeEach(function () {
-            deleteCategory = {ID: 'TF1002', name: '干果类', num: '0'};
-            notDeleteCategory = {ID: 'TF1001', name: '饮料类', num: '3'};
+            deleteObject = {ID: 'TF1002', name: '干果类', num: '0'};
+            notobject = {ID: 'TF1001', name: '饮料类', num: '3'};
 
-            var currentCategories = [
+            currentCategories = [
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
-            localStorageService.set('category', currentCategories);
         });
-        it('num is not 0', function () {
-            CategoryService.deleteButton(notDeleteCategory);
-            var category = localStorageService.get('category');
-            expect(category.length).toBe(2);
+        it('cant delete category with goods', function () {
+            var result = CategoryService.deleteButton(currentCategories, notobject);
+            expect(result).toEqual(false);
         });
-        it('num is 0', function () {
-            CategoryService.deleteButton(deleteCategory);
-            var category = localStorageService.get('category');
-            expect(category.length).toBe(1);
+        it('can delete category without goods', function () {
+            $httpBackend.when('DELETE', '/api/categories/'+'TF1002').respond([{}, {}, {}]);
+            var result = CategoryService.deleteButton(currentCategories, deleteObject);
+            expect(result).toEqual(true);
+            $httpBackend.expectDELETE('/api/categories/'+'TF1002');
+            $httpBackend.flush();
         });
     });
 
