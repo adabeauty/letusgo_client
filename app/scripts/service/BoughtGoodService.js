@@ -100,7 +100,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
 
     };
     this.decreaseOrDelete = function(boughtGoods, i){
-
+        console.log(boughtGoods);
         if (boughtGoods[i].num === 1) {
             boughtGoods[i].num--;
             _.remove(boughtGoods, function (boughtGood) {
@@ -110,13 +110,12 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
             boughtGoods[i].num--;
         }
         $http.post('/api/boughtGoods', {'boughtGoods': boughtGoods}).success(function(){});
-
+        return boughtGoods;
     };
     this.processNum = function (boughtGoods, direction, i) {
 
         if (direction === 1) {
             boughtGoods[i].num++;
-            console.log(boughtGoods[i]);
             $http.put('/api/boughtGoods/' + boughtGoods[i].item.Id, {'boughtGood': boughtGoods[i]});
         } else {
             this.decreaseOrDelete(boughtGoods, i);
