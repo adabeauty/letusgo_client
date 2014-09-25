@@ -36,18 +36,6 @@ describe('test: CategoryService:', function () {
            expect(ID).toBe(2);
        }) ;
     });
-    describe('test categoryDetailSuccess', function () {
-
-        var categoryID, categoryName;
-        beforeEach(function () {
-            categoryID = undefined;
-            categoryName = '饮料类';
-        });
-        it('categoryDetailSuccess is ok', function () {
-            var result = CategoryService.categoryDetailSuccess(categoryID, categoryName);
-            expect(result).toEqual(undefined);
-        });
-    });
 
     describe('test nameHadExist:', function () {
 
