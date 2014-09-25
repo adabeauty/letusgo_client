@@ -25,68 +25,18 @@ describe('test GoodService:', function () {
        });
 
     });
-    describe('test updateItem ', function () {
-        var allGoods, updateItem;
-        beforeEach(function () {
-            updateItem = {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'};
-            localStorageService.set('updateItem', updateItem);
 
-            allGoods = [
-                {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
-                {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'}
-            ];
-            localStorageService.set('allGoods', allGoods);
-        });
-        it('updateItem is ok', function () {
-            var result = GoodService.updateItem();
+    describe('hasExistItem:', function () {
 
-            expect(localStorageService.set).toHaveBeenCalledWith('allGoods', allGoods);
-            expect(result).toEqual(1);
-        });
-    });
+        var goods = [ {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'}];
 
-
-    describe('test category:', function () {
-        var good;
-        beforeEach(function () {
-            good = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-        });
-        it('category is ok', function () {
-            var item = GoodService.item(good.category, good.name, good.price, good.unit);
-
-            expect(item.category).toEqual('饮料类');
-            expect(item.name).toEqual('雪碧');
-            expect(item.price).toEqual('3.00');
-            expect(item.unit).toEqual('瓶');
-        });
-    });
-
-    describe('test hasExistItem:', function () {
-        beforeEach(function () {
-            var good = [
-                {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'}
-            ];
-            localStorageService.set('allGoods', good);
-        });
         it('hasExistItem is true', function () {
-            var hasExistItem = GoodService.hasExistItem('雪碧');
+            var hasExistItem = GoodService.hasExistItem(goods, '雪碧');
             expect(hasExistItem).toEqual(0);
         });
         it('hasExistItem is false', function () {
-            var hasExistItem = GoodService.hasExistItem('可乐');
+            var hasExistItem = GoodService.hasExistItem(goods, '可乐');
             expect(hasExistItem).toEqual(-1);
-        });
-    });
-
-    describe('test itemDetailSuccess:', function () {
-
-        it('itemDetailSuccess is ok', function () {
-
-            var firstResult= GoodService.itemDetailSuccess(false, false, false, true);
-            var secondResult = GoodService.itemDetailSuccess(true, true, true, true);
-
-            expect(firstResult).toEqual(false);
-            expect(secondResult ).toEqual(true);
         });
     });
 
@@ -236,6 +186,41 @@ describe('test GoodService:', function () {
 
             expect(GoodService.decreaseCategoryNum).toHaveBeenCalledWith(item);
             expect(allItems.length).toBe(1);
+        });
+    });
+    describe('test updateItem ', function () {
+        var allGoods, updateItem;
+        beforeEach(function () {
+            updateItem = {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'};
+            localStorageService.set('updateItem', updateItem);
+
+            allGoods = [
+                {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
+                {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'}
+            ];
+            localStorageService.set('allGoods', allGoods);
+        });
+        it('updateItem is ok', function () {
+            var result = GoodService.updateItem();
+
+            expect(localStorageService.set).toHaveBeenCalledWith('allGoods', allGoods);
+            expect(result).toEqual(1);
+        });
+    });
+
+
+    describe('test category:', function () {
+        var good;
+        beforeEach(function () {
+            good = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
+        });
+        it('category is ok', function () {
+            var item = GoodService.item(good.category, good.name, good.price, good.unit);
+
+            expect(item.category).toEqual('饮料类');
+            expect(item.name).toEqual('雪碧');
+            expect(item.price).toEqual('3.00');
+            expect(item.unit).toEqual('瓶');
         });
     });
 
