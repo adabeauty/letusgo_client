@@ -1,6 +1,6 @@
 'use strict';
 describe('cartItemService test: ', function () {
-    
+
     beforeEach(module('letusgoApp'));
     var BoughtGoodsService, localStorageService, $http, $httpBackend;
     beforeEach(inject(function ($injector) {
@@ -27,16 +27,7 @@ describe('cartItemService test: ', function () {
             existName = '可口可乐';
             unexistName = '雪碧';
         });
-//        var noExistItem, boughtItem, newItem;
-//        var existName, unexistName;
-//        beforeEach(function () {
-//            newItem = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
-//            boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
-//            noExistItem = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-//
-//            existName = '可口可乐';
-//            unexistName = '雪碧';
-//        });
+
         it('of existItem should work', function () {
             var result = BoughtGoodsService.hasExistGoods(existName, [boughtItem]);
             expect(result.item.name).toEqual('可口可乐');
