@@ -40,36 +40,25 @@ describe('test GoodService:', function () {
         });
     });
 
-    describe('test saveItem:', function () {
+    describe('saveItem', function () {
         var allGoods;
         beforeEach(function () {
-
             allGoods = [
                 {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
                 {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'}
             ];
-            var item = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
+            var item = {Id: 1, category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
             spyOn(GoodService, 'item').and.returnValue(item);
+            $httpBackend.when('POST', '/api/goods').respond([{}, {}, {}]);
+            GoodService.saveItem(allGoods, '饮料类', '雪碧', '3.00', '瓶');
         });
         it('allGoods is null', function () {
-
-            localStorageService.set('allGoods', '');
-
-            GoodService.saveItem('饮料类', '雪碧', '3.00', '瓶');
-            var currentItems = localStorageService.get('allGoods');
-
             expect(GoodService.item).toHaveBeenCalled();
-            expect(currentItems.length).toBe(1);
+            expect(allGoods.length).toBe(3);
+            $httpBackend.expectPOST('/api/goods');
+            $httpBackend.flush();
         });
-        it('allGoods isnot null', function () {
-            localStorageService.set('allGoods', allGoods);
 
-            GoodService.saveItem('饮料类', '雪碧', '3.00', '瓶');
-            var currentItems = localStorageService.get('allGoods');
-
-            expect(GoodService.item).toHaveBeenCalled();
-            expect(currentItems.length).toBe(3);
-        });
     });
 
     describe('test addCategoryNum', function () {
