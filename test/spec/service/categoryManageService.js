@@ -37,21 +37,15 @@ describe('test: CategoryService:', function () {
        }) ;
     });
 
-    describe('test nameHadExist:', function () {
+    describe('nameHadExist', function () {
 
-        var currentNameExist, currentNameNoExist;
-        beforeEach(function () {
-            currentNameExist = '饮料类';
-            currentNameNoExist = '家电类';
-
-            localStorageService.set('category', currentCategories);
-        });
-        it('name exist', function () {
-            var existResult = CategoryService.nameHadExist(currentNameExist);
+        var categories = [{ID:'1', name:'饮料类', num: 3}];
+        it('of exsit name should return index', function () {
+            var existResult = CategoryService.nameHadExist(categories, '饮料类');
             expect(existResult).toBe(0);
         });
-        it('name does not exist', function () {
-            var existResult = CategoryService.nameHadExist(currentNameNoExist);
+        it('of unexist name should return -1', function () {
+            var existResult = CategoryService.nameHadExist(categories, '家电类');
             expect(existResult).toBe(-1);
         });
     });
