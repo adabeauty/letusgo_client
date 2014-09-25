@@ -70,6 +70,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
             return false;
         } else {
             $http.delete('/api/categories/' + object.ID).success(function(){});
+            return true;
         }
     };
 
