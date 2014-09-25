@@ -1,37 +1,41 @@
 'use strict';
-xdescribe('test: CategoryService:', function () {
+describe('test: CategoryService:', function () {
 
-    var CategoryService, localStorageService;
-    var store = {};
     beforeEach(module('letusgoApp'));
+    var CategoryService, localStorageService, $http, $httpBackend;
     beforeEach(inject(function ($injector) {
 
         CategoryService = $injector.get('CategoryService');
         localStorageService = $injector.get('localStorageService');
-
-        spyOn(localStorageService, 'get').and.callFake(function (key) {
-            return store[key];
-        });
-        spyOn(localStorageService, 'set').and.callFake(function (key, value) {
-            return store[key] = value;
-        });
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
     }));
 
-    var ID, name, num;
-    describe('test category:', function () {
-        beforeEach(function () {
-            ID = 'TF1001';
-            name = '饮料类';
-            num = 3;
-        });
-        it('category is ok', function () {
-            var category = CategoryService.category(ID, name, num);
+    describe('category:', function () {
+        it('should return a object', function () {
+            var category = CategoryService.category('TF1001', '饮料类', 3);
             expect(category.ID).toEqual('TF1001');
             expect(category.name).toEqual('饮料类');
             expect(category.num).toEqual(3);
         });
     });
 
+    xdescribe('getCurrentId', function(){
+
+       it('of a null array should return 1', function(){
+           $httpBackend.when('GET', '/api/categories').response([]);
+           var ID = CategoryService.getCurrentID();
+           $httpBackend.expectGET('/api/categories');
+           $httpBackend.flush();
+           expect(ID).toEqual(1);
+       }) ;
+       it('of a array should return a new Id', function(){
+           var currentCategories = {ID:'1', name:'drinks', num:'1'};
+           $httpBackend.when('GET', '/api/categories').response([currentCategories]);
+           var ID = CategoryService.getCurrentID();
+           expect(ID).toBe(2);
+       }) ;
+    });
     describe('test categoryDetailSuccess', function () {
 
         var categoryID, categoryName;
@@ -44,31 +48,6 @@ xdescribe('test: CategoryService:', function () {
             expect(result).toEqual(undefined);
         });
     });
-
-
-    var currentCategories = [
-        {ID: 'TF1001', name: '饮料类', num: 3},
-        {ID: 'TF1002', name: '干果类', num: 0}
-    ];
-    describe('test IDHasExist:', function () {
-        var currentIDExist, currentIDNoExist;
-        beforeEach(function () {
-
-            currentIDExist = 'TF1001';
-            currentIDNoExist = 'TF1003';
-
-            localStorageService.set('category', currentCategories);
-        });
-        it(' ID exist', function () {
-            var existResult = CategoryService.IDHasExist(currentIDExist);
-            expect(existResult).toBe(0);
-        });
-        it(' ID does not exist', function () {
-            var existResult = CategoryService.IDHasExist(currentIDNoExist);
-            expect(existResult).toBe(-1);
-        });
-    });
-
 
     describe('test nameHadExist:', function () {
 
