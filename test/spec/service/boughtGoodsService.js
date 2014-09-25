@@ -188,22 +188,22 @@ describe('cartItemService test: ', function () {
     xdescribe('test deleteItem():', function () {
         var deleteGood;
         beforeEach(function () {
-            $httpBackend.when('DELETE', '/api/boughtGoods');
+            $httpBackend.when('DELETE', '/api/cart');
             deleteGood = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
             BoughtGoodsService.deleteItem(deleteGood);
         });
         it('deleteItem is ok', function () {
-            $httpBackend.expectDELETE('/api/boughtGoods');
+            $httpBackend.expectDELETE('/api/cart');
             $httpBackend.flush();
         });
     });
     describe('clearDate()', function () {
         beforeEach(function () {
-            $httpBackend.when('POST', '/api/boughtGoods').respond([{}, {}, {}]);
+            $httpBackend.when('POST', '/api/payment').respond([{}, {}, {}]);
             BoughtGoodsService.clearDate();
         });
         it('clearDate is ok', function () {
-            $httpBackend.expectPOST('/api/boughtGoods');
+            $httpBackend.expectPOST('/api/payment');
             $httpBackend.flush();
         });
     });

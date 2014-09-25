@@ -27,7 +27,7 @@ describe('payList test: ', function () {
     }));
     beforeEach(function(){
         spyOn($scope, '$emit');
-        $httpBackend.when('GET', '/api/boughtGoods').respond([{}, {}, {}]);
+        $httpBackend.when('GET', '/api/cart').respond([{}, {}, {}]);
         creatPayListCtrl();
     });
     describe('outside function', function(){
@@ -37,7 +37,7 @@ describe('payList test: ', function () {
         it('should work', function(){
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 0);
 //            expect(BoughtGoodsService.getTotalMoney).toHaveBeenCalled();
-            $httpBackend.expectGET('/api/boughtGoods');
+            $httpBackend.expectGET('/api/cart');
             $httpBackend.flush();
         });
     });
