@@ -51,7 +51,7 @@ describe('test: CategoryService:', function () {
         });
     });
 
-    describe('addNewCateogory', function () {
+    xdescribe('addNewCateogory', function () {
         var currentID, currentName, currentCategories;
 
         beforeEach(function () {
@@ -77,7 +77,7 @@ describe('test: CategoryService:', function () {
     });
 
 
-    describe('test: saveButton()', function () {
+    xdescribe('saveButton', function () {
 
         var currentCategories, currentID, currentName;
         beforeEach(function () {
@@ -87,48 +87,36 @@ describe('test: CategoryService:', function () {
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
-            localStorageService.set('category', currentCategories);
-
+//            $httpBackend.when('GET', '/api/categories').response(currentCategories);
+//            $httpBackend.when('GET', '/api/categories').respond([{}, {}, {}]);
         });
-        it('categoryDetailSuccess is failed', function () {
-            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(false);
 
-            var result = CategoryService.saveButton(currentID, currentName);
-
-            expect(result).toEqual(false);
-        });
-        it('ID exist', function () {
-            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
-            spyOn(CategoryService, 'IDHasExist').and.returnValue(1);
-
-            var result = CategoryService.saveButton(currentID, currentName);
-
-            expect(CategoryService.IDHasExist).toHaveBeenCalledWith(currentID);
-            expect(result).toEqual(false);
-        });
-        it('name exist', function () {
-            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
-            spyOn(CategoryService, 'IDHasExist').and.returnValue(-1);
+        it('without name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
+            var result = CategoryService.saveButton(currentID, null);
+            expect(result).toEqual(false);
+//            $httpBackend.expectGET('/api/categories');
+//            $httpBackend.flush();
+        });
 
+        it('with existed name should return false', function () {
+            spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
             var result = CategoryService.saveButton(currentID, currentName);
 
             expect(result).toEqual(false);
         });
-        it('name and ID are not exist', function () {
-            spyOn(CategoryService, 'categoryDetailSuccess').and.returnValue(true);
+        it('with correct data', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(-1);
-            spyOn(CategoryService, 'IDHasExist').and.returnValue(-1);
             spyOn(CategoryService, 'addNewCateogory');
 
             var result = CategoryService.saveButton(currentID, currentName);
 
-            expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentID, currentName);
+            expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentCategories, currentID, currentName);
             expect(result).toEqual(true);
         });
     });
     
-    describe('test updateCategory:', function () {
+    ddescribe('test updateCategory:', function () {
         var updateCategory, allCategories;
         beforeEach(function () {
             updateCategory = {ID: 'TF1001', name: '饮料', num: 3};
