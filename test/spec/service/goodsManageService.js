@@ -1,24 +1,30 @@
 'use strict';
-xdescribe('test GoodService:', function () {
+describe('test GoodService:', function () {
 
     beforeEach(module('letusgoApp'));
 
-    var GoodService, localStorageService, $location;
-    var store = {};
+    var GoodService, localStorageService, $location, $http, $httpBackend;
     beforeEach(inject(function ($injector) {
 
         GoodService = $injector.get('GoodService');
         localStorageService = $injector.get('localStorageService');
         $location = $injector.get('$location');
-
-        spyOn(localStorageService, 'get').and.callFake(function (key) {
-            return store[key];
-        });
-        spyOn(localStorageService, 'set').and.callFake(function (key, value) {
-            return store[key] = value;
-        });
+        $http = $injector.get('$http');
+        $httpBackend = $injector.get('$httpBackend');
     }));
 
+    describe('item', function(){
+       beforeEach(function(){
+
+       });
+        var goods = [{"Id":3,"category":"nuts","name":"kaixinguo","price":"2.50","unit":"jin"}];
+       it('should return a object', function(){
+           var object = GoodService.item(goods, 'drinks', '可口可乐', '3.00', '瓶');
+           expect(object.Id).toEqual(4);
+           expect(object.name).toEqual('可口可乐');
+       });
+
+    });
     describe('test updateItem ', function () {
         var allGoods, updateItem;
         beforeEach(function () {
