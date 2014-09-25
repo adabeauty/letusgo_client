@@ -69,7 +69,20 @@ describe('test GoodService:', function () {
         });
 
     });
-
+    describe('succeedSave', function(){
+        var goods, name, itemName, itemPrice, itemUnit;
+       beforeEach(function(){
+           spyOn(GoodService, 'saveItem');
+           spyOn(GoodService, 'modifyCategoryNum');
+           spyOn($location, 'path');
+           GoodService.succeedSave();
+       });
+       it('should save category', function(){
+           expect(GoodService.saveItem).toHaveBeenCalledWith(goods, name, itemName, itemPrice, itemUnit);
+           expect(GoodService.modifyCategoryNum).toHaveBeenCalledWith(1, name);
+           expect($location.path).toHaveBeenCalledWith('/goodsManage');
+       })
+    });
     describe('test saveButton:', function () {
         it('itemDetail isnot integreted', function () {
             spyOn(GoodService, 'itemDetailSuccess').and.returnValue(false);
