@@ -7,17 +7,17 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
             num: num
         };
     };
-    this.getCurrentID = function(){
+    this.getCurrentID = function(callback){
 
         $http.get('/api/categories').success(function(categories){
             if(categories.length === 0){
+                callback(1);
                 return 1;
-//                callback(1);
             }else{
                 var lastID = categories[categories.length - 1].ID;
-                var currentID = JSON.parse(lastID) + 1;
+                var currentID = (lastID) + 1;
+                callback(currentID);
                 return currentID;
-//                callback(currentID);
             }
         });
     };
@@ -40,6 +40,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
 
         var currentThis = this;
         $http.get('/api/categories').success(function(categories){
+            console.log('response:', categories);
             var nameHadExist = currentThis.nameHadExist(categories, currentName);
             if (!currentName) {
                 alert('请填写分类名称!');
@@ -50,6 +51,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 return false;
             } else{
                 currentThis.addNewCateogory(categories, currentID, currentName);
+                return true;
 //                currentThis.addNewCateogory(currentID, currentName);
             }
         });
@@ -65,6 +67,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
 
         if (object.num !== '0') {
             alert('此分类下有商品存在,不能删除');
+            return false;
         } else {
             $http.delete('/api/categories/' + object.ID).success(function(){});
         }
