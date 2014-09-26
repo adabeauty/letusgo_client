@@ -51,7 +51,6 @@ describe('cartList test:', function () {
 
         it("can work", function(done) {
             setTimeout(function() {
-//                BoughtGoodsService.modifyCartItemNum();
                 done();
             }, 9000);
 

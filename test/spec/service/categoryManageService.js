@@ -12,32 +12,6 @@ describe('test: CategoryService:', function () {
         $httpBackend = $injector.get('$httpBackend');
     }));
 
-    describe('category:', function () {
-        it('should return a object', function () {
-            var category = CategoryService.category('TF1001', '饮料类', 3);
-            expect(category.ID).toEqual('TF1001');
-            expect(category.name).toEqual('饮料类');
-            expect(category.num).toEqual(3);
-        });
-    });
-
-    xdescribe('getCurrentId', function(){
-
-       it('of a null array should return 1', function(){
-           $httpBackend.when('GET', '/api/categories').response([]);
-           var ID = CategoryService.getCurrentID();
-           $httpBackend.expectGET('/api/categories');
-           $httpBackend.flush();
-           expect(ID).toEqual(1);
-       }) ;
-       it('of a array should return a new Id', function(){
-           var currentCategories = {ID:'1', name:'drinks', num:'1'};
-           $httpBackend.when('GET', '/api/categories').response([currentCategories]);
-           var ID = CategoryService.getCurrentID();
-           expect(ID).toBe(2);
-       }) ;
-    });
-
     describe('nameHasExist', function () {
 
         var categories = [{ID:'1', name:'饮料类', num: 3}];
@@ -50,32 +24,6 @@ describe('test: CategoryService:', function () {
             expect(existResult).toBe(-1);
         });
     });
-
-    xdescribe('addNewCateogory', function () {
-        var currentID, currentName, categories;
-
-        beforeEach(function () {
-            currentID = 'TF1004';
-            currentName = '家电类';
-            categories = [
-                {ID: 'TF1001', name: '饮料类', num: 3},
-                {ID: 'TF1002', name: '干果类', num: 0}
-            ];
-            spyOn(CategoryService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
-            spyOn($location, 'path');
-            $httpBackend.when('POST', '/api/categories', {'categories': categories}).response([{},{},{}]);
-        });
-
-        it('should add new category', function () {
-            CategoryService.addNewCateogory(categories, currentID, currentName);
-            $httpBackend.expectPOST('/api/categories', {'categories': categories});
-            $httpBackend.flush();
-            expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
-            expect(currentCategories.length).toEqual(3);
-            expect($location.path).toHaveBeenCalledWith('/categoryManage');
-        });
-    });
-
 
     xdescribe('saveButton', function () {
 

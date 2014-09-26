@@ -19,16 +19,6 @@ describe('test categoryAdd:', function () {
         }
     }));
 
-    describe('$scope.currentID', function(){
-        beforeEach(function () {
-            spyOn(CategoryService, 'getCurrentID');
-            creatCategoryAddCtrl();
-        });
-        it('should get value', function(){
-            expect(CategoryService.getCurrentID).toHaveBeenCalled();
-        })
-    });
-
     describe('saveButton:', function () {
 
         beforeEach(function () {
@@ -37,7 +27,7 @@ describe('test categoryAdd:', function () {
             $scope.saveButton();
         });
         it('should work', function () {
-            expect(CategoryService.saveButton).toHaveBeenCalledWith($scope.currentID, $scope.currentName);
+            expect(CategoryService.saveButton).toHaveBeenCalledWith($scope.currentName);
         });
     });
 
