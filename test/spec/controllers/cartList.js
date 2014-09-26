@@ -23,10 +23,10 @@ describe('cartList test:', function () {
 
 
     describe('outside params', function () {
+        var refresh;
         beforeEach(function () {
-
             spyOn($scope, '$emit');
-//            spyOn('refresh');
+//            refresh = jasmine.createSpy('refresh');
             creatCartListCtrl();
         });
         it('has correct value', function () {
@@ -39,12 +39,13 @@ describe('cartList test:', function () {
 
         var originalTimeout;
         var direction, cartItem;
+
         beforeEach(function() {
             originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
             jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
             creatCartListCtrl();
             spyOn(BoughtGoodsService, 'modifyCartItemNum');
-            spyOn($scope, '$emit');
+//            spyOn($scope, '$emit');
             $scope.modifyCartItemNum(cartItem, direction);
         });
 
