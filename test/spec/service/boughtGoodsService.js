@@ -39,29 +39,40 @@ describe('cartItemService test: ', function () {
 
     });
 
-    xdescribe('addCartNum()', function () {
+    describe('addCartNum()', function () {
+
+        var item = {name:'可口可乐', category: 'drinks', price: 3.50, num:1};
+        var callback;
+        beforeEach(function(){
+
+            spyOn(BoughtGoodsService, 'BoughtItem');
+            $httpBackend.when('GET', '/api/cart').respond(item);
+            $httpBackend.when('POST', '/api/cart').respond([{},{}]);
+//            callback = jasmine.creatSpy('callback');
+            BoughtGoodsService.addCartNum(item, callback);
+//            callback(item);
+        });
 
         it('boughtGoods is null', function () {
 
             spyOn(BoughtGoodsService, 'hasExistGoods').and.returnValue(undefined);
-            spyOn(BoughtGoodsService, 'BoughtItem').and.returnValue(boughtItem);
-
-            BoughtGoodsService.addCartNum(item,  done);
-            expect(BoughtGoodsService.hasExistGoods).toHaveBeenCalled();
-            expect(BoughtGoodsService.BoughtItem).toHaveBeenCalled();
-            expect(boughtGoods[0].item.name).toEqual('可口可乐');
-            expect(boughtGoods[0].num).toEqual(1);
+            $http.get('api/cart').success(function(data){
+                expect(BoughtGoodsService.hasExistGoods).toHaveBeenCalled();
+                expect(BoughtGoodsService.BoughtItem).calls.count(0);
+                $httpBackend.expectPOST('/api/cart');
+                $httpBackend.flush();
+//                expect(callback).toHaveBeenCalled();
+            });
         });
 
         it('boughtGoods is exist', function () {
-
-            spyOn(BoughtGoodsService, 'hasExistGoods').and.returnValue(boughtItem);
-            localStorageService.set('boughtGoods', boughtItem);
-            BoughtGoodsService.addCartNum(boughtItem);
-
-            var boughtGoods = localStorageService.get('boughtGoods');
-            expect(BoughtGoodsService.hasExistGoods).toHaveBeenCalled();
-            expect(boughtGoods.num).toEqual(2);
+            spyOn(BoughtGoodsService, 'hasExistGoods').and.returnValue(true);
+            $http.get('api/cart').success(function(data){
+                expect(BoughtGoodsService.hasExistGoods).toHaveBeenCalled();
+                expect(BoughtGoodsService.BoughtItem).toHaveBeenCalled();
+                $httpBackend.expectPOST('/api/cart');
+                $httpBackend.flush();
+            });
         });
 
     });
@@ -134,7 +145,7 @@ describe('cartItemService test: ', function () {
         });
     });
     xdescribe('addClickCount', function(){
-        beforeEach('', function(){
+        beforeEach(function(){
 
         });
         it('should add clickCount', function(){
