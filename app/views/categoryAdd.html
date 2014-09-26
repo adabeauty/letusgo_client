@@ -1,3 +1,11 @@
+<div class="alert alert-warning alert-dismissible" role="alert" ng-show="undefinedCategory">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Warning! 请填写商品名称!</strong>
+</div>
+<div class="alert alert-warning alert-dismissible" role="alert" ng-show="repeatedCategory">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <strong>Warning! 此分类已存在,请重新填写!</strong>
+</div>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4 class="text-center">添加新分类</h4>

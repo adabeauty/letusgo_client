@@ -5,7 +5,11 @@ angular.module('letusgoApp')
 
         $scope.saveButton = function () {
 
-            CategoryService.saveButton($scope.currentName);
+        CategoryService.saveButton($scope.currentName, function(warning){
+                $scope.undefinedCategory = warning[0];
+                $scope.repeatedCategory = warning[1];
+            });
+
         };
 
         $scope.cancel = function () {
