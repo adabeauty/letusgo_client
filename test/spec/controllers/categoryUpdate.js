@@ -36,14 +36,16 @@ describe('test categoryUpdate', function () {
         beforeEach(function () {
             spyOn(localStorageService, 'set');
             spyOn(CategoryService, 'updateCategory');
-//            spyOn($location, 'path');
+            spyOn($location, 'path');
 
             $scope.updateCategory();
         });
         it('should work', function () {
+            CategoryService.updateCategory(function(){
+                expect($location.path).toHaveBeenCalledWith('/categoryManage');
+            });
             expect(localStorageService.set).toHaveBeenCalledWith('updateCategory', $scope.updateObject);
-            expect(localStorageService.set).toHaveBeenCalled();
-//            expect($location.path).toHaveBeenCalledWith('/categoryManage');
+            expect(CategoryService.updateCategory).toHaveBeenCalled();
         });
     });
 
