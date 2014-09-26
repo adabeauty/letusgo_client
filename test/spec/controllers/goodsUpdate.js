@@ -47,7 +47,7 @@ describe('test goodsUpdate:', function () {
     describe('test cancel', function () {
         beforeEach(function () {
             spyOn($location, 'path');
-            $scope.cancel();
+            $scope.closeUpdateView();
         });
         it('cancel is ok', function () {
             expect($location.path).toHaveBeenCalledWith('/goodsManage');
