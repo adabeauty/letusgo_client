@@ -37,7 +37,7 @@ describe('Controller: ShopCtrl', function () {
             $httpBackend.flush();
         });
     });
-    describe('addCartNum', function () {
+    ddescribe('addCartNum', function () {
 
         var item = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
         beforeEach(function () {
@@ -45,6 +45,9 @@ describe('Controller: ShopCtrl', function () {
             $scope.addCartNum(item);
         });
         it('should work', function () {
+            BoughtGoodsService.addCartNum(item, function(){
+               expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', 1, 1);
+            });
             expect(BoughtGoodsService.addCartNum).toHaveBeenCalled();
         });
     });
