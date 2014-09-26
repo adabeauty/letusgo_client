@@ -15,7 +15,7 @@ angular.module('letusgoApp')
             });
         };
 
-        $scope.closeGoodsView = function () {
+        $scope.closeAddView = function () {
             $location.path('/goodsManage');
         };
     });
