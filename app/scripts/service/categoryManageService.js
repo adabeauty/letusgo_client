@@ -19,10 +19,8 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 alert('此商品分类已经存在,请重新输入!');
                 return false;
             } else{
-                $http.post('/api/categories', {'newCategory': currentName}).success(function(){
-                    $location.path('/categoryManage');
-                });
-
+                $http.post('/api/categories', {'newCategory': currentName});
+                $location.path('/categoryManage');
                 return true;
             }
         });
