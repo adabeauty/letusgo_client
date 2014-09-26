@@ -127,93 +127,41 @@ describe('test GoodService:', function () {
             ];
             localStorageService.set('category', category);
         });
-        it('should get all categories, function () {
+        it('should get all categories', function () {
 
             var result = GoodService.getAllCategories();
             expect(result.length).toEqual(2);
             expect(result[0].name).toEqual('可乐');
         });
     });
-    
-    
-    describe('test decreaseCategoryNum:', function () {
-        var item,notExistItem, category;
+
+    describe('updateItem ', function () {
+
         beforeEach(function () {
-            category = [
-                            {ID: 'TF1001', name: '饮料类', num: 3}
-                        ];
-            localStorageService.set('category', category);
-
-            item = {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'};
-            notExistItem = {category: '水果类', name: '可乐', price: '3.00', unit: '瓶'};
+            var updateItem = {Id: '1', category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'};
+            $httpBackend.when('PUT', '/api/goods/'+'1').respond([{}, {}, {}]);
+            GoodService.updateItem(updateItem);
         });
-        it('processCategory is ok', function () {
-            GoodService.decreaseCategoryNum(item);
-            var existResult = localStorageService.get('category');
-            expect(existResult[0].num).toEqual(2);
-
-            GoodService.decreaseCategoryNum(notExistItem);
-            var notExistResult = localStorageService.get('category');
-
-            expect(notExistResult[0].num).toEqual(2);
+        it('should put updated item to server', function () {
+            $httpBackend.expectPUT('/api/goods/' + '1');
+            $httpBackend.flush();
         });
     });
 
-    describe('test deleteButton:', function () {
-        var item, allItems;
+    describe('deleteButton', function () {
+        var item;
         beforeEach(function () {
-
-            item = {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'};
-            allItems = [
-                {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
-                {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'}
-            ];
-            localStorageService.set('allGoods', allItems);
-
-            spyOn(GoodService, 'decreaseCategoryNum');
+            item = {Id: '1', category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'};
+            spyOn(GoodService, 'modifyCategoryNum');
+            $httpBackend.when('DELETE', '/api/goods/'+'1').respond([{}, {}, {}]);
+            GoodService.deleteButton(item);
         });
         it('deleteButton is ok', function () {
-            GoodService.deleteButton(item);
-            var allItems = localStorageService.get('allGoods');
-
-            expect(GoodService.decreaseCategoryNum).toHaveBeenCalledWith(item);
-            expect(allItems.length).toBe(1);
-        });
-    });
-    describe('test updateItem ', function () {
-        var allGoods, updateItem;
-        beforeEach(function () {
-            updateItem = {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'};
-            localStorageService.set('updateItem', updateItem);
-
-            allGoods = [
-                {category: '饮料类', name: '可乐', price: '3.00', unit: '瓶'},
-                {category: '饮料类', name: '橙汁', price: '3.00', unit: '瓶'}
-            ];
-            localStorageService.set('allGoods', allGoods);
-        });
-        it('updateItem is ok', function () {
-            var result = GoodService.updateItem();
-
-            expect(localStorageService.set).toHaveBeenCalledWith('allGoods', allGoods);
-            expect(result).toEqual(1);
+            expect(GoodService.modifyCategoryNum).toHaveBeenCalledWith(-1, item.category);
+            $httpBackend.expectDELETE('/api/goods/' + '1');
+            $httpBackend.flush();
         });
     });
 
-
-    describe('test category:', function () {
-        var good;
-        beforeEach(function () {
-            good = {category: '饮料类', name: '雪碧', price: '3.00', unit: '瓶'};
-        });
-        it('category is ok', function () {
-            var item = GoodService.item(good.category, good.name, good.price, good.unit);
-
-            expect(item.category).toEqual('饮料类');
-            expect(item.name).toEqual('雪碧');
-            expect(item.price).toEqual('3.00');
-            expect(item.unit).toEqual('瓶');
-        });
-    });
 
 });

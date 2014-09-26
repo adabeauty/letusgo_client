@@ -1,5 +1,5 @@
 'use strict';
-xdescribe('itemService test:', function () {
+describe('itemService test:', function () {
 
     var ItemService, localStorageService;
     var store = {};

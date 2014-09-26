@@ -52,24 +52,24 @@ describe('test: CategoryService:', function () {
     });
 
     xdescribe('addNewCateogory', function () {
-        var currentID, currentName, currentCategories;
+        var currentID, currentName, categories;
 
         beforeEach(function () {
             currentID = 'TF1004';
             currentName = '家电类';
-            currentCategories = [
+            categories = [
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
             spyOn(CategoryService, 'category').and.returnValue({ID: 'TF1004', name: '家电类', num: 0});
             spyOn($location, 'path');
-//            $httpBackend.when('POST', '/api/categories').response([{},{},{}]);
+            $httpBackend.when('POST', '/api/categories', {'categories': categories}).response([{},{},{}]);
         });
 
         it('should add new category', function () {
-            CategoryService.addNewCateogory(currentCategories, currentID, currentName);
-//            $httpBackend.expectPOST('/api/categories');
-//            $httpBackend.flush();
+            CategoryService.addNewCateogory(categories, currentID, currentName);
+            $httpBackend.expectPOST('/api/categories', {'categories': categories});
+            $httpBackend.flush();
             expect(CategoryService.category).toHaveBeenCalledWith(currentID, currentName, '0');
             expect(currentCategories.length).toEqual(3);
             expect($location.path).toHaveBeenCalledWith('/categoryManage');
@@ -87,16 +87,15 @@ describe('test: CategoryService:', function () {
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
-//            $httpBackend.when('GET', '/api/categories').response(currentCategories);
-//            $httpBackend.when('GET', '/api/categories').respond([{}, {}, {}]);
+            $httpBackend.when('GET', '/api/categories').response(currentCategories);
         });
 
         it('without name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
             var result = CategoryService.saveButton(currentID, null);
             expect(result).toEqual(false);
-//            $httpBackend.expectGET('/api/categories');
-//            $httpBackend.flush();
+            $httpBackend.expectGET('/api/categories');
+            $httpBackend.flush();
         });
 
         it('with existed name should return false', function () {
