@@ -6,7 +6,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         return nameExist;
     };
 
-    this.saveButton = function (currentName, callback) {
+    this.saveNewCategory = function (currentName, callback) {
         var currentThis = this;
         $http.get('/api/categories').success(function(categories){
             var nameHadExist = currentThis.nameHadExist(categories, currentName);

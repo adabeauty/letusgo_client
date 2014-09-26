@@ -25,7 +25,7 @@ describe('test: CategoryService:', function () {
         });
     });
 
-    xdescribe('saveButton', function () {
+    xdescribe('saveNewCategory', function () {
 
         var currentCategories, currentID, currentName;
         beforeEach(function () {
@@ -40,7 +40,7 @@ describe('test: CategoryService:', function () {
 
         it('without name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
-            var result = CategoryService.saveButton(currentID, null);
+            var result = CategoryService.saveNewCategory(currentID, null);
             expect(result).toEqual(false);
             $httpBackend.expectGET('/api/categories');
             $httpBackend.flush();
@@ -48,7 +48,7 @@ describe('test: CategoryService:', function () {
 
         it('with existed name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
-            var result = CategoryService.saveButton(currentID, currentName);
+            var result = CategoryService.saveNewCategory(currentID, currentName);
 
             expect(result).toEqual(false);
         });
@@ -56,7 +56,7 @@ describe('test: CategoryService:', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(-1);
             spyOn(CategoryService, 'addNewCateogory');
 
-            var result = CategoryService.saveButton(currentID, currentName);
+            var result = CategoryService.saveNewCategory(currentID, currentName);
 
             expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentCategories, currentID, currentName);
             expect(result).toEqual(true);

@@ -23,11 +23,11 @@ describe('test categoryAdd:', function () {
 
         beforeEach(function () {
             creatCategoryAddCtrl();
-            spyOn(CategoryService, 'saveButton');
-            $scope.saveButton();
+            spyOn(CategoryService, 'saveNewCategory');
+            $scope.saveNewCategory();
         });
         it('should work', function () {
-            expect(CategoryService.saveButton).toHaveBeenCalled();
+            expect(CategoryService.saveNewCategory).toHaveBeenCalled();
         });
     });
 
