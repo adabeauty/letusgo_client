@@ -9,7 +9,6 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
     this.saveButton = function (currentName) {
         var currentThis = this;
         $http.get('/api/categories').success(function(categories){
-            console.log('response:', categories);
             var nameHadExist = currentThis.nameHadExist(categories, currentName);
             if (!currentName) {
                 alert('请填写分类名称!');
