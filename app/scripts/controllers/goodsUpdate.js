@@ -10,7 +10,7 @@ angular.module('letusgoApp')
 
         };
 
-        $scope.cancel = function () {
+        $scope.closeUpdateView = function () {
             $location.path('/goodsManage');
         };
     });
