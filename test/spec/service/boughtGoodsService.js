@@ -136,20 +136,41 @@ describe('cartItemService test: ', function () {
         });
 
     });
-    xdescribe('refresh', function(){
-        beforeEach('', function(){
+    describe('refresh', function(){
 
+        var callback;
+        beforeEach(function(){
+            var item = {name:'可口可乐', category: 'drinks', price: 3.50, num:1};
+            $httpBackend.when('GET', '/api/cart').respond(item);
+            spyOn(BoughtGoodsService, 'getTotalMoney');
+            spyOn(BoughtGoodsService, 'generateCartGoods');
+            spyOn(BoughtGoodsService, 'getClickCount');
+
+            BoughtGoodsService.refreshData(callback);
         });
         it('should refresh date', function(){
-
+            $http.get('api/cart').success(function(data){
+                expect(BoughtGoodsService.getTotalMoney).toHaveBeenCalled(data);
+                expect(BoughtGoodsService.generateCartGoods).toHaveBeenCalled(data);
+                expect(BoughtGoodsService.getClickCount).toHaveBeenCalled(data);
+                $httpBackend.expectGET('/api/cart');
+                $httpBackend.flush();
+            });
         });
     });
-    xdescribe('addClickCount', function(){
-        beforeEach(function(){
+    describe('addClickCount', function(){
 
+        var direction, number,callback;
+        beforeEach(function(){
+            $httpBackend.when('GET', '/api/cart').respond([]);
+            spyOn(BoughtGoodsService, 'getClickCount');
+
+            BoughtGoodsService.addClickcount(direction, number,callback);
         });
         it('should add clickCount', function(){
-
+            $http.get('/api/cart').success(function(data){
+                expect(BoughtGoodsService.getClickCount).toHaveBeenCalledWith(data);
+            });
         });
     });
     describe('deleteOrDecrease:', function(){
@@ -199,12 +220,12 @@ describe('cartItemService test: ', function () {
     xdescribe('test deleteItem():', function () {
         var deleteGood;
         beforeEach(function () {
-            $httpBackend.when('DELETE', '/api/cart');
-            deleteGood = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+            deleteGood = {num: 1, item: {Id: 1, category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+            $httpBackend.when('DELETE', '/api/cart/' + deleteGood.item.Id).response([{}, {}]);
             BoughtGoodsService.deleteItem(deleteGood);
         });
         it('deleteItem is ok', function () {
-            $httpBackend.expectDELETE('/api/cart');
+            $httpBackend.expectDELETE('/api/cart/'+deleteGood.item.Id);
             $httpBackend.flush();
         });
     });
