@@ -52,7 +52,7 @@ describe('test goodsAdd:', function () {
         beforeEach(function () {
             creatGoodsAddCtrl();
             spyOn($location, 'path');
-            $scope.cancel();
+            $scope.closeGoodsView();
         });
         it('cancel is ok', function () {
             expect($location.path).toHaveBeenCalledWith('/goodsManage');
