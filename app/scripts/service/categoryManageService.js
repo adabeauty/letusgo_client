@@ -27,17 +27,8 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
         var nameExist = _.findIndex(categories, {name: currentName});
         return nameExist;
     };
-    this.addNewCateogory = function (categories, currentID, currentName) {
 
-        addCategory = this.category(currentID, currentName, '0');
-        categories.push(addCategory);
-        $http.post('/api/categories', {'categories': categories}).success(function(){});
-//        $http.post('/api/categories/' + currentID, {'category': addCategory});
-        $location.path('/categoryManage');
-    };
-
-    this.saveButton = function (currentID, currentName) {
-
+    this.saveButton = function (currentName) {
         var currentThis = this;
         $http.get('/api/categories').success(function(categories){
             console.log('response:', categories);
@@ -50,9 +41,11 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 alert('此商品分类已经存在,请重新输入!');
                 return false;
             } else{
-                currentThis.addNewCateogory(categories, currentID, currentName);
+                $http.post('/api/categories', {'newCategory': currentName}).success(function(){
+                    $location.path('/categoryManage');
+                });
+
                 return true;
-//                currentThis.addNewCateogory(currentID, currentName);
             }
         });
     };
