@@ -22,11 +22,19 @@ describe('test categoryAdd:', function () {
     describe('saveButton:', function () {
 
         beforeEach(function () {
+            var result = [false, true];
+            var currentName;
             creatCategoryAddCtrl();
-            spyOn(CategoryService, 'saveNewCategory');
+            spyOn(CategoryService, 'saveNewCategory').and.callFake(function(currentName, callback){
+                callback(result);
+            });
             $scope.saveNewCategory();
         });
         it('should work', function () {
+            CategoryService.saveNewCategory($scope.currentName, function(warnig){
+                expect($scope.undefinedCategory).toEqual(false);
+                expect($scope.repeatedCategory).toEqual(true);
+            });
             expect(CategoryService.saveNewCategory).toHaveBeenCalled();
         });
     });
