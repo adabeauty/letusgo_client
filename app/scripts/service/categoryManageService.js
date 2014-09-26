@@ -1,27 +1,5 @@
 angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location, $http) {
 
-    this.category = function (ID, name, num) {
-        return {
-            ID: ID,
-            name: name,
-            num: num
-        };
-    };
-    this.getCurrentID = function(callback){
-
-        $http.get('/api/categories').success(function(categories){
-            if(categories.length === 0){
-                callback(1);
-                return 1;
-            }else{
-                var lastID = categories[categories.length - 1].ID;
-                var currentID = (lastID) + 1;
-                callback(currentID);
-                return currentID;
-            }
-        });
-    };
-
     this.nameHadExist = function (categories, currentName) {
 
         var nameExist = _.findIndex(categories, {name: currentName});
