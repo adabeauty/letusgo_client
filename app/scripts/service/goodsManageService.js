@@ -50,7 +50,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
         this.modifyCategoryNum(1, name);
         $location.path('/goodsManage');
     };
-    this.saveButton = function (itemCategory, itemName, itemPrice, itemUnit) {
+    this.saveNewGood = function (itemCategory, itemName, itemPrice, itemUnit) {
 
         var currentThis = this;
         $http.get('/api/goods').success(function(goods){

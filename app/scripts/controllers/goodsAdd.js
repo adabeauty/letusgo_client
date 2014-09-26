@@ -6,9 +6,9 @@ angular.module('letusgoApp')
             $scope.allCategories = categoryNames;
         });
 
-        $scope.saveButton = function () {
+        $scope.saveNewGood = function () {
 
-            GoodService.saveButton($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
+            GoodService.saveNewGood($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
 
             $http.get('/api/goods').success(function(goods){
                 $scope.allItems = goods;

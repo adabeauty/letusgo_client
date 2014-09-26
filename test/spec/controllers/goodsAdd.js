@@ -32,17 +32,17 @@ describe('test goodsAdd:', function () {
         });
 
     });
-    describe('test saveButton', function () {
+    describe('test saveNewGood', function () {
         beforeEach(function () {
             spyOn(GoodService, 'getAllCategories');
             creatGoodsAddCtrl();
             $httpBackend.when('GET', '/api/goods').respond('allItems');
-            spyOn(GoodService, 'saveButton');
+            spyOn(GoodService, 'saveNewGood');
 
-            $scope.saveButton();
+            $scope.saveNewGood();
         });
-        it('saveButton is ok', function () {
-            expect(GoodService.saveButton).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
+        it('saveNewGood is ok', function () {
+            expect(GoodService.saveNewGood).toHaveBeenCalledWith($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
             $httpBackend.expectGET('/api/goods');
             $httpBackend.flush();
         });
