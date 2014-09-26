@@ -27,7 +27,7 @@ describe('test categoryAdd:', function () {
             $scope.saveButton();
         });
         it('should work', function () {
-            expect(CategoryService.saveButton).toHaveBeenCalledWith($scope.currentName);
+            expect(CategoryService.saveButton).toHaveBeenCalled();
         });
     });
 
