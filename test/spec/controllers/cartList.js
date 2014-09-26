@@ -21,12 +21,36 @@ describe('cartList test:', function () {
         }
     }));
 
+    describe('refresh', function(){
+       beforeEach(function(){
 
+           var object = {
+               cartGoods: [{name:'可口可乐', num: 1, category: 'drinks'}],
+               totalAmount: 40,
+               totalCount: 3
+           };
+           spyOn(BoughtGoodsService, 'refreshData').and.callFake(function(callback){
+              callback(object);
+           });
+           creatCartListCtrl();
+       });
+        it('should give value to params in view',function(){
+            BoughtGoodsService.refreshData(function(data){
+                expect($scope.cartGoods.length).toBe(1);
+                expect($scope.totalAmount).toBe(40);
+                expect($scope.totalCount).toBe(3);
+
+            });
+        });
+
+//        expect(BoughtGoodsService.refreshData).toHaveBeenCalled();
+    });
     describe('outside params', function () {
         var refresh;
         beforeEach(function () {
             spyOn($scope, '$emit');
-//            refresh = jasmine.createSpy('refresh');
+            refresh = jasmine.createSpy('refresh');
+//            refresh();
             creatCartListCtrl();
         });
         it('has correct value', function () {
@@ -35,31 +59,19 @@ describe('cartList test:', function () {
 //            expect(refresh).toHaveBeenCalled();
         });
     });
-    describe('modifyItem ', function(){
-
-        var originalTimeout;
+    describe('modifyItem', function(){
         var direction, cartItem;
-
-        beforeEach(function() {
-            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-            creatCartListCtrl();
-            spyOn(BoughtGoodsService, 'modifyCartItemNum');
-//            spyOn($scope, '$emit');
-            $scope.modifyCartItemNum(cartItem, direction);
+        beforeEach(function(){
+           creatCartListCtrl();
+           spyOn(BoughtGoodsService, 'modifyCartItemNum');
+           spyOn($scope, '$emit');
+           $scope.modifyCartItemNum(cartItem, direction);
         });
-
-        it("can work", function(done) {
-            setTimeout(function() {
-                done();
-            }, 9000);
-
-            expect(BoughtGoodsService.modifyCartItemNum).toHaveBeenCalled();
-//            expect($scope.emit).toHaveBeenCalledWith('to-parent-changeClickCount', direction, 1);
-        });
-
-        afterEach(function() {
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        it('should work',function(){
+            BoughtGoodsService.modifyCartItemNum(cartItem, direction, function(){
+               expect($scope.$emit).toHaveBeenCalledWith('to-parent-changeClickCount', direction, 1);
+           });
+           expect(BoughtGoodsService.modifyCartItemNum).toHaveBeenCalled();
         });
     });
 
