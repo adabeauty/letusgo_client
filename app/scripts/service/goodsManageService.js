@@ -32,9 +32,7 @@ angular.module('letusgoApp').service('GoodService', function (localStorageServic
     this.saveItem = function (goods, itemCategory, itemName, itemPrice, itemUnit) {
 
         var newItem = this.item(goods, itemCategory, itemName, JSON.parse(itemPrice).toFixed(2), itemUnit);
-        goods.push(newItem);
-        $http.post('/api/goods', {'goods': goods}).success(function(){});
-//        $http.post('/api/goods/' + newItem.Id, {'good': newItem});
+        $http.post('/api/goods/' + newItem.Id, {'newGood': newItem});
     };
     this.modifyCategoryNum = function (num, itemCategory) {
 
@@ -63,11 +61,8 @@ angular.module('letusgoApp').service('GoodService', function (localStorageServic
                 alert('此商品已存在,请重新输入!');
                 return false;
             } else {
-
-                $http.post('/api/goods', {'goods': goods}).success(function(){
-                    currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
-                    callback();
-                });
+                currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
+                callback();
             }
         });
     };
