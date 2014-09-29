@@ -140,7 +140,7 @@ angular.module('letusgoApp').service('BoughtGoodsService', function (localStorag
     };
 
     this.clearDate = function () {
-        $http.post('/api/payment', {'emptyData': []});
+        $http.post('/api/payment');
     };
 
 });
