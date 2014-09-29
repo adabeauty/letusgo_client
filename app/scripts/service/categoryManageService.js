@@ -32,7 +32,7 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
 
     this.deleteButton = function (categories, object) {
 
-        if (object.num !== '0') {
+        if (object.num != 0) {
             alert('此分类下有商品存在,不能删除');
             return false;
         } else {
