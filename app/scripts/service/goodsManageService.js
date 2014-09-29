@@ -1,5 +1,5 @@
 'use strict';
-angular.module('letusgoApp').service('GoodService', function ($location, localStorageService, $http) {
+angular.module('letusgoApp').service('GoodService', function (localStorageService, $http) {
 
     function generateId(goods){
 
@@ -48,9 +48,8 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
     this.succeedSave = function(goods, name, itemName, itemPrice, itemUnit){
         this.saveItem(goods, name, itemName, itemPrice, itemUnit);
         this.modifyCategoryNum(1, name);
-        $location.path('/goodsManage');
     };
-    this.saveNewGood = function (itemCategory, itemName, itemPrice, itemUnit) {
+    this.saveNewGood = function (itemCategory, itemName, itemPrice, itemUnit, callback) {
 
         var currentThis = this;
         $http.get('/api/goods').success(function(goods){
@@ -67,6 +66,7 @@ angular.module('letusgoApp').service('GoodService', function ($location, localSt
 
                 $http.post('/api/goods', {'goods': goods}).success(function(){
                     currentThis.succeedSave(goods, itemCategory.name, itemName, itemPrice, itemUnit);
+                    callback();
                 });
             }
         });

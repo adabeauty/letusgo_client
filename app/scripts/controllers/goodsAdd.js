@@ -8,8 +8,9 @@ angular.module('letusgoApp')
 
         $scope.saveNewGood = function () {
 
-            GoodService.saveNewGood($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit);
-
+            GoodService.saveNewGood($scope.itemCategory, $scope.itemName, $scope.itemPrice, $scope.itemUnit, function(){
+                $location.path('/goodsManage');
+            });
             $http.get('/api/goods').success(function(goods){
                 $scope.allItems = goods;
             });
