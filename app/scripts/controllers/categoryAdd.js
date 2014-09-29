@@ -5,9 +5,13 @@ angular.module('letusgoApp')
 
         $scope.saveNewCategory = function () {
             CategoryService.saveNewCategory($scope.currentName, function(warning){
-                    $location.path('/categoryManage');
                     $scope.undefinedCategory = warning[0];
                     $scope.repeatedCategory = warning[1];
+
+                    var skip = warning[0] === false && warning[1] ===false;
+                    if(skip){
+                        $location.path('/categoryManage');
+                    }
                 });
         };
 
