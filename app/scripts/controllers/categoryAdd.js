@@ -5,6 +5,7 @@ angular.module('letusgoApp')
 
         $scope.saveNewCategory = function () {
             CategoryService.saveNewCategory($scope.currentName, function(warning){
+                    $location.path('/categoryManage');
                     $scope.undefinedCategory = warning[0];
                     $scope.repeatedCategory = warning[1];
                 });

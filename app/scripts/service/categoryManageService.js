@@ -1,4 +1,4 @@
-angular.module('letusgoApp').service('CategoryService', function (localStorageService, $location, $http) {
+angular.module('letusgoApp').service('CategoryService', function (localStorageService, $http) {
 
     this.nameHadExist = function (categories, currentName) {
 
@@ -19,7 +19,6 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
                 return ;
             }else{
                 $http.post('/api/categories', {'newCategory': currentName});
-                $location.path('/categoryManage');
                 callback([false, false]);
             }
         });
