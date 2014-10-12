@@ -1,5 +1,5 @@
 'use strict';
-ddescribe('cartItemService test: ', function () {
+describe('cartItemService test: ', function () {
 
     beforeEach(module('letusgoApp'));
     var BoughtGoodsService, localStorageService, $http, $httpBackend;
@@ -200,10 +200,10 @@ ddescribe('cartItemService test: ', function () {
         });
 
         it('of up can work', function () {
-//            $httpBackend.when('PUT', '/api/cart/' + boughtGoods[i].item.Id).response([{}]);
+            $httpBackend.when('PUT', '/api/cart/' + boughtGoods[i].item.Id).respond([{}]);
             BoughtGoodsService.processNum(boughtGoods, directionUp, i);
-//            $httpBackend.expectPUT('/api/cart');
-//            $httpBackend.flush();
+            $httpBackend.expectPUT('/api/cart/' + boughtGoods[i].item.Id);
+            $httpBackend.flush();
         });
         it('of down can work', function () {
             spyOn(BoughtGoodsService, 'decreaseOrDelete');
