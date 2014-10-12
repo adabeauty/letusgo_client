@@ -1,4 +1,4 @@
-describe('test categoryAdd:', function () {
+ddescribe('test categoryAdd:', function () {
 
     beforeEach(module('letusgoApp'));
     var $scope, $location, CategoryService, $controller, creatCategoryAddCtrl;
@@ -21,19 +21,37 @@ describe('test categoryAdd:', function () {
 
     describe('saveButton:', function () {
 
-        beforeEach(function () {
+        it('should not skip', function () {
             var result = [false, true];
-            var currentName;
+            var currentName = 'fruit';
+
             creatCategoryAddCtrl();
             spyOn(CategoryService, 'saveNewCategory').and.callFake(function(currentName, callback){
                 callback(result);
             });
             $scope.saveNewCategory();
-        });
-        it('should work', function () {
+
             CategoryService.saveNewCategory($scope.currentName, function(warnig){
                 expect($scope.undefinedCategory).toEqual(false);
                 expect($scope.repeatedCategory).toEqual(true);
+            });
+            expect(CategoryService.saveNewCategory).toHaveBeenCalled();
+        });
+        it('should skip to another view', function () {
+            var result = [false, false];
+            var currentName = 'fruit';
+
+            creatCategoryAddCtrl();
+            spyOn(CategoryService, 'saveNewCategory').and.callFake(function(currentName, callback){
+                callback(result);
+            });
+            spyOn($location, 'path');
+            $scope.saveNewCategory();
+
+            CategoryService.saveNewCategory($scope.currentName, function(warnig){
+                expect($scope.undefinedCategory).toEqual(false);
+                expect($scope.repeatedCategory).toEqual(false);
+                expect($location.path).toHaveBeenCalledWith('/categoryManage');
             });
             expect(CategoryService.saveNewCategory).toHaveBeenCalled();
         });
