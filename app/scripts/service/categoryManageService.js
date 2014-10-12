@@ -12,14 +12,15 @@ angular.module('letusgoApp').service('CategoryService', function (localStorageSe
             var nameHadExist = currentThis.nameHadExist(categories, currentName);
             if (!currentName) {
                 callback([true, false]);
-                return ;
+                return false;
             }
             if (nameHadExist !== -1) {
                 callback([false, true]);
-                return ;
+                return false;
             }else{
                 $http.post('/api/categories', {'newCategory': currentName});
                 callback([false, false]);
+                return true;
             }
         });
     };
