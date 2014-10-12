@@ -8,8 +8,8 @@ angular.module('letusgoApp')
                     $scope.undefinedCategory = warning[0];
                     $scope.repeatedCategory = warning[1];
 
-                    var skip = warning[0] === false && warning[1] ===false;
-                    if(skip){
+                    var canSkip = warning[0] === false && warning[1] ===false;
+                    if(canSkip){
                         $location.path('/categoryManage');
                     }
                 });
