@@ -89,15 +89,20 @@ describe('test index :', function () {
         });
     });
 
-    describe('to-parent-changeClickCount', function () {
+    xdescribe('to-parent-changeClickCount', function () {
         beforeEach(function () {
             creatclickCountCtrl();
-            spyOn(BoughtGoodsService, 'addClickcount');
+
+            var clickCount = 10;
+            spyOn(BoughtGoodsService, 'addClickcount').and.callFake(function(callback){
+                callback(clickCount);
+            });
         });
         it('to-parent-changeClickCount is ok', function () {
             $scope.$digest();
             $rootScope.$broadcast('to-parent-changeClickCount');
             expect(BoughtGoodsService.addClickcount).toHaveBeenCalled();
+            expecct($scope.clickCount).toBe(10);
 
         });
     });
