@@ -83,16 +83,16 @@ ddescribe('cartItemService test: ', function () {
 
     describe('cartList', function () {
         var className = '饮料类';
-        var boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+        var boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶', Id:1}};
         it('should return a object', function () {
             var cartListResult = BoughtGoodsService.cartList(className, boughtItem);
             expect(cartListResult.categoryName).toEqual('饮料类');
         });
     });
     var boughtItems = [
-        {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}},
-        {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}},
-        {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋'}}
+        {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶', Id: 1}},
+        {num: 3, item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋', Id: 2}},
+        {num: 4, item: {category: '干果类', name: '开心果', price: '15.00', unit: '袋', Id: 3}}
     ];
     describe('getGoodsArray', function(){
         it('should return a array', function(){
@@ -104,11 +104,11 @@ ddescribe('cartItemService test: ', function () {
 
     var item1 = {
         num: 1,
-        item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}
+        item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶', Id: 1}
     };
     var item2 = {
         num: 3,
-        item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋'}
+        item: {category: '零食类', name: '可比克', price: '4.50', unit: '袋', Id: 2}
     };
     describe('generateCartGoods', function () {
         var boughtGoods, goodsArray;
@@ -197,12 +197,12 @@ ddescribe('cartItemService test: ', function () {
             i = 1;
             directionUp = 1;
             directionDown = 0;
-//            $httpBackend.when('PUT', '/api/boughtGoods'+1);
         });
 
         it('of up can work', function () {
+//            $httpBackend.when('PUT', '/api/cart/' + boughtGoods[i].item.Id).response([{}]);
             BoughtGoodsService.processNum(boughtGoods, directionUp, i);
-//            $httpBackend.expectPUT('/api/boughtGoods');
+//            $httpBackend.expectPUT('/api/cart');
 //            $httpBackend.flush();
         });
         it('of down can work', function () {
@@ -213,19 +213,31 @@ ddescribe('cartItemService test: ', function () {
     });
 
     describe('modifyCategoryNum', function(){
+        var direction, boughtGoods, cartItem, callback;
         beforeEach(function(){
+            cartItem = item1;
+            boughtGoods = [item1, item2];
 
+            callback = jasmine.createSpy('callback');
+            $httpBackend.when('GET', '/api/cart').respond([item1, item2]);
+            spyOn(BoughtGoodsService, 'processNum');
         });
        it('should modify categoryNum', function(){
+           BoughtGoodsService.modifyCartItemNum(cartItem, direction, callback);
 
+           $http.get('/api/cart').success(function(boughtGoods){
+               expect(BoughtGoodsService.processNum).toHaveBeenCalled();
+           });
+           $httpBackend.expectGET('/api/cart');
+           $httpBackend.flush();
        });
     });
 
-    xdescribe('test deleteItem():', function () {
+    describe('test deleteItem():', function () {
         var deleteGood;
         beforeEach(function () {
             deleteGood = {num: 1, item: {Id: 1, category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
-            $httpBackend.when('DELETE', '/api/cart/' + deleteGood.item.Id).response([{}, {}]);
+            $httpBackend.when('DELETE', '/api/cart/' + deleteGood.item.Id).respond([{}, {}]);
             BoughtGoodsService.deleteItem(deleteGood);
         });
         it('deleteItem is ok', function () {
