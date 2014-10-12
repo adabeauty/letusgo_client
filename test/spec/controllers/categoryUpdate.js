@@ -9,6 +9,7 @@ describe('test categoryUpdate', function () {
         $location = $injector.get('$location');
         localStorageService = $injector.get('localStorageService');
         CategoryService = $injector.get('CategoryService');
+
         $controller = $injector.get('$controller');
         creatCategoryUpdateCtrl = function () {
             return $controller('CategoryUpdateCtrl', {
@@ -35,7 +36,9 @@ describe('test categoryUpdate', function () {
     describe('updateCategory', function () {
         beforeEach(function () {
             spyOn(localStorageService, 'set');
-            spyOn(CategoryService, 'updateCategory');
+            spyOn(CategoryService, 'updateCategory').and.callFake(function(callback){
+                callback();
+            });
             spyOn($location, 'path');
 
             $scope.updateCategory();
