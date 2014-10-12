@@ -25,9 +25,9 @@ describe('test: CategoryService:', function () {
         });
     });
 
-    xdescribe('saveNewCategory', function () {
+    describe('saveNewCategory', function () {
 
-        var currentCategories, currentID, currentName;
+        var currentCategories, currentID, currentName, callback;
         beforeEach(function () {
             currentID = 'TF1004';
             currentName = '家电类';
@@ -35,35 +35,42 @@ describe('test: CategoryService:', function () {
                 {ID: 'TF1001', name: '饮料类', num: 3},
                 {ID: 'TF1002', name: '干果类', num: 0}
             ];
-            $httpBackend.when('GET', '/api/categories').response(currentCategories);
+            callback = jasmine.createSpy('callback');
+            $httpBackend.when('GET', '/api/categories').respond(currentCategories);
         });
 
         it('without name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
-            var result = CategoryService.saveNewCategory(currentID, null);
-            expect(result).toEqual(false);
-            $httpBackend.expectGET('/api/categories');
-            $httpBackend.flush();
+            var result = CategoryService.saveNewCategory(currentID, callback);
+            $http.get('/api/categories').success(function(categories){
+                expect(result).toEqual(false);
+                $httpBackend.expectGET('/api/categories');
+                $httpBackend.flush();
+            });
         });
 
         it('with existed name should return false', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(1);
-            var result = CategoryService.saveNewCategory(currentID, currentName);
-
-            expect(result).toEqual(false);
+            var result = CategoryService.saveNewCategory(currentID, callback);
+            $http.get('/api/categories').success(function(categories){
+                expect(result).toEqual(false);
+            });
         });
         it('with correct data', function () {
             spyOn(CategoryService, 'nameHadExist').and.returnValue(-1);
-            spyOn(CategoryService, 'addNewCateogory');
+            $httpBackend.when('POST', '/api/categories').respond(currentCategories);
+            var result = CategoryService.saveNewCategory(currentID, callback);
+            $http.get('/api/categories').success(function(categories){
+                expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentCategories, currentID, currentName);
+                expect(result).toEqual(true);
+                $httpBackend.expectPOST('/api/categories');
+                $httpBackend.flush();
+            });
 
-            var result = CategoryService.saveNewCategory(currentID, currentName);
-
-            expect(CategoryService.addNewCateogory).toHaveBeenCalledWith(currentCategories, currentID, currentName);
-            expect(result).toEqual(true);
         });
     });
     
-    xdescribe('updateCategory', function () {
+    describe('updateCategory', function () {
         var updateCategory, allCategories;
         beforeEach(function () {
             updateCategory = {ID: 'TF1001', name: '饮料', num: 3};
