@@ -71,13 +71,21 @@ describe('test: CategoryService:', function () {
     });
     
     describe('updateCategory', function () {
-        var updateCategory, allCategories;
+        var updateCategory, callback;
         beforeEach(function () {
             updateCategory = {ID: 'TF1001', name: '饮料', num: 3};
 
+            callback = jasmine.createSpy('callback');
+            spyOn(localStorageService, 'get').and.returnValue(updateCategory);
+            $httpBackend.when('PUT', '/api/categories/' + updateCategory.ID).respond([]);
+
+            CategoryService.updateCategory(callback);
         });
         it('put updated category to server', function () {
 
+            expect(localStorageService.get).toHaveBeenCalledWith('updateCategory');
+            $httpBackend.expectPUT('/api/categories/' + updateCategory.ID);
+            $httpBackend.flush();
         });
     });
     
