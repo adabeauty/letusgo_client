@@ -1,5 +1,5 @@
 'use strict';
-describe('cartItemService test: ', function () {
+ddescribe('cartItemService test: ', function () {
 
     beforeEach(module('letusgoApp'));
     var BoughtGoodsService, localStorageService, $http, $httpBackend;
@@ -20,20 +20,24 @@ describe('cartItemService test: ', function () {
     });
 
     describe('hasExistGoods', function () {
-        var boughtItem;
+        var boughtGoods;
         var existName, unexistName;
         beforeEach(function () {
-            boughtItem = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
+            boughtGoods = {num: 1, item: {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'}};
             existName = '可口可乐';
             unexistName = '雪碧';
         });
 
+        it('with no boughtItem should return undefined', function(){
+            var result = BoughtGoodsService.hasExistGoods(existName, []);
+            expect(result).toEqual(undefined);
+        });
         it('of existItem should work', function () {
-            var result = BoughtGoodsService.hasExistGoods(existName, [boughtItem]);
+            var result = BoughtGoodsService.hasExistGoods(existName, [boughtGoods]);
             expect(result.item.name).toEqual('可口可乐');
         });
-        it('of noExistItem should work', function () {
-            var result = BoughtGoodsService.hasExistGoods(unexistName, [boughtItem]);
+        it('of noExistItem should return undefined', function () {
+            var result = BoughtGoodsService.hasExistGoods(unexistName, [boughtGoods]);
             expect(result).toEqual(undefined);
         });
 
