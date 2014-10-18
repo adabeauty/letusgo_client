@@ -93,8 +93,8 @@ describe('test: CategoryService:', function () {
     describe('deleteButton', function () {
         var deleteObject, notobject, currentCategories;
         beforeEach(function () {
-            deleteObject = {ID: 'TF1002', name: '干果类', num: '0'};
-            notobject = {ID: 'TF1001', name: '饮料类', num: '3'};
+            deleteObject = {ID: 'TF1002', name: '干果类', num: 0};
+            notobject = {ID: 'TF1001', name: '饮料类', num: 3};
 
             currentCategories = [
                 {ID: 'TF1001', name: '饮料类', num: 3},

@@ -30,6 +30,7 @@ describe('Controller: ShopCtrl', function () {
         $httpBackend.when('GET', '/api/goods').respond(item);
         creatShopCtrl();
     });
+
     describe('outside function', function(){
         it('should work', function(){
             expect($scope.$emit).toHaveBeenCalledWith('to-parent-navigator-inshop');
@@ -42,6 +43,7 @@ describe('Controller: ShopCtrl', function () {
             $httpBackend.flush();
         });
     });
+
     describe('addCartNum', function () {
 
         var item = {category: '饮料类', name: '可口可乐', price: '3.00', unit: '瓶'};
